@@ -1,0 +1,107 @@
+{
+  "id": "clone-graph",
+  "title": "Clone Graph",
+  "difficulty": "medium",
+  "tags": [
+    "Graph",
+    "DFS",
+    "Hash Map"
+  ],
+  "unitId": "unit-07",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "Map old node \u2192 new node while DFS/BFS. Don't recurse infinitely.",
+  "statement": "Given a reference of a node in a **connected** undirected graph, return a deep copy of the graph.\n\nEach node has a val and a list of neighbors. The input is an adjacency list. Node vals are 1-indexed as in the list order.",
+  "examples": [
+    {
+      "input": "adjList = [[2,4],[1,3],[2,4],[1,3]]",
+      "output": "[[2,4],[1,3],[2,4],[1,3]]"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 100].",
+    "1 <= Node.val <= 100",
+    "Node.val is unique.",
+    "The graph is connected."
+  ],
+  "followUp": null,
+  "editorial": "HashMap original\u2192clone. DFS: create clone, then attach cloned neighbors.",
+  "mode": "function",
+  "entry": {
+    "python": "cloneGraph",
+    "javascript": "cloneGraph"
+  },
+  "paramNames": [
+    "node"
+  ],
+  "helpers": [
+    "graph",
+    "graph"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def cloneGraph(self, node: Optional[Node]) -> Optional[Node]:\n        pass\n",
+    "javascript": "/**\n * @param {Node|null} node\n * @return {Node|null}\n */\nvar cloneGraph = function(node) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "node": [
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "expected": [
+          [
+            2,
+            4
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "node": [
+            []
+          ]
+        },
+        "expected": [
+          []
+        ]
+      },
+      {
+        "args": {
+          "node": []
+        },
+        "expected": []
+      }
+    ]
+  }
+}

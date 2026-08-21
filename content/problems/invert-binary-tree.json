@@ -1,0 +1,91 @@
+{
+  "id": "invert-binary-tree",
+  "title": "Invert Binary Tree",
+  "difficulty": "easy",
+  "tags": [
+    "Tree",
+    "DFS",
+    "BFS"
+  ],
+  "unitId": "unit-05",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "The joke question that still shows up as a warmup.",
+  "statement": "Invert a binary tree (mirror it) and return its root.\n\nTrees are given as level-order arrays (`null` for missing children).",
+  "examples": [
+    {
+      "input": "{\"root\": [4, 2, 7, 1, 3, 6, 9]}",
+      "output": "[4, 7, 2, 9, 6, 3, 1]"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-1000 <= Node.val <= 1000"
+  ],
+  "followUp": null,
+  "editorial": "Swap children, recurse. Or BFS swap.",
+  "mode": "function",
+  "entry": {
+    "python": "invertTree",
+    "javascript": "invertTree"
+  },
+  "paramNames": [
+    "root"
+  ],
+  "helpers": [
+    "tree",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {TreeNode|null}\n */\nvar invertTree = function(root) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            4,
+            2,
+            7,
+            1,
+            3,
+            6,
+            9
+          ]
+        },
+        "expected": [
+          4,
+          7,
+          2,
+          9,
+          6,
+          3,
+          1
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            2,
+            1,
+            3
+          ]
+        },
+        "expected": [
+          2,
+          3,
+          1
+        ]
+      },
+      {
+        "args": {
+          "root": []
+        },
+        "expected": []
+      }
+    ]
+  }
+}

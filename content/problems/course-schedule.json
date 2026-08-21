@@ -1,0 +1,103 @@
+{
+  "id": "course-schedule",
+  "title": "Course Schedule",
+  "difficulty": "medium",
+  "tags": [
+    "Graph",
+    "Topological Sort"
+  ],
+  "unitId": "unit-07",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Cycle detection. Kahn or DFS colors.",
+  "statement": "There are `numCourses` labeled `0` to `numCourses - 1`. `prerequisites[i] = [ai, bi]` means you must take `bi` before `ai`.\n\nReturn `true` if you can finish all courses (the graph is a DAG).",
+  "examples": [
+    {
+      "input": "numCourses = 2, prerequisites = [[1,0]]",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "1 <= numCourses <= 2000",
+    "0 <= prerequisites.length <= 5000",
+    "prerequisites[i].length == 2",
+    "0 <= ai, bi < numCourses"
+  ],
+  "followUp": "Return a valid order (Course Schedule II).",
+  "editorial": "Build adj + indegree. Queue zero-indegree. If you process all nodes, no cycle.",
+  "mode": "function",
+  "entry": {
+    "python": "canFinish",
+    "javascript": "canFinish"
+  },
+  "paramNames": [
+    "numCourses",
+    "prerequisites"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {number} numCourses\n * @param {number[][]} prerequisites\n * @return {boolean}\n */\nvar canFinish = function(numCourses, prerequisites) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "numCourses": 2,
+          "prerequisites": [
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "numCourses": 2,
+          "prerequisites": [
+            [
+              1,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ]
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "numCourses": 1,
+          "prerequisites": []
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "numCourses": 3,
+          "prerequisites": [
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              1
+            ]
+          ]
+        },
+        "expected": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "path-sum",
+  "title": "Path Sum",
+  "difficulty": "easy",
+  "tags": [
+    "Tree",
+    "DFS",
+    "BFS"
+  ],
+  "unitId": "unit-05",
+  "kind": "core",
+  "order": 5,
+  "microsoftNote": "Root-to-leaf, not any path. Microsoft asks path variants constantly.",
+  "statement": "Return true if the tree has a **root-to-leaf** path such that the sum of node values equals `targetSum`.\n\nTrees are given as level-order arrays (`null` for missing children).",
+  "examples": [
+    {
+      "input": "{\"root\": [5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1], \"targetSum\": 22}",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-1000 <= Node.val <= 1000"
+  ],
+  "followUp": null,
+  "editorial": "DFS remaining sum. Leaf check: no children and remaining == node.val.",
+  "mode": "function",
+  "entry": {
+    "python": "hasPathSum",
+    "javascript": "hasPathSum"
+  },
+  "paramNames": [
+    "root",
+    "targetSum"
+  ],
+  "helpers": [
+    "json",
+    "tree",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @param {number} targetSum\n * @return {boolean}\n */\nvar hasPathSum = function(root, targetSum) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            5,
+            4,
+            8,
+            11,
+            null,
+            13,
+            4,
+            7,
+            2,
+            null,
+            null,
+            null,
+            1
+          ],
+          "targetSum": 22
+        },
+        "expected": true
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            1,
+            2,
+            3
+          ],
+          "targetSum": 5
+        },
+        "expected": false
+      },
+      {
+        "args": {
+          "root": [],
+          "targetSum": 0
+        },
+        "expected": false
+      }
+    ]
+  }
+}

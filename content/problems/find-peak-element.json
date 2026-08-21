@@ -1,0 +1,77 @@
+{
+  "id": "find-peak-element",
+  "title": "Find Peak Element",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Binary Search"
+  ],
+  "unitId": "unit-04",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "Binary search on slope. nums[-1] and nums[n] are -inf.",
+  "statement": "A peak is an element strictly greater than its neighbors. Given `nums`, return **any** peak index. `nums[-1]` and `nums[n]` are considered `-\u221e`. O(log n).",
+  "examples": [
+    {
+      "input": "nums = [1,2,3,1]",
+      "output": "2"
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 1000",
+    "-2^31 <= nums[i] <= 2^31 - 1",
+    "nums[i] != nums[i + 1] for all valid i."
+  ],
+  "followUp": null,
+  "editorial": "If nums[mid] < nums[mid+1], a peak exists on the right. Else on the left (including mid).",
+  "mode": "function",
+  "entry": {
+    "python": "findPeakElement",
+    "javascript": "findPeakElement"
+  },
+  "paramNames": [
+    "nums"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def findPeakElement(self, nums: list[int]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar findPeakElement = function(nums) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            1,
+            2,
+            3,
+            1
+          ]
+        },
+        "expected": 2
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            1
+          ]
+        },
+        "expected": 0
+      },
+      {
+        "args": {
+          "nums": [
+            2,
+            1
+          ]
+        },
+        "expected": 0
+      }
+    ]
+  }
+}

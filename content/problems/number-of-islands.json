@@ -1,0 +1,132 @@
+{
+  "id": "number-of-islands",
+  "title": "Number of Islands",
+  "difficulty": "medium",
+  "tags": [
+    "Graph",
+    "DFS",
+    "BFS",
+    "Matrix"
+  ],
+  "unitId": "unit-07",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Grid DFS/BFS. Cloud-infra teams ask this constantly.",
+  "statement": "Given an `m x n` 2D binary grid `grid` which represents a map of `'1'`s (land) and `'0'`s (water), return the number of islands.\n\nAn island is surrounded by water and is formed by connecting adjacent lands **horizontally or vertically**.",
+  "examples": [
+    {
+      "input": "grid = [[\"1\",\"1\",\"0\"],[\"1\",\"1\",\"0\"],[\"0\",\"0\",\"1\"]]",
+      "output": "2"
+    }
+  ],
+  "constraints": [
+    "m == grid.length",
+    "n == grid[i].length",
+    "1 <= m, n <= 300",
+    "grid[i][j] is '0' or '1'."
+  ],
+  "followUp": null,
+  "editorial": "Scan. On a '1', increment and DFS/BFS flood to '0' or a visited mark.",
+  "mode": "function",
+  "entry": {
+    "python": "numIslands",
+    "javascript": "numIslands"
+  },
+  "paramNames": [
+    "grid"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def numIslands(self, grid: list[list[str]]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {character[][]} grid\n * @return {number}\n */\nvar numIslands = function(grid) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "grid": [
+            [
+              "1",
+              "1",
+              "1",
+              "1",
+              "0"
+            ],
+            [
+              "1",
+              "1",
+              "0",
+              "1",
+              "0"
+            ],
+            [
+              "1",
+              "1",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        "expected": 1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "grid": [
+            [
+              "1",
+              "1",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "1",
+              "1",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "1",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0",
+              "1",
+              "1"
+            ]
+          ]
+        },
+        "expected": 3
+      },
+      {
+        "args": {
+          "grid": [
+            [
+              "0"
+            ]
+          ]
+        },
+        "expected": 0
+      }
+    ]
+  }
+}

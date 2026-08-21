@@ -1,0 +1,87 @@
+{
+  "id": "word-break",
+  "title": "Word Break",
+  "difficulty": "medium",
+  "tags": [
+    "DP",
+    "String",
+    "Trie"
+  ],
+  "unitId": "unit-09",
+  "kind": "core",
+  "order": 6,
+  "microsoftNote": "dp[i] = whether s[:i] can be segmented.",
+  "statement": "Given a string `s` and a dictionary `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words. Words may be reused.",
+  "examples": [
+    {
+      "input": "s = \"leetcode\", wordDict = [\"leet\",\"code\"]",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 300",
+    "1 <= wordDict.length <= 1000",
+    "1 <= wordDict[i].length <= 20",
+    "s and words consist of lowercase letters.",
+    "All dictionary words unique."
+  ],
+  "followUp": null,
+  "editorial": "dp[0]=True. For i in 1..n, if some word ends at i and dp[i-len] and s[i-len:i]==word.",
+  "mode": "function",
+  "entry": {
+    "python": "wordBreak",
+    "javascript": "wordBreak"
+  },
+  "paramNames": [
+    "s",
+    "wordDict"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def wordBreak(self, s: str, wordDict: list[str]) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {string} s\n * @param {string[]} wordDict\n * @return {boolean}\n */\nvar wordBreak = function(s, wordDict) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "s": "leetcode",
+          "wordDict": [
+            "leet",
+            "code"
+          ]
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "applepenapple",
+          "wordDict": [
+            "apple",
+            "pen"
+          ]
+        },
+        "expected": true
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "s": "catsandog",
+          "wordDict": [
+            "cats",
+            "dog",
+            "sand",
+            "and",
+            "cat"
+          ]
+        },
+        "expected": false
+      }
+    ]
+  }
+}

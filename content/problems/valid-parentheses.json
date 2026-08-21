@@ -1,0 +1,92 @@
+{
+  "id": "valid-parentheses",
+  "title": "Valid Parentheses",
+  "difficulty": "easy",
+  "tags": [
+    "String",
+    "Stack"
+  ],
+  "unitId": "unit-03",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Stack matching. Empty stack at the end, never pop empty.",
+  "statement": "Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.\n\nOpen brackets must be closed by the same type, in the correct order. Every close has a corresponding open.",
+  "examples": [
+    {
+      "input": "s = \"()\"",
+      "output": "true"
+    },
+    {
+      "input": "s = \"()[]{}\"",
+      "output": "true"
+    },
+    {
+      "input": "s = \"(]\"",
+      "output": "false"
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 10^4",
+    "s consists of parentheses only ()[]{}."
+  ],
+  "followUp": null,
+  "editorial": "Push opens. On close, the stack top must match. Stack empty at the end.",
+  "mode": "function",
+  "entry": {
+    "python": "isValid",
+    "javascript": "isValid"
+  },
+  "paramNames": [
+    "s"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def isValid(self, s: str) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isValid = function(s) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "s": "()"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "()[]{}"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "(]"
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "s": "([)]"
+        },
+        "expected": false
+      },
+      {
+        "args": {
+          "s": "{[]}"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "]"
+        },
+        "expected": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "daily-temperatures",
+  "title": "Daily Temperatures",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Stack",
+    "Monotonic Stack"
+  ],
+  "unitId": "unit-03",
+  "kind": "stretch",
+  "order": 5,
+  "microsoftNote": "Next greater element via a decreasing stack of indices.",
+  "statement": "Given `temperatures` where `temperatures[i]` is the temperature on day `i`, return an array `answer` such that `answer[i]` is the number of days you have to wait after the `i`th day to get a warmer temperature. If there is no future day, `answer[i] == 0`.",
+  "examples": [
+    {
+      "input": "temperatures = [73,74,75,71,69,72,76,73]",
+      "output": "[1,1,4,2,1,1,0,0]"
+    }
+  ],
+  "constraints": [
+    "1 <= temperatures.length <= 10^5",
+    "30 <= temperatures[i] <= 100"
+  ],
+  "followUp": "O(n) time.",
+  "editorial": "Monotonic decreasing stack of indices. When today's temp is warmer, pop and fill wait = i - idx.",
+  "mode": "function",
+  "entry": {
+    "python": "dailyTemperatures",
+    "javascript": "dailyTemperatures"
+  },
+  "paramNames": [
+    "temperatures"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def dailyTemperatures(self, temperatures: list[int]) -> list[int]:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} temperatures\n * @return {number[]}\n */\nvar dailyTemperatures = function(temperatures) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "temperatures": [
+            73,
+            74,
+            75,
+            71,
+            69,
+            72,
+            76,
+            73
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          4,
+          2,
+          1,
+          1,
+          0,
+          0
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "temperatures": [
+            30,
+            40,
+            50,
+            60
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "args": {
+          "temperatures": [
+            30,
+            60,
+            90
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          0
+        ]
+      }
+    ]
+  }
+}

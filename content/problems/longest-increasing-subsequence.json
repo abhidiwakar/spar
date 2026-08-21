@@ -1,0 +1,87 @@
+{
+  "id": "longest-increasing-subsequence",
+  "title": "Longest Increasing Subsequence",
+  "difficulty": "medium",
+  "tags": [
+    "DP",
+    "Binary Search"
+  ],
+  "unitId": "unit-09",
+  "kind": "core",
+  "order": 5,
+  "microsoftNote": "O(n^2) DP is acceptable; mention patience sorting O(n log n).",
+  "statement": "Given an integer array `nums`, return the length of the longest strictly increasing subsequence.",
+  "examples": [
+    {
+      "input": "nums = [10,9,2,5,3,7,101,18]",
+      "output": "4"
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 2500",
+    "-10^4 <= nums[i] <= 10^4"
+  ],
+  "followUp": "O(n log n).",
+  "editorial": "dp[i] = 1 + max(dp[j] for j < i if nums[j] < nums[i]). Or tails binary search.",
+  "mode": "function",
+  "entry": {
+    "python": "lengthOfLIS",
+    "javascript": "lengthOfLIS"
+  },
+  "paramNames": [
+    "nums"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def lengthOfLIS(self, nums: list[int]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar lengthOfLIS = function(nums) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            10,
+            9,
+            2,
+            5,
+            3,
+            7,
+            101,
+            18
+          ]
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "nums": [
+            0,
+            1,
+            0,
+            3,
+            2,
+            3
+          ]
+        },
+        "expected": 4
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            7,
+            7,
+            7,
+            7
+          ]
+        },
+        "expected": 1
+      }
+    ]
+  }
+}

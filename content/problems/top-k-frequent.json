@@ -1,0 +1,81 @@
+{
+  "id": "top-k-frequent",
+  "title": "Top K Frequent Elements",
+  "difficulty": "medium",
+  "tags": [
+    "Heap",
+    "Hash Map"
+  ],
+  "unitId": "unit-08",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Heap or bucket sort. Return any order.",
+  "statement": "Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.",
+  "examples": [
+    {
+      "input": "nums = [1,1,1,2,2,3], k = 2",
+      "output": "[1,2]"
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^5",
+    "k is in the range [1, the number of unique elements in nums].",
+    "It is guaranteed that the answer is unique."
+  ],
+  "followUp": "Better than n log n.",
+  "editorial": "Count frequencies. Heap of size k, or bucket sort by frequency.",
+  "mode": "function",
+  "entry": {
+    "python": "topKFrequent",
+    "javascript": "topKFrequent"
+  },
+  "paramNames": [
+    "nums",
+    "k"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def topKFrequent(self, nums: list[int], k: int) -> list[int]:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar topKFrequent = function(nums, k) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            1,
+            1,
+            1,
+            2,
+            2,
+            3
+          ],
+          "k": 2
+        },
+        "expected": [
+          1,
+          2
+        ],
+        "compare": "sorted"
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            1
+          ],
+          "k": 1
+        },
+        "expected": [
+          1
+        ],
+        "compare": "sorted"
+      }
+    ]
+  }
+}

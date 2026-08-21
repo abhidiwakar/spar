@@ -1,0 +1,107 @@
+{
+  "id": "non-overlapping-intervals",
+  "title": "Non-overlapping Intervals",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Greedy",
+    "Intervals"
+  ],
+  "unitId": "unit-08",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Minimum removals = n - maximum non-overlapping. Sort by end.",
+  "statement": "Given an array of intervals `intervals` where `intervals[i] = [starti, endi]`, return the minimum number of intervals you need to remove to make the rest non-overlapping.\n\nTwo intervals overlap if they share any points except if they only touch at an endpoint: `[1,2]` and `[2,3]` do **not** overlap.",
+  "examples": [
+    {
+      "input": "intervals = [[1,2],[2,3],[3,4],[1,3]]",
+      "output": "1"
+    }
+  ],
+  "constraints": [
+    "1 <= intervals.length <= 10^5",
+    "intervals[i].length == 2",
+    "-5 * 10^4 <= starti < endi <= 5 * 10^4"
+  ],
+  "followUp": null,
+  "editorial": "Sort by end. Greedily keep an interval if start >= last_end. Removals = n - kept.",
+  "mode": "function",
+  "entry": {
+    "python": "eraseOverlapIntervals",
+    "javascript": "eraseOverlapIntervals"
+  },
+  "paramNames": [
+    "intervals"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def eraseOverlapIntervals(self, intervals: list[list[int]]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[][]} intervals\n * @return {number}\n */\nvar eraseOverlapIntervals = function(intervals) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "intervals": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        "expected": 1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "intervals": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        "expected": 2
+      },
+      {
+        "args": {
+          "intervals": [
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        },
+        "expected": 0
+      }
+    ]
+  }
+}

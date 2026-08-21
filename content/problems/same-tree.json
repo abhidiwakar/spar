@@ -1,0 +1,102 @@
+{
+  "id": "same-tree",
+  "title": "Same Tree",
+  "difficulty": "easy",
+  "tags": [
+    "Tree",
+    "DFS",
+    "BFS"
+  ],
+  "unitId": "unit-05",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "Null handling. Don't crash on empty trees.",
+  "statement": "Given the roots of two binary trees `p` and `q`, write a function to check if they are the same (identical structure and values).\n\nTrees are given as level-order arrays (`null` for missing children).",
+  "examples": [
+    {
+      "input": "{\"p\": [1, 2, 3], \"q\": [1, 2, 3]}",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-1000 <= Node.val <= 1000"
+  ],
+  "followUp": null,
+  "editorial": "Compare vals, then both lefts and both rights. Null mismatches fail.",
+  "mode": "function",
+  "entry": {
+    "python": "isSameTree",
+    "javascript": "isSameTree"
+  },
+  "paramNames": [
+    "p",
+    "q"
+  ],
+  "helpers": [
+    "json",
+    "tree",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} p\n * @param {TreeNode|null} q\n * @return {boolean}\n */\nvar isSameTree = function(p, q) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "p": [
+            1,
+            2,
+            3
+          ],
+          "q": [
+            1,
+            2,
+            3
+          ]
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "p": [
+            1,
+            2
+          ],
+          "q": [
+            1,
+            null,
+            2
+          ]
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "p": [],
+          "q": []
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "p": [
+            1,
+            2,
+            1
+          ],
+          "q": [
+            1,
+            1,
+            2
+          ]
+        },
+        "expected": false
+      }
+    ]
+  }
+}

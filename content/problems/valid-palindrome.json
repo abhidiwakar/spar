@@ -1,0 +1,82 @@
+{
+  "id": "valid-palindrome",
+  "title": "Valid Palindrome",
+  "difficulty": "easy",
+  "tags": [
+    "String",
+    "Two Pointers"
+  ],
+  "unitId": "unit-02",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Two pointers skipping non-alphanumeric. Off-by-one on empty leftover.",
+  "statement": "A phrase is a palindrome if, after converting all uppercase letters into lowercase and removing all non-alphanumeric characters, it reads the same forward and backward.\n\nGiven a string `s`, return `true` if it is a palindrome.",
+  "examples": [
+    {
+      "input": "s = \"A man, a plan, a canal: Panama\"",
+      "output": "true"
+    },
+    {
+      "input": "s = \"race a car\"",
+      "output": "false"
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 2 * 10^5",
+    "s consists of printable ASCII."
+  ],
+  "followUp": "Do it with O(1) extra memory.",
+  "editorial": "Left and right pointers. Skip non-alnum, compare lowercased chars, move inward.",
+  "mode": "function",
+  "entry": {
+    "python": "isPalindrome",
+    "javascript": "isPalindrome"
+  },
+  "paramNames": [
+    "s"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isPalindrome = function(s) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "s": "A man, a plan, a canal: Panama"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "race a car"
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "s": " "
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "0P"
+        },
+        "expected": false
+      },
+      {
+        "args": {
+          "s": "ab_a"
+        },
+        "expected": true
+      }
+    ]
+  }
+}

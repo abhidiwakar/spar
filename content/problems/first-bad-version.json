@@ -1,0 +1,84 @@
+{
+  "id": "first-bad-version",
+  "title": "First Bad Version",
+  "difficulty": "easy",
+  "tags": [
+    "Binary Search",
+    "Interactive"
+  ],
+  "unitId": "unit-04",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "API-style binary search. Minimize calls to isBadVersion.",
+  "statement": "You are a product manager. Versions `[1, n]` go bad and stay bad. `isBadVersion(version)` is provided.\n\nImplement `firstBadVersion(n)` to find the first bad version. Minimize API calls.",
+  "examples": [
+    {
+      "input": "n = 5, bad = 4",
+      "output": "4"
+    }
+  ],
+  "constraints": [
+    "1 <= bad <= n <= 2^31 - 1"
+  ],
+  "followUp": "How many API calls in the worst case?",
+  "editorial": "Binary search for the first true. Classic lower-bound.",
+  "mode": "function",
+  "entry": {
+    "python": "firstBadVersion",
+    "javascript": "firstBadVersion"
+  },
+  "paramNames": [
+    "n"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "first_bad_version"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def firstBadVersion(self, n: int) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number} n\n * @return {number}\n */\nvar firstBadVersion = function(n) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "n": 5
+        },
+        "extra": {
+          "bad": 4
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "n": 1
+        },
+        "extra": {
+          "bad": 1
+        },
+        "expected": 1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "n": 10
+        },
+        "extra": {
+          "bad": 10
+        },
+        "expected": 10
+      },
+      {
+        "args": {
+          "n": 10
+        },
+        "extra": {
+          "bad": 1
+        },
+        "expected": 1
+      }
+    ]
+  }
+}

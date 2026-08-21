@@ -1,0 +1,92 @@
+{
+  "id": "construct-preorder-inorder",
+  "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+  "difficulty": "medium",
+  "tags": [
+    "Tree",
+    "Divide and Conquer"
+  ],
+  "unitId": "unit-06",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Onsite favorite. Preorder gives the root; inorder splits left/right.",
+  "statement": "Given two integer arrays `preorder` and `inorder` where `preorder` is the preorder traversal of a binary tree and `inorder` is the inorder traversal of the same tree (distinct values), construct and return the binary tree.",
+  "examples": [
+    {
+      "input": "preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]",
+      "output": "[3,9,20,null,null,15,7]"
+    }
+  ],
+  "constraints": [
+    "1 <= preorder.length <= 3000",
+    "inorder.length == preorder.length",
+    "All values unique.",
+    "inorder is the inorder of the tree, preorder is the preorder of the tree."
+  ],
+  "followUp": "O(n) with an index map for inorder.",
+  "editorial": "Root = preorder[0]. Find it in inorder. Left size = index. Recurse on slices. Map value\u2192inorder index.",
+  "mode": "function",
+  "entry": {
+    "python": "buildTree",
+    "javascript": "buildTree"
+  },
+  "paramNames": [
+    "preorder",
+    "inorder"
+  ],
+  "helpers": [
+    "tree",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} preorder\n * @param {number[]} inorder\n * @return {TreeNode|null}\n */\nvar buildTree = function(preorder, inorder) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "preorder": [
+            3,
+            9,
+            20,
+            15,
+            7
+          ],
+          "inorder": [
+            9,
+            3,
+            15,
+            20,
+            7
+          ]
+        },
+        "expected": [
+          3,
+          9,
+          20,
+          null,
+          null,
+          15,
+          7
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "preorder": [
+            -1
+          ],
+          "inorder": [
+            -1
+          ]
+        },
+        "expected": [
+          -1
+        ]
+      }
+    ]
+  }
+}

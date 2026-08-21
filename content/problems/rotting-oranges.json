@@ -1,0 +1,106 @@
+{
+  "id": "rotting-oranges",
+  "title": "Rotting Oranges",
+  "difficulty": "medium",
+  "tags": [
+    "Graph",
+    "BFS",
+    "Matrix"
+  ],
+  "unitId": "unit-07",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "Multi-source BFS. Minutes = max distance from any rotten orange.",
+  "statement": "In a grid, `0` is empty, `1` is a fresh orange, `2` is rotten. Every minute, any fresh orange 4-directionally adjacent to a rotten one becomes rotten.\n\nReturn the minimum minutes until no fresh orange remains. If impossible, return `-1`.",
+  "examples": [
+    {
+      "input": "grid = [[2,1,1],[1,1,0],[0,1,1]]",
+      "output": "4"
+    }
+  ],
+  "constraints": [
+    "m == grid.length",
+    "n == grid[i].length",
+    "1 <= m, n <= 10",
+    "grid[i][j] is 0, 1, or 2."
+  ],
+  "followUp": null,
+  "editorial": "Queue all rotten at minute 0. BFS. Count fresh; if leftover fresh at the end, -1.",
+  "mode": "function",
+  "entry": {
+    "python": "orangesRotting",
+    "javascript": "orangesRotting"
+  },
+  "paramNames": [
+    "grid"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def orangesRotting(self, grid: list[list[int]]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[][]} grid\n * @return {number}\n */\nvar orangesRotting = function(grid) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "grid": [
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              1
+            ]
+          ]
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "grid": [
+            [
+              2,
+              1,
+              1
+            ],
+            [
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ]
+          ]
+        },
+        "expected": -1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "grid": [
+            [
+              0,
+              2
+            ]
+          ]
+        },
+        "expected": 0
+      }
+    ]
+  }
+}

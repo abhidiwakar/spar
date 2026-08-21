@@ -1,0 +1,129 @@
+{
+  "id": "word-search",
+  "title": "Word Search",
+  "difficulty": "medium",
+  "tags": [
+    "Matrix",
+    "Backtracking"
+  ],
+  "unitId": "unit-07",
+  "kind": "stretch",
+  "order": 6,
+  "microsoftNote": "Backtracking on a grid. Mark visited, unmark on return.",
+  "statement": "Given an `m x n` grid of characters `board` and a string `word`, return `true` if `word` exists in the grid. The word can be constructed from sequentially adjacent cells (4-dir). The same cell may not be used twice.",
+  "examples": [
+    {
+      "input": "board = [[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word = \"ABCCED\"",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "1 <= m, n <= 6",
+    "1 <= word.length <= 15",
+    "board and word consist of uppercase and lowercase English letters."
+  ],
+  "followUp": null,
+  "editorial": "Start DFS from each cell. Mutate board to mark visited, restore after.",
+  "mode": "function",
+  "entry": {
+    "python": "exist",
+    "javascript": "exist"
+  },
+  "paramNames": [
+    "board",
+    "word"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def exist(self, board: list[list[str]], word: str) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {character[][]} board\n * @param {string} word\n * @return {boolean}\n */\nvar exist = function(board, word) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "board": [
+            [
+              "A",
+              "B",
+              "C",
+              "E"
+            ],
+            [
+              "S",
+              "F",
+              "C",
+              "S"
+            ],
+            [
+              "A",
+              "D",
+              "E",
+              "E"
+            ]
+          ],
+          "word": "ABCCED"
+        },
+        "expected": true
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "board": [
+            [
+              "A",
+              "B",
+              "C",
+              "E"
+            ],
+            [
+              "S",
+              "F",
+              "C",
+              "S"
+            ],
+            [
+              "A",
+              "D",
+              "E",
+              "E"
+            ]
+          ],
+          "word": "SEE"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "board": [
+            [
+              "A",
+              "B",
+              "C",
+              "E"
+            ],
+            [
+              "S",
+              "F",
+              "C",
+              "S"
+            ],
+            [
+              "A",
+              "D",
+              "E",
+              "E"
+            ]
+          ],
+          "word": "ABCB"
+        },
+        "expected": false
+      }
+    ]
+  }
+}

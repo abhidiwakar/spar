@@ -1,0 +1,114 @@
+{
+  "id": "zero-one-matrix",
+  "title": "01 Matrix",
+  "difficulty": "medium",
+  "tags": [
+    "Graph",
+    "BFS",
+    "Matrix"
+  ],
+  "unitId": "unit-07",
+  "kind": "core",
+  "order": 5,
+  "microsoftNote": "Multi-source BFS from every 0.",
+  "statement": "Given an `m x n` binary matrix `mat`, return the distance of the nearest `0` for each cell. Adjacent cells are 4-directional, distance 1 each.",
+  "examples": [
+    {
+      "input": "mat = [[0,0,0],[0,1,0],[1,1,1]]",
+      "output": "[[0,0,0],[0,1,0],[1,2,1]]"
+    }
+  ],
+  "constraints": [
+    "m == mat.length",
+    "n == mat[i].length",
+    "1 <= m, n <= 200",
+    "mat[i][j] is 0 or 1.",
+    "There is at least one 0."
+  ],
+  "followUp": "DP two-pass is an alternative to BFS.",
+  "editorial": "Queue all zeros. BFS outward, filling unseen 1s with dist.",
+  "mode": "function",
+  "entry": {
+    "python": "updateMatrix",
+    "javascript": "updateMatrix"
+  },
+  "paramNames": [
+    "mat"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def updateMatrix(self, mat: list[list[int]]) -> list[list[int]]:\n        pass\n",
+    "javascript": "/**\n * @param {number[][]} mat\n * @return {number[][]}\n */\nvar updateMatrix = function(mat) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "mat": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ]
+        },
+        "expected": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            2,
+            1
+          ]
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "mat": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        "expected": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      }
+    ]
+  }
+}

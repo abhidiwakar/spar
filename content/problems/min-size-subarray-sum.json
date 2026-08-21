@@ -1,0 +1,106 @@
+{
+  "id": "min-size-subarray-sum",
+  "title": "Minimum Size Subarray Sum",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Sliding Window"
+  ],
+  "unitId": "unit-02",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Positive integers make a shrinking window valid. Say that out loud.",
+  "statement": "Given an array of **positive** integers `nums` and a positive integer `target`, return the **minimal length** of a subarray whose sum is greater than or equal to `target`. If none exists, return `0`.",
+  "examples": [
+    {
+      "input": "target = 7, nums = [2,3,1,2,4,3]",
+      "output": "2",
+      "explanation": "[4,3]"
+    }
+  ],
+  "constraints": [
+    "1 <= target <= 10^9",
+    "1 <= nums.length <= 10^5",
+    "1 <= nums[i] <= 10^4"
+  ],
+  "followUp": "O(n) time, O(1) extra space.",
+  "editorial": "Expand right, add. While sum >= target, record length and subtract nums[left], then left++.",
+  "mode": "function",
+  "entry": {
+    "python": "minSubArrayLen",
+    "javascript": "minSubArrayLen"
+  },
+  "paramNames": [
+    "target",
+    "nums"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def minSubArrayLen(self, target: int, nums: list[int]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number} target\n * @param {number[]} nums\n * @return {number}\n */\nvar minSubArrayLen = function(target, nums) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "target": 7,
+          "nums": [
+            2,
+            3,
+            1,
+            2,
+            4,
+            3
+          ]
+        },
+        "expected": 2
+      },
+      {
+        "args": {
+          "target": 4,
+          "nums": [
+            1,
+            4,
+            4
+          ]
+        },
+        "expected": 1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "target": 11,
+          "nums": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "expected": 0
+      },
+      {
+        "args": {
+          "target": 15,
+          "nums": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "expected": 5
+      }
+    ]
+  }
+}

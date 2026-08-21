@@ -1,0 +1,79 @@
+{
+  "id": "coin-change",
+  "title": "Coin Change",
+  "difficulty": "medium",
+  "tags": [
+    "DP"
+  ],
+  "unitId": "unit-09",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "Unbounded knapsack. Microsoft textbook DP.",
+  "statement": "You are given coins of different denominations and a total amount of money `amount`. Return the fewest number of coins that you need to make up that amount. If it is impossible, return `-1`. You may use each coin as many times as you want.",
+  "examples": [
+    {
+      "input": "coins = [1,2,5], amount = 11",
+      "output": "3"
+    }
+  ],
+  "constraints": [
+    "1 <= coins.length <= 12",
+    "1 <= coins[i] <= 2^31 - 1",
+    "0 <= amount <= 10^4"
+  ],
+  "followUp": "What is Coin Change II counting combinations?",
+  "editorial": "dp[x] = min coins to make x. dp[0]=0, else inf. For each coin, update amounts upward.",
+  "mode": "function",
+  "entry": {
+    "python": "coinChange",
+    "javascript": "coinChange"
+  },
+  "paramNames": [
+    "coins",
+    "amount"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def coinChange(self, coins: list[int], amount: int) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} coins\n * @param {number} amount\n * @return {number}\n */\nvar coinChange = function(coins, amount) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "coins": [
+            1,
+            2,
+            5
+          ],
+          "amount": 11
+        },
+        "expected": 3
+      },
+      {
+        "args": {
+          "coins": [
+            2
+          ],
+          "amount": 3
+        },
+        "expected": -1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "coins": [
+            1
+          ],
+          "amount": 0
+        },
+        "expected": 0
+      }
+    ]
+  }
+}

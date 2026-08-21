@@ -1,0 +1,89 @@
+{
+  "id": "valid-anagram",
+  "title": "Valid Anagram",
+  "difficulty": "easy",
+  "tags": [
+    "String",
+    "Hash Map"
+  ],
+  "unitId": "unit-01",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Frequency maps. Unicode follow-up is a chance to talk constraints.",
+  "statement": "Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.\n\nAn anagram uses the same characters the same number of times.",
+  "examples": [
+    {
+      "input": "s = \"anagram\", t = \"nagaram\"",
+      "output": "true"
+    },
+    {
+      "input": "s = \"rat\", t = \"car\"",
+      "output": "false"
+    }
+  ],
+  "constraints": [
+    "1 <= s.length, t.length <= 5 * 10^4",
+    "s and t consist of lowercase English letters."
+  ],
+  "followUp": "What if the inputs contained Unicode characters?",
+  "editorial": "Count characters in s, decrement with t. All counts must land on zero. Sorting both is the slower alternative.",
+  "mode": "function",
+  "entry": {
+    "python": "isAnagram",
+    "javascript": "isAnagram"
+  },
+  "paramNames": [
+    "s",
+    "t"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def isAnagram(self, s: str, t: str) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isAnagram = function(s, t) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "s": "anagram",
+          "t": "nagaram"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "rat",
+          "t": "car"
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "s": "a",
+          "t": "a"
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "s": "ab",
+          "t": "a"
+        },
+        "expected": false
+      },
+      {
+        "args": {
+          "s": "aa",
+          "t": "a"
+        },
+        "expected": false
+      }
+    ]
+  }
+}

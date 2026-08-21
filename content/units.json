@@ -1,0 +1,124 @@
+[
+  {
+    "id": "unit-01",
+    "week": 1,
+    "title": "Arrays and hashing",
+    "subtitle": "O(n) with a map",
+    "briefing": "When a nested loop is scanning for a complement or a duplicate, a hash map turns it into one pass. Microsoft OAs start here.",
+    "kind": "standard",
+    "coreIds": ["two-sum", "contains-duplicate", "best-time-buy-sell", "valid-anagram"],
+    "stretchIds": ["group-anagrams"]
+  },
+  {
+    "id": "unit-02",
+    "week": 2,
+    "title": "Two pointers and sliding window",
+    "subtitle": "Shrink and expand",
+    "briefing": "Sorted arrays and substrings with a constraint are almost never brute force. Name the window invariant before you code.",
+    "kind": "standard",
+    "coreIds": ["valid-palindrome", "container-most-water", "longest-substring-no-repeat", "min-size-subarray-sum"],
+    "stretchIds": ["three-sum"]
+  },
+  {
+    "id": "unit-03",
+    "week": 3,
+    "title": "Lists, stacks, queues",
+    "subtitle": "Pointers and matching",
+    "briefing": "Dummy heads, Floyd cycle, and a stack for matching or next-greater. Clean pointer code is scored.",
+    "kind": "standard",
+    "coreIds": ["reverse-linked-list", "linked-list-cycle", "merge-two-sorted-lists", "valid-parentheses"],
+    "stretchIds": ["daily-temperatures"]
+  },
+  {
+    "id": "unit-04",
+    "week": 4,
+    "title": "Binary search",
+    "subtitle": "On indexes and on answers",
+    "briefing": "If the predicate is monotonic, binary search. Rotated arrays and 'minimum feasible capacity' are the Microsoft variants.",
+    "kind": "standard",
+    "coreIds": ["binary-search", "search-rotated-sorted", "find-peak-element", "first-bad-version"],
+    "stretchIds": ["koko-eating-bananas"]
+  },
+  {
+    "id": "unit-05",
+    "week": 5,
+    "title": "Binary trees I",
+    "subtitle": "What does this node return?",
+    "briefing": "Trees dominate Microsoft loops. Recursive DFS plus level-order BFS. Practice both.",
+    "kind": "standard",
+    "coreIds": ["max-depth-binary-tree", "invert-binary-tree", "same-tree", "diameter-binary-tree", "path-sum", "level-order", "symmetric-tree"],
+    "stretchIds": []
+  },
+  {
+    "id": "unit-06",
+    "week": 6,
+    "title": "Binary trees II",
+    "subtitle": "BST, LCA, construct",
+    "briefing": "Validate a BST with bounds, not just left < root < right on one node. Construction from traversals is a common onsite.",
+    "kind": "standard",
+    "coreIds": ["validate-bst", "lca-bst", "right-side-view", "construct-preorder-inorder", "zigzag-level-order"],
+    "stretchIds": ["max-path-sum"]
+  },
+  {
+    "id": "unit-07",
+    "week": 7,
+    "title": "Graphs and grids",
+    "subtitle": "BFS, DFS, indegree",
+    "briefing": "Number of islands and rotting oranges show up constantly. Multi-source BFS and cycle detection via indegree.",
+    "kind": "standard",
+    "coreIds": ["number-of-islands", "rotting-oranges", "clone-graph", "course-schedule", "zero-one-matrix"],
+    "stretchIds": ["word-search"]
+  },
+  {
+    "id": "unit-08",
+    "week": 8,
+    "title": "Heaps and intervals",
+    "subtitle": "Top-K and sort-then-scan",
+    "briefing": "Heap for streaming top-K. Intervals: sort, then one scan. Meeting rooms is the same scan with a heap.",
+    "kind": "standard",
+    "coreIds": ["top-k-frequent", "kth-largest", "merge-intervals", "non-overlapping-intervals"],
+    "stretchIds": ["meeting-rooms-ii"]
+  },
+  {
+    "id": "unit-09",
+    "week": 9,
+    "title": "Textbook DP",
+    "subtitle": "Define dp[i], then fill",
+    "briefing": "Microsoft DP is recognizable medium: stairs, robber, coin change, unique paths, LIS, word break. Not burst balloons.",
+    "kind": "standard",
+    "coreIds": ["climbing-stairs", "house-robber", "coin-change", "unique-paths", "longest-increasing-subsequence", "word-break"],
+    "stretchIds": ["house-robber-iii"]
+  },
+  {
+    "id": "unit-10",
+    "week": 10,
+    "title": "Design and hard-adjacent",
+    "subtitle": "Caches, tries, water",
+    "briefing": "LRU cache and tries are 'implement this'. Trapping rain water and sliding window maximum are the hard-pattern interviews.",
+    "kind": "standard",
+    "coreIds": ["lru-cache", "implement-trie", "sliding-window-maximum", "trapping-rain-water"],
+    "stretchIds": ["merge-k-sorted-lists"]
+  },
+  {
+    "id": "unit-11",
+    "week": 11,
+    "title": "Mixed Microsoft set",
+    "subtitle": "Name the pattern in two minutes",
+    "briefing": "No topic labels. Identify the pattern, then code. Weekend: two 45-minute problems back to back.",
+    "kind": "mixed",
+    "timerMinutes": 45,
+    "coreIds": ["course-schedule", "validate-bst", "longest-substring-no-repeat", "coin-change", "merge-intervals", "number-of-islands", "search-rotated-sorted", "lru-cache"],
+    "stretchIds": ["path-sum", "top-k-frequent"]
+  },
+  {
+    "id": "unit-12",
+    "week": 12,
+    "title": "Mocks and weak spots",
+    "subtitle": "OA simulation",
+    "briefing": "Re-solve anything you needed a hint on. Two timed problems. Edge cases before you say you are done.",
+    "kind": "mock",
+    "timerMinutes": 45,
+    "coreIds": ["max-path-sum", "trapping-rain-water", "rotting-oranges", "three-sum"],
+    "stretchIds": ["merge-k-sorted-lists"]
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "id": "house-robber",
+  "title": "House Robber",
+  "difficulty": "medium",
+  "tags": [
+    "DP",
+    "Array"
+  ],
+  "unitId": "unit-09",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "1D DP: rob this and skip previous, or skip this.",
+  "statement": "You are a robber. `nums[i]` is the money in house i. Adjacent houses have a security system \u2014 you cannot rob two adjacent houses. Return the maximum amount you can rob.",
+  "examples": [
+    {
+      "input": "nums = [1,2,3,1]",
+      "output": "4"
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 100",
+    "0 <= nums[i] <= 400"
+  ],
+  "followUp": "Circular street is House Robber II.",
+  "editorial": "dp[i] = max(dp[i-1], dp[i-2] + nums[i]). Two rolling vars.",
+  "mode": "function",
+  "entry": {
+    "python": "rob",
+    "javascript": "rob"
+  },
+  "paramNames": [
+    "nums"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def rob(self, nums: list[int]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar rob = function(nums) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            1,
+            2,
+            3,
+            1
+          ]
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "nums": [
+            2,
+            7,
+            9,
+            3,
+            1
+          ]
+        },
+        "expected": 12
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            2,
+            1,
+            1,
+            2
+          ]
+        },
+        "expected": 4
+      }
+    ]
+  }
+}

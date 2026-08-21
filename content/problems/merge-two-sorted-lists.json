@@ -1,0 +1,104 @@
+{
+  "id": "merge-two-sorted-lists",
+  "title": "Merge Two Sorted Lists",
+  "difficulty": "easy",
+  "tags": [
+    "Linked List"
+  ],
+  "unitId": "unit-03",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "Dummy head. Do not drop the remainder of the longer list.",
+  "statement": "Merge two sorted linked lists and return it as a sorted list. The lists should be spliced together, not copied as new nodes if you can reuse them.",
+  "examples": [
+    {
+      "input": "list1 = [1,2,4], list2 = [1,3,4]",
+      "output": "[1,1,2,3,4,4]"
+    }
+  ],
+  "constraints": [
+    "The number of nodes in both lists is in the range [0, 50].",
+    "-100 <= Node.val <= 100",
+    "Both lists are sorted in non-decreasing order."
+  ],
+  "followUp": null,
+  "editorial": "Dummy node. Always attach the smaller of list1/list2. Append whatever remains.",
+  "mode": "function",
+  "entry": {
+    "python": "mergeTwoLists",
+    "javascript": "mergeTwoLists"
+  },
+  "paramNames": [
+    "list1",
+    "list2"
+  ],
+  "helpers": [
+    "list",
+    "list",
+    "list"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:\n        pass\n",
+    "javascript": "/**\n * @param {ListNode|null} list1\n * @param {ListNode|null} list2\n * @return {ListNode|null}\n */\nvar mergeTwoLists = function(list1, list2) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "list1": [
+            1,
+            2,
+            4
+          ],
+          "list2": [
+            1,
+            3,
+            4
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          4
+        ]
+      },
+      {
+        "args": {
+          "list1": [],
+          "list2": []
+        },
+        "expected": []
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "list1": [],
+          "list2": [
+            0
+          ]
+        },
+        "expected": [
+          0
+        ]
+      },
+      {
+        "args": {
+          "list1": [
+            2
+          ],
+          "list2": [
+            1
+          ]
+        },
+        "expected": [
+          1,
+          2
+        ]
+      }
+    ]
+  }
+}

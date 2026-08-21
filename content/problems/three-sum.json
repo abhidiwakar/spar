@@ -1,0 +1,125 @@
+{
+  "id": "three-sum",
+  "title": "3Sum",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Two Pointers"
+  ],
+  "unitId": "unit-02",
+  "kind": "stretch",
+  "order": 5,
+  "microsoftNote": "Sort, then two-sum on the remainder. Dedup is the part people fumble.",
+  "statement": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i`, `j`, and `k` are distinct and `nums[i] + nums[j] + nums[k] == 0`.\n\nThe solution set must not contain duplicate triplets.",
+  "examples": [
+    {
+      "input": "nums = [-1,0,1,2,-1,-4]",
+      "output": "[[-1,-1,2],[-1,0,1]]"
+    }
+  ],
+  "constraints": [
+    "3 <= nums.length <= 3000",
+    "-10^5 <= nums[i] <= 10^5"
+  ],
+  "followUp": "How do you skip duplicates without a set of tuples?",
+  "editorial": "Sort. For each i, two-pointer the rest. Skip equal nums[i], and skip equal left/right after a hit.",
+  "mode": "function",
+  "entry": {
+    "python": "threeSum",
+    "javascript": "threeSum"
+  },
+  "paramNames": [
+    "nums"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def threeSum(self, nums: list[int]) -> list[list[int]]:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            -1,
+            0,
+            1,
+            2,
+            -1,
+            -4
+          ]
+        },
+        "expected": [
+          [
+            -1,
+            -1,
+            2
+          ],
+          [
+            -1,
+            0,
+            1
+          ]
+        ],
+        "compare": "set"
+      },
+      {
+        "args": {
+          "nums": [
+            0,
+            1,
+            1
+          ]
+        },
+        "expected": [],
+        "compare": "set"
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            0,
+            0,
+            0
+          ]
+        },
+        "expected": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "compare": "set"
+      },
+      {
+        "args": {
+          "nums": [
+            -2,
+            0,
+            1,
+            1,
+            2
+          ]
+        },
+        "expected": [
+          [
+            -2,
+            0,
+            2
+          ],
+          [
+            -2,
+            1,
+            1
+          ]
+        ],
+        "compare": "set"
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "id": "container-most-water",
+  "title": "Container With Most Water",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Two Pointers",
+    "Greedy"
+  ],
+  "unitId": "unit-02",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "Classic two-pointer greedy. Prove why you move the shorter side.",
+  "statement": "You are given `height` of length `n`. Two indices `i < j` form a container of area `min(height[i], height[j]) * (j - i)`.\n\nReturn the maximum area of water the container can store.",
+  "examples": [
+    {
+      "input": "height = [1,8,6,2,5,4,8,3,7]",
+      "output": "49"
+    }
+  ],
+  "constraints": [
+    "n == height.length",
+    "2 <= n <= 10^5",
+    "0 <= height[i] <= 10^4"
+  ],
+  "followUp": "Why is the two-pointer algorithm correct?",
+  "editorial": "Start at both ends. Area is limited by the shorter line. Move that pointer inward; the width shrinks, so the only way to improve is a taller min.",
+  "mode": "function",
+  "entry": {
+    "python": "maxArea",
+    "javascript": "maxArea"
+  },
+  "paramNames": [
+    "height"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def maxArea(self, height: list[int]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nvar maxArea = function(height) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "height": [
+            1,
+            8,
+            6,
+            2,
+            5,
+            4,
+            8,
+            3,
+            7
+          ]
+        },
+        "expected": 49
+      },
+      {
+        "args": {
+          "height": [
+            1,
+            1
+          ]
+        },
+        "expected": 1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "height": [
+            4,
+            3,
+            2,
+            1,
+            4
+          ]
+        },
+        "expected": 16
+      },
+      {
+        "args": {
+          "height": [
+            1,
+            2,
+            1
+          ]
+        },
+        "expected": 2
+      }
+    ]
+  }
+}

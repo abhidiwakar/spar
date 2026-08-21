@@ -1,0 +1,90 @@
+{
+  "id": "kth-largest",
+  "title": "Kth Largest Element in an Array",
+  "difficulty": "medium",
+  "tags": [
+    "Heap",
+    "Quickselect"
+  ],
+  "unitId": "unit-08",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "Heap of size k or quickselect. Sorting is acceptable if you name the complexity.",
+  "statement": "Given an integer array `nums` and an integer `k`, return the `k`th **largest** element in the array (1-indexed: 1 = largest).",
+  "examples": [
+    {
+      "input": "nums = [3,2,1,5,6,4], k = 2",
+      "output": "5"
+    }
+  ],
+  "constraints": [
+    "1 <= k <= nums.length <= 10^5",
+    "-10^4 <= nums[i] <= 10^4"
+  ],
+  "followUp": "Quickselect expected O(n).",
+  "editorial": "Min-heap of size k. Or sort reverse and index k-1.",
+  "mode": "function",
+  "entry": {
+    "python": "findKthLargest",
+    "javascript": "findKthLargest"
+  },
+  "paramNames": [
+    "nums",
+    "k"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def findKthLargest(self, nums: list[int], k: int) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findKthLargest = function(nums, k) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            3,
+            2,
+            1,
+            5,
+            6,
+            4
+          ],
+          "k": 2
+        },
+        "expected": 5
+      },
+      {
+        "args": {
+          "nums": [
+            3,
+            2,
+            3,
+            1,
+            2,
+            4,
+            5,
+            5,
+            6
+          ],
+          "k": 4
+        },
+        "expected": 4
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            1
+          ],
+          "k": 1
+        },
+        "expected": 1
+      }
+    ]
+  }
+}

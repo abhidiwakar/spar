@@ -1,0 +1,98 @@
+{
+  "id": "binary-search",
+  "title": "Binary Search",
+  "difficulty": "easy",
+  "tags": [
+    "Array",
+    "Binary Search"
+  ],
+  "unitId": "unit-04",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Write the loop bounds without an off-by-one. Say the invariant.",
+  "statement": "Given a sorted array of integers `nums` (ascending, distinct) and an integer `target`, return the index of `target` or `-1` if it is not present. You must write an algorithm with O(log n) runtime.",
+  "examples": [
+    {
+      "input": "nums = [-1,0,3,5,9,12], target = 9",
+      "output": "4"
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 10^4",
+    "-10^4 <= nums[i], target <= 10^4",
+    "All integers in nums are unique.",
+    "nums is sorted in ascending order."
+  ],
+  "followUp": null,
+  "editorial": "lo, hi inclusive or exclusive \u2014 pick one and stick to it. Mid overflow: lo + (hi-lo)//2.",
+  "mode": "function",
+  "entry": {
+    "python": "search",
+    "javascript": "search"
+  },
+  "paramNames": [
+    "nums",
+    "target"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def search(self, nums: list[int], target: int) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number}\n */\nvar search = function(nums, target) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            -1,
+            0,
+            3,
+            5,
+            9,
+            12
+          ],
+          "target": 9
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "nums": [
+            -1,
+            0,
+            3,
+            5,
+            9,
+            12
+          ],
+          "target": 2
+        },
+        "expected": -1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            5
+          ],
+          "target": 5
+        },
+        "expected": 0
+      },
+      {
+        "args": {
+          "nums": [
+            5
+          ],
+          "target": -5
+        },
+        "expected": -1
+      }
+    ]
+  }
+}

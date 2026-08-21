@@ -1,0 +1,96 @@
+{
+  "id": "longest-substring-no-repeat",
+  "title": "Longest Substring Without Repeating Characters",
+  "difficulty": "medium",
+  "tags": [
+    "String",
+    "Sliding Window",
+    "Hash Map"
+  ],
+  "unitId": "unit-02",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "Variable window. Microsoft likes this as a communication problem: when does the left pointer move?",
+  "statement": "Given a string `s`, find the length of the longest substring without repeating characters.",
+  "examples": [
+    {
+      "input": "s = \"abcabcbb\"",
+      "output": "3",
+      "explanation": "\"abc\""
+    },
+    {
+      "input": "s = \"bbbbb\"",
+      "output": "1"
+    }
+  ],
+  "constraints": [
+    "0 <= s.length <= 5 * 10^4",
+    "s consists of English letters, digits, symbols and spaces."
+  ],
+  "followUp": "What if the alphabet is huge?",
+  "editorial": "Window [left, right]. Map char \u2192 last index. If s[right] was seen at or after left, jump left. Track max width.",
+  "mode": "function",
+  "entry": {
+    "python": "lengthOfLongestSubstring",
+    "javascript": "lengthOfLongestSubstring"
+  },
+  "paramNames": [
+    "s"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def lengthOfLongestSubstring(self, s: str) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "s": "abcabcbb"
+        },
+        "expected": 3
+      },
+      {
+        "args": {
+          "s": "bbbbb"
+        },
+        "expected": 1
+      },
+      {
+        "args": {
+          "s": "pwwkew"
+        },
+        "expected": 3
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "s": ""
+        },
+        "expected": 0
+      },
+      {
+        "args": {
+          "s": " "
+        },
+        "expected": 1
+      },
+      {
+        "args": {
+          "s": "dvdf"
+        },
+        "expected": 3
+      },
+      {
+        "args": {
+          "s": "abba"
+        },
+        "expected": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "id": "koko-eating-bananas",
+  "title": "Koko Eating Bananas",
+  "difficulty": "medium",
+  "tags": [
+    "Array",
+    "Binary Search"
+  ],
+  "unitId": "unit-04",
+  "kind": "stretch",
+  "order": 5,
+  "microsoftNote": "Binary search on the answer (speed k).",
+  "statement": "Koko has `piles[i]` bananas in pile i. Guards return in `h` hours. She eats at speed `k` bananas/hour, one pile at a time, rounding hours **up**.\n\nReturn the minimum integer `k` such that she finishes in `h` hours.",
+  "examples": [
+    {
+      "input": "piles = [3,6,7,11], h = 8",
+      "output": "4"
+    }
+  ],
+  "constraints": [
+    "1 <= piles.length <= 10^4",
+    "piles.length <= h <= 10^9",
+    "1 <= piles[i] <= 10^9"
+  ],
+  "followUp": null,
+  "editorial": "k in [1, max(piles)]. Feasible if sum(ceil(p/k)) <= h. Binary search the min feasible k.",
+  "mode": "function",
+  "entry": {
+    "python": "minEatingSpeed",
+    "javascript": "minEatingSpeed"
+  },
+  "paramNames": [
+    "piles",
+    "h"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def minEatingSpeed(self, piles: list[int], h: int) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} piles\n * @param {number} h\n * @return {number}\n */\nvar minEatingSpeed = function(piles, h) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "piles": [
+            3,
+            6,
+            7,
+            11
+          ],
+          "h": 8
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "piles": [
+            30,
+            11,
+            23,
+            4,
+            20
+          ],
+          "h": 5
+        },
+        "expected": 30
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "piles": [
+            30,
+            11,
+            23,
+            4,
+            20
+          ],
+          "h": 6
+        },
+        "expected": 23
+      },
+      {
+        "args": {
+          "piles": [
+            1
+          ],
+          "h": 1
+        },
+        "expected": 1
+      }
+    ]
+  }
+}

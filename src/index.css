@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0c0c0e;
+  color: #e8e6e3;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+button,
+select,
+textarea,
+input {
+  font: inherit;
+}
+
+.problem-prose {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #d9d6d1;
+}
+
+.problem-prose h1,
+.problem-prose h2,
+.problem-prose h3 {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  color: #e8e6e3;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.problem-prose p {
+  margin: 0.75rem 0;
+}
+
+.problem-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.86em;
+  background: #222228;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.problem-prose pre {
+  background: #141417;
+  border: 1px solid #2c2c34;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  overflow: auto;
+}
+
+.problem-prose pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.problem-prose ul,
+.problem-prose ol {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.problem-prose li {
+  margin: 0.2rem 0;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #2c2c34;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

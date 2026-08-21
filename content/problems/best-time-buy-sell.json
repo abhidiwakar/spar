@@ -1,0 +1,109 @@
+{
+  "id": "best-time-buy-sell",
+  "title": "Best Time to Buy and Sell Stock",
+  "difficulty": "easy",
+  "tags": [
+    "Array",
+    "Greedy"
+  ],
+  "unitId": "unit-01",
+  "kind": "core",
+  "order": 3,
+  "microsoftNote": "One-pass min-so-far. Interviewers watch whether you invent O(n^2) first and then cut it.",
+  "statement": "You are given `prices` where `prices[i]` is the price of a stock on day `i`.\n\nYou want one buy and one later sell. Return the maximum profit. If you cannot profit, return `0`.",
+  "examples": [
+    {
+      "input": "prices = [7,1,5,3,6,4]",
+      "output": "5",
+      "explanation": "Buy on day 2 (1) and sell on day 5 (6)."
+    },
+    {
+      "input": "prices = [7,6,4,3,1]",
+      "output": "0"
+    }
+  ],
+  "constraints": [
+    "1 <= prices.length <= 10^5",
+    "0 <= prices[i] <= 10^4"
+  ],
+  "followUp": "What if you could complete at most two transactions?",
+  "editorial": "Track the minimum price seen so far and the best `price - min` as you scan once.",
+  "mode": "function",
+  "entry": {
+    "python": "maxProfit",
+    "javascript": "maxProfit"
+  },
+  "paramNames": [
+    "prices"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def maxProfit(self, prices: list[int]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} prices\n * @return {number}\n */\nvar maxProfit = function(prices) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "prices": [
+            7,
+            1,
+            5,
+            3,
+            6,
+            4
+          ]
+        },
+        "expected": 5
+      },
+      {
+        "args": {
+          "prices": [
+            7,
+            6,
+            4,
+            3,
+            1
+          ]
+        },
+        "expected": 0
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "prices": [
+            2,
+            4,
+            1
+          ]
+        },
+        "expected": 2
+      },
+      {
+        "args": {
+          "prices": [
+            3,
+            2,
+            6,
+            5,
+            0,
+            3
+          ]
+        },
+        "expected": 4
+      },
+      {
+        "args": {
+          "prices": [
+            1
+          ]
+        },
+        "expected": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "id": "validate-bst",
+  "title": "Validate Binary Search Tree",
+  "difficulty": "medium",
+  "tags": [
+    "Tree",
+    "BST",
+    "DFS"
+  ],
+  "unitId": "unit-06",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Bounds, not just left < root < right on one node. A classic fail.",
+  "statement": "Given the root of a binary tree, determine if it is a valid **binary search tree**.\n\nA valid BST: the left subtree contains only keys **strictly less** than the node, the right only **strictly greater**, and both subtrees are BSTs.",
+  "examples": [
+    {
+      "input": "root = [2,1,3]",
+      "output": "true"
+    },
+    {
+      "input": "root = [5,1,4,null,null,3,6]",
+      "output": "false"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [1, 10^4].",
+    "-2^31 <= Node.val <= 2^31 - 1"
+  ],
+  "followUp": "Inorder should be strictly increasing \u2014 that is another solution.",
+  "editorial": "DFS with (low, high) bounds. Left child gets high=root.val, right gets low=root.val. Strict inequalities.",
+  "mode": "function",
+  "entry": {
+    "python": "isValidBST",
+    "javascript": "isValidBST"
+  },
+  "paramNames": [
+    "root"
+  ],
+  "helpers": [
+    "json",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def isValidBST(self, root: Optional[TreeNode]) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {boolean}\n */\nvar isValidBST = function(root) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            2,
+            1,
+            3
+          ]
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "root": [
+            5,
+            1,
+            4,
+            null,
+            null,
+            3,
+            6
+          ]
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            5,
+            4,
+            6,
+            null,
+            null,
+            3,
+            7
+          ]
+        },
+        "expected": false
+      },
+      {
+        "args": {
+          "root": [
+            1
+          ]
+        },
+        "expected": true
+      }
+    ]
+  }
+}

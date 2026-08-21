@@ -1,0 +1,96 @@
+{
+  "id": "merge-k-sorted-lists",
+  "title": "Merge k Sorted Lists",
+  "difficulty": "hard",
+  "tags": [
+    "Linked List",
+    "Heap"
+  ],
+  "unitId": "unit-10",
+  "kind": "stretch",
+  "order": 5,
+  "microsoftNote": "Min-heap of k heads, or divide-and-conquer merge.",
+  "statement": "You are given an array of `k` linked-lists `lists`, each sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.",
+  "examples": [
+    {
+      "input": "lists = [[1,4,5],[1,3,4],[2,6]]",
+      "output": "[1,1,2,3,4,4,5,6]"
+    }
+  ],
+  "constraints": [
+    "k == lists.length",
+    "0 <= k <= 10^4",
+    "0 <= lists[i].length <= 500",
+    "-10^4 <= Node.val <= 10^4",
+    "lists[i] is sorted.",
+    "The sum of lists[i].length <= 10^4"
+  ],
+  "followUp": "O(n log k).",
+  "editorial": "Heap of (val, node) for each list head. Pop min, push next.",
+  "mode": "function",
+  "entry": {
+    "python": "mergeKLists",
+    "javascript": "mergeKLists"
+  },
+  "paramNames": [
+    "lists"
+  ],
+  "helpers": [
+    "list",
+    "listlist"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def mergeKLists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:\n        pass\n",
+    "javascript": "/**\n * @param {Array<ListNode|null>} lists\n * @return {ListNode|null}\n */\nvar mergeKLists = function(lists) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "lists": [
+            [
+              1,
+              4,
+              5
+            ],
+            [
+              1,
+              3,
+              4
+            ],
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "lists": []
+        },
+        "expected": []
+      },
+      {
+        "args": {
+          "lists": [
+            []
+          ]
+        },
+        "expected": []
+      }
+    ]
+  }
+}

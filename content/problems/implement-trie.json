@@ -1,0 +1,111 @@
+{
+  "id": "implement-trie",
+  "title": "Implement Trie (Prefix Tree)",
+  "difficulty": "medium",
+  "tags": [
+    "Design",
+    "Trie"
+  ],
+  "unitId": "unit-10",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "Node with children map and is_word flag.",
+  "statement": "Implement a trie with `insert(word)`, `search(word)`, and `startsWith(prefix)`.\n\n`search` returns true only for a full word. `startsWith` is a prefix query.",
+  "examples": [
+    {
+      "input": "[\"Trie\",\"insert\",\"search\",\"search\",\"startsWith\",\"insert\",\"search\"]\\n[[],[\"apple\"],[\"apple\"],[\"app\"],[\"app\"],[\"app\"],[\"app\"]]",
+      "output": "[null,null,true,false,true,null,true]"
+    }
+  ],
+  "constraints": [
+    "1 <= word.length, prefix.length <= 2000",
+    "word and prefix consist of lowercase English letters.",
+    "At most 3 * 10^4 calls."
+  ],
+  "followUp": null,
+  "editorial": "Each node: dict child, bool end. Walk characters.",
+  "mode": "class",
+  "entry": {
+    "python": "Trie",
+    "javascript": "Trie"
+  },
+  "paramNames": [],
+  "helpers": [
+    "json"
+  ],
+  "starter": {
+    "python": "class Trie:\n    def __init__(self):\n        pass\n\n    def insert(self, word: str) -> None:\n        pass\n\n    def search(self, word: str) -> bool:\n        pass\n\n    def startsWith(self, prefix: str) -> bool:\n        pass\n",
+    "javascript": "var Trie = function() {\n    \n};\n\nTrie.prototype.insert = function(word) {\n    \n};\n\nTrie.prototype.search = function(word) {\n    \n};\n\nTrie.prototype.startsWith = function(prefix) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "ops": [
+          [
+            "Trie"
+          ],
+          [
+            "insert",
+            "apple"
+          ],
+          [
+            "search",
+            "apple"
+          ],
+          [
+            "search",
+            "app"
+          ],
+          [
+            "startsWith",
+            "app"
+          ],
+          [
+            "insert",
+            "app"
+          ],
+          [
+            "search",
+            "app"
+          ]
+        ],
+        "expected": [
+          null,
+          null,
+          true,
+          false,
+          true,
+          null,
+          true
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "ops": [
+          [
+            "Trie"
+          ],
+          [
+            "insert",
+            "a"
+          ],
+          [
+            "search",
+            "a"
+          ],
+          [
+            "startsWith",
+            "a"
+          ]
+        ],
+        "expected": [
+          null,
+          null,
+          true,
+          true
+        ]
+      }
+    ]
+  }
+}

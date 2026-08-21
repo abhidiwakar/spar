@@ -1,0 +1,109 @@
+{
+  "id": "linked-list-cycle",
+  "title": "Linked List Cycle",
+  "difficulty": "easy",
+  "tags": [
+    "Linked List",
+    "Two Pointers"
+  ],
+  "unitId": "unit-03",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "Floyd. `pos` is the index where the tail connects, or -1.",
+  "statement": "Given `head` of a linked list, return `true` if there is a cycle.\n\nThe test extra field `pos` is the index the tail links to (`-1` if none). You will receive a real `ListNode` that may contain that cycle. Do not use extra O(n) memory if you can help it.",
+  "examples": [
+    {
+      "input": "head = [3,2,0,-4], pos = 1",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-10^5 <= Node.val <= 10^5",
+    "pos is -1 or a valid index."
+  ],
+  "followUp": "O(1) extra space.",
+  "editorial": "Slow and fast pointers. If they meet, there is a cycle.",
+  "mode": "function",
+  "entry": {
+    "python": "hasCycle",
+    "javascript": "hasCycle"
+  },
+  "paramNames": [
+    "head"
+  ],
+  "helpers": [
+    "json",
+    "list"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def hasCycle(self, head: Optional[ListNode]) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {ListNode|null} head\n * @return {boolean}\n */\nvar hasCycle = function(head) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "head": [
+            3,
+            2,
+            0,
+            -4
+          ]
+        },
+        "extra": {
+          "pos": 1
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "head": [
+            1,
+            2
+          ]
+        },
+        "extra": {
+          "pos": 0
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "head": [
+            1
+          ]
+        },
+        "extra": {
+          "pos": -1
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "head": []
+        },
+        "extra": {
+          "pos": -1
+        },
+        "expected": false
+      },
+      {
+        "args": {
+          "head": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "extra": {
+          "pos": -1
+        },
+        "expected": false
+      }
+    ]
+  }
+}

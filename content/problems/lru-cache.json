@@ -1,0 +1,130 @@
+{
+  "id": "lru-cache",
+  "title": "LRU Cache",
+  "difficulty": "medium",
+  "tags": [
+    "Design",
+    "Hash Map",
+    "Linked List"
+  ],
+  "unitId": "unit-10",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Hash + doubly linked list. O(1) get/put. Design round adjacent.",
+  "statement": "Design a data structure that follows the constraints of a **Least Recently Used (LRU) cache**.\n\nImplement `LRUCache`:\n\n- `LRUCache(int capacity)` initialize with positive size.\n- `int get(int key)` return the value if present, else `-1`.\n- `void put(int key, int value)` update or insert. If the number of keys exceeds capacity, evict the least recently used key.\n\nGet and put must both be O(1) average.",
+  "examples": [
+    {
+      "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\",\"get\",\"get\"]\\n[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]",
+      "output": "[null,null,null,1,null,-1,null,-1,3,4]"
+    }
+  ],
+  "constraints": [
+    "1 <= capacity <= 3000",
+    "0 <= key <= 10^4",
+    "0 <= value <= 10^5",
+    "At most 2 * 10^5 calls to get and put."
+  ],
+  "followUp": null,
+  "editorial": "Map key \u2192 node. Dummy head/tail. Move to head on get/put. Evict tail.prev.",
+  "mode": "class",
+  "entry": {
+    "python": "LRUCache",
+    "javascript": "LRUCache"
+  },
+  "paramNames": [],
+  "helpers": [
+    "json"
+  ],
+  "starter": {
+    "python": "class LRUCache:\n    def __init__(self, capacity: int):\n        pass\n\n    def get(self, key: int) -> int:\n        pass\n\n    def put(self, key: int, value: int) -> None:\n        pass\n",
+    "javascript": "var LRUCache = function(capacity) {\n    \n};\n\n/** \n * @param {number} key\n * @return {number}\n */\nLRUCache.prototype.get = function(key) {\n    \n};\n\n/** \n * @param {number} key \n * @param {number} value\n * @return {void}\n */\nLRUCache.prototype.put = function(key, value) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "ops": [
+          [
+            "LRUCache",
+            2
+          ],
+          [
+            "put",
+            1,
+            1
+          ],
+          [
+            "put",
+            2,
+            2
+          ],
+          [
+            "get",
+            1
+          ],
+          [
+            "put",
+            3,
+            3
+          ],
+          [
+            "get",
+            2
+          ],
+          [
+            "put",
+            4,
+            4
+          ],
+          [
+            "get",
+            1
+          ],
+          [
+            "get",
+            3
+          ],
+          [
+            "get",
+            4
+          ]
+        ],
+        "expected": [
+          null,
+          null,
+          null,
+          1,
+          null,
+          -1,
+          null,
+          -1,
+          3,
+          4
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "ops": [
+          [
+            "LRUCache",
+            1
+          ],
+          [
+            "put",
+            2,
+            1
+          ],
+          [
+            "get",
+            2
+          ]
+        ],
+        "expected": [
+          null,
+          null,
+          1
+        ]
+      }
+    ]
+  }
+}

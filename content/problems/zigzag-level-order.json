@@ -1,0 +1,92 @@
+{
+  "id": "zigzag-level-order",
+  "title": "Binary Tree Zigzag Level Order Traversal",
+  "difficulty": "medium",
+  "tags": [
+    "Tree",
+    "BFS"
+  ],
+  "unitId": "unit-06",
+  "kind": "core",
+  "order": 5,
+  "microsoftNote": "Level order with alternating reverse. Frequently reported at Microsoft.",
+  "statement": "Given the root of a binary tree, return the zigzag level order traversal of its nodes' values (i.e., from left to right, then right to left for the next level and alternate).",
+  "examples": [
+    {
+      "input": "root = [3,9,20,null,null,15,7]",
+      "output": "[[3],[20,9],[15,7]]"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 2000].",
+    "-100 <= Node.val <= 100"
+  ],
+  "followUp": null,
+  "editorial": "BFS. Reverse every odd level (0-index even is L\u2192R).",
+  "mode": "function",
+  "entry": {
+    "python": "zigzagLevelOrder",
+    "javascript": "zigzagLevelOrder"
+  },
+  "paramNames": [
+    "root"
+  ],
+  "helpers": [
+    "json",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number[][]}\n */\nvar zigzagLevelOrder = function(root) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            3,
+            9,
+            20,
+            null,
+            null,
+            15,
+            7
+          ]
+        },
+        "expected": [
+          [
+            3
+          ],
+          [
+            20,
+            9
+          ],
+          [
+            15,
+            7
+          ]
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            1
+          ]
+        },
+        "expected": [
+          [
+            1
+          ]
+        ]
+      },
+      {
+        "args": {
+          "root": []
+        },
+        "expected": []
+      }
+    ]
+  }
+}

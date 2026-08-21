@@ -1,0 +1,85 @@
+{
+  "id": "symmetric-tree",
+  "title": "Symmetric Tree",
+  "difficulty": "easy",
+  "tags": [
+    "Tree",
+    "DFS",
+    "BFS"
+  ],
+  "unitId": "unit-05",
+  "kind": "core",
+  "order": 7,
+  "microsoftNote": "Mirror comparison, not 'is BST'.",
+  "statement": "Return true if the binary tree is a mirror of itself (symmetric around its center).\n\nTrees are given as level-order arrays (`null` for missing children).",
+  "examples": [
+    {
+      "input": "{\"root\": [1, 2, 2, 3, 4, 4, 3]}",
+      "output": "true"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-1000 <= Node.val <= 1000"
+  ],
+  "followUp": null,
+  "editorial": "Helper(a,b): both null, or vals equal and helper(a.left,b.right) and helper(a.right,b.left).",
+  "mode": "function",
+  "entry": {
+    "python": "isSymmetric",
+    "javascript": "isSymmetric"
+  },
+  "paramNames": [
+    "root"
+  ],
+  "helpers": [
+    "json",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def isSymmetric(self, root: Optional[TreeNode]) -> bool:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {boolean}\n */\nvar isSymmetric = function(root) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            1,
+            2,
+            2,
+            3,
+            4,
+            4,
+            3
+          ]
+        },
+        "expected": true
+      },
+      {
+        "args": {
+          "root": [
+            1,
+            2,
+            2,
+            null,
+            3,
+            null,
+            3
+          ]
+        },
+        "expected": false
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            1
+          ]
+        },
+        "expected": true
+      }
+    ]
+  }
+}

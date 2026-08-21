@@ -1,0 +1,93 @@
+{
+  "id": "reverse-linked-list",
+  "title": "Reverse Linked List",
+  "difficulty": "easy",
+  "tags": [
+    "Linked List"
+  ],
+  "unitId": "unit-03",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "Iterative three-pointer reverse. Also have the recursive version ready.",
+  "statement": "Given the head of a singly linked list, reverse the list and return the new head.\n\nThe judge passes arrays; they are converted to `ListNode` for you.",
+  "examples": [
+    {
+      "input": "head = [1,2,3,4,5]",
+      "output": "[5,4,3,2,1]"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 5000].",
+    "-5000 <= Node.val <= 5000"
+  ],
+  "followUp": "Reverse it both iteratively and recursively.",
+  "editorial": "prev = None. While head: nxt = head.next; head.next = prev; prev = head; head = nxt. Return prev.",
+  "mode": "function",
+  "entry": {
+    "python": "reverseList",
+    "javascript": "reverseList"
+  },
+  "paramNames": [
+    "head"
+  ],
+  "helpers": [
+    "list",
+    "list"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        pass\n",
+    "javascript": "/**\n * @param {ListNode|null} head\n * @return {ListNode|null}\n */\nvar reverseList = function(head) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "head": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "expected": [
+          5,
+          4,
+          3,
+          2,
+          1
+        ]
+      },
+      {
+        "args": {
+          "head": [
+            1,
+            2
+          ]
+        },
+        "expected": [
+          2,
+          1
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "head": []
+        },
+        "expected": []
+      },
+      {
+        "args": {
+          "head": [
+            1
+          ]
+        },
+        "expected": [
+          1
+        ]
+      }
+    ]
+  }
+}

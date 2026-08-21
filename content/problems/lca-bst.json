@@ -1,0 +1,106 @@
+{
+  "id": "lca-bst",
+  "title": "Lowest Common Ancestor of a BST",
+  "difficulty": "medium",
+  "tags": [
+    "Tree",
+    "BST"
+  ],
+  "unitId": "unit-06",
+  "kind": "core",
+  "order": 2,
+  "microsoftNote": "Walk down from the root; split point is the LCA. p and q are values.",
+  "statement": "Given a BST `root` and two node values `p` and `q` that exist in the tree, return the value of their lowest common ancestor.\n\nThe LCA is the lowest node that has both `p` and `q` as descendants (a node can be a descendant of itself).",
+  "examples": [
+    {
+      "input": "root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8",
+      "output": "6"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [2, 10^5].",
+    "-10^9 <= Node.val <= 10^9",
+    "All values unique.",
+    "p != q",
+    "p and q exist in the tree."
+  ],
+  "followUp": "Iterative, O(1) extra space.",
+  "editorial": "If both p and q are < root, go left. Both > root, go right. Else root is the split.",
+  "mode": "function",
+  "entry": {
+    "python": "lowestCommonAncestor",
+    "javascript": "lowestCommonAncestor"
+  },
+  "paramNames": [
+    "root",
+    "p",
+    "q"
+  ],
+  "helpers": [
+    "json",
+    "tree",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def lowestCommonAncestor(self, root: Optional[TreeNode], p: int, q: int) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @param {number} p\n * @param {number} q\n * @return {number}\n */\nvar lowestCommonAncestor = function(root, p, q) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            6,
+            2,
+            8,
+            0,
+            4,
+            7,
+            9,
+            null,
+            null,
+            3,
+            5
+          ],
+          "p": 2,
+          "q": 8
+        },
+        "expected": 6
+      },
+      {
+        "args": {
+          "root": [
+            6,
+            2,
+            8,
+            0,
+            4,
+            7,
+            9,
+            null,
+            null,
+            3,
+            5
+          ],
+          "p": 2,
+          "q": 4
+        },
+        "expected": 2
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            2,
+            1
+          ],
+          "p": 2,
+          "q": 1
+        },
+        "expected": 2
+      }
+    ]
+  }
+}

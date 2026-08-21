@@ -1,0 +1,135 @@
+{
+  "id": "two-sum",
+  "title": "Two Sum",
+  "difficulty": "easy",
+  "tags": [
+    "Array",
+    "Hash Map"
+  ],
+  "unitId": "unit-01",
+  "kind": "core",
+  "order": 1,
+  "microsoftNote": "OA staple. One-pass hash map is the expected story, not the nested loop.",
+  "statement": "Given an array of integers `nums` and an integer `target`, return **the indices** of the two numbers that add up to `target`.\n\nYou may assume each input has **exactly one** solution, and you may not use the same element twice. Return the indices in any order.",
+  "examples": [
+    {
+      "input": "nums = [2,7,11,15], target = 9",
+      "output": "[0,1]",
+      "explanation": "nums[0] + nums[1] = 2 + 7 = 9."
+    },
+    {
+      "input": "nums = [3,2,4], target = 6",
+      "output": "[1,2]"
+    }
+  ],
+  "constraints": [
+    "2 <= nums.length <= 10^4",
+    "-10^9 <= nums[i] <= 10^9",
+    "-10^9 <= target <= 10^9",
+    "Exactly one valid answer exists."
+  ],
+  "followUp": "Can you do it in one pass?",
+  "editorial": "Walk the array once. For each value x, look up target - x in a map of value \u2192 index. If it exists, return those indices. Otherwise store x.",
+  "mode": "function",
+  "entry": {
+    "python": "twoSum",
+    "javascript": "twoSum"
+  },
+  "paramNames": [
+    "nums",
+    "target"
+  ],
+  "helpers": [
+    "json",
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def twoSum(self, nums: list[int], target: int) -> list[int]:\n        pass\n",
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "nums": [
+            2,
+            7,
+            11,
+            15
+          ],
+          "target": 9
+        },
+        "expected": [
+          0,
+          1
+        ],
+        "compare": "sorted"
+      },
+      {
+        "args": {
+          "nums": [
+            3,
+            2,
+            4
+          ],
+          "target": 6
+        },
+        "expected": [
+          1,
+          2
+        ],
+        "compare": "sorted"
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "nums": [
+            3,
+            3
+          ],
+          "target": 6
+        },
+        "expected": [
+          0,
+          1
+        ],
+        "compare": "sorted"
+      },
+      {
+        "args": {
+          "nums": [
+            0,
+            4,
+            3,
+            0
+          ],
+          "target": 0
+        },
+        "expected": [
+          0,
+          3
+        ],
+        "compare": "sorted"
+      },
+      {
+        "args": {
+          "nums": [
+            -1,
+            -2,
+            -3,
+            -4,
+            -5
+          ],
+          "target": -8
+        },
+        "expected": [
+          2,
+          4
+        ],
+        "compare": "sorted"
+      }
+    ]
+  }
+}

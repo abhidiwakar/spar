@@ -1,0 +1,102 @@
+{
+  "id": "group-anagrams",
+  "title": "Group Anagrams",
+  "difficulty": "medium",
+  "tags": [
+    "String",
+    "Hash Map"
+  ],
+  "unitId": "unit-01",
+  "kind": "stretch",
+  "order": 5,
+  "microsoftNote": "Map from a canonical key (sorted letters or 26-count tuple) to a list of words.",
+  "statement": "Given an array of strings `strs`, group the anagrams together. Return the groups in any order.",
+  "examples": [
+    {
+      "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+      "output": "[[\"bat\"],[\"nat\",\"tan\"],[\"ate\",\"eat\",\"tea\"]]"
+    }
+  ],
+  "constraints": [
+    "1 <= strs.length <= 10^4",
+    "0 <= strs[i].length <= 100",
+    "strs[i] consists of lowercase English letters."
+  ],
+  "followUp": "Can you avoid sorting each word?",
+  "editorial": "Key = sorted word, or a 26-length count tuple. Bucket strings by key.",
+  "mode": "function",
+  "entry": {
+    "python": "groupAnagrams",
+    "javascript": "groupAnagrams"
+  },
+  "paramNames": [
+    "strs"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:\n        pass\n",
+    "javascript": "/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nvar groupAnagrams = function(strs) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "strs": [
+            "eat",
+            "tea",
+            "tan",
+            "ate",
+            "nat",
+            "bat"
+          ]
+        },
+        "expected": [
+          [
+            "bat"
+          ],
+          [
+            "nat",
+            "tan"
+          ],
+          [
+            "ate",
+            "eat",
+            "tea"
+          ]
+        ],
+        "compare": "set"
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "strs": [
+            ""
+          ]
+        },
+        "expected": [
+          [
+            ""
+          ]
+        ],
+        "compare": "set"
+      },
+      {
+        "args": {
+          "strs": [
+            "a"
+          ]
+        },
+        "expected": [
+          [
+            "a"
+          ]
+        ],
+        "compare": "set"
+      }
+    ]
+  }
+}

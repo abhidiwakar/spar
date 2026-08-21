@@ -1,0 +1,93 @@
+{
+  "id": "level-order",
+  "title": "Binary Tree Level Order Traversal",
+  "difficulty": "medium",
+  "tags": [
+    "Tree",
+    "DFS",
+    "BFS"
+  ],
+  "unitId": "unit-05",
+  "kind": "core",
+  "order": 6,
+  "microsoftNote": "Iterative BFS. They like seeing a queue, not only recursion.",
+  "statement": "Return the level-order traversal of node values (from left to right, level by level).\n\nTrees are given as level-order arrays (`null` for missing children).",
+  "examples": [
+    {
+      "input": "{\"root\": [3, 9, 20, null, null, 15, 7]}",
+      "output": "[[3], [9, 20], [15, 7]]"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-1000 <= Node.val <= 1000"
+  ],
+  "followUp": null,
+  "editorial": "Queue BFS. Record size at the start of each level.",
+  "mode": "function",
+  "entry": {
+    "python": "levelOrder",
+    "javascript": "levelOrder"
+  },
+  "paramNames": [
+    "root"
+  ],
+  "helpers": [
+    "json",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def levelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number[][]}\n */\nvar levelOrder = function(root) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            3,
+            9,
+            20,
+            null,
+            null,
+            15,
+            7
+          ]
+        },
+        "expected": [
+          [
+            3
+          ],
+          [
+            9,
+            20
+          ],
+          [
+            15,
+            7
+          ]
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            1
+          ]
+        },
+        "expected": [
+          [
+            1
+          ]
+        ]
+      },
+      {
+        "args": {
+          "root": []
+        },
+        "expected": []
+      }
+    ]
+  }
+}

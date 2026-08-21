@@ -1,0 +1,101 @@
+{
+  "id": "meeting-rooms-ii",
+  "title": "Meeting Rooms II",
+  "difficulty": "medium",
+  "tags": [
+    "Heap",
+    "Intervals"
+  ],
+  "unitId": "unit-08",
+  "kind": "stretch",
+  "order": 5,
+  "microsoftNote": "Min rooms = max overlap. Sort starts; min-heap of end times.",
+  "statement": "Given an array of meeting time intervals `intervals` where `intervals[i] = [starti, endi]`, return the minimum number of conference rooms required.",
+  "examples": [
+    {
+      "input": "intervals = [[0,30],[5,10],[15,20]]",
+      "output": "2"
+    }
+  ],
+  "constraints": [
+    "1 <= intervals.length <= 10^4",
+    "0 <= starti < endi <= 10^6"
+  ],
+  "followUp": null,
+  "editorial": "Sort by start. Heap of end times. If start >= heap.min, pop (reuse room). After each meeting, push its end. The answer is the maximum heap size, equivalently the heap size if you never shrink except on reuse.",
+  "mode": "function",
+  "entry": {
+    "python": "minMeetingRooms",
+    "javascript": "minMeetingRooms"
+  },
+  "paramNames": [
+    "intervals"
+  ],
+  "helpers": [
+    "json",
+    "json"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def minMeetingRooms(self, intervals: list[list[int]]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {number[][]} intervals\n * @return {number}\n */\nvar minMeetingRooms = function(intervals) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "intervals": [
+            [
+              0,
+              30
+            ],
+            [
+              5,
+              10
+            ],
+            [
+              15,
+              20
+            ]
+          ]
+        },
+        "expected": 2
+      },
+      {
+        "args": {
+          "intervals": [
+            [
+              7,
+              10
+            ],
+            [
+              2,
+              4
+            ]
+          ]
+        },
+        "expected": 1
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "intervals": [
+            [
+              1,
+              5
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              8,
+              9
+            ]
+          ]
+        },
+        "expected": 2
+      }
+    ]
+  }
+}

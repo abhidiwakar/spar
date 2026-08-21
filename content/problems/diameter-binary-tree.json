@@ -1,0 +1,78 @@
+{
+  "id": "diameter-binary-tree",
+  "title": "Diameter of Binary Tree",
+  "difficulty": "easy",
+  "tags": [
+    "Tree",
+    "DFS",
+    "BFS"
+  ],
+  "unitId": "unit-05",
+  "kind": "core",
+  "order": 4,
+  "microsoftNote": "Height vs diameter \u2014 the return value to the parent is height, the answer is a side effect.",
+  "statement": "The diameter is the length of the longest path between any two nodes, measured in **edges**. It may or may not pass through the root.\n\nTrees are given as level-order arrays (`null` for missing children).",
+  "examples": [
+    {
+      "input": "{\"root\": [1, 2, 3, 4, 5]}",
+      "output": "3"
+    }
+  ],
+  "constraints": [
+    "The number of nodes is in [0, 10^4].",
+    "-1000 <= Node.val <= 1000"
+  ],
+  "followUp": null,
+  "editorial": "For each node, diameter candidate = leftHeight + rightHeight. Recurse heights. Keep a global max.",
+  "mode": "function",
+  "entry": {
+    "python": "diameterOfBinaryTree",
+    "javascript": "diameterOfBinaryTree"
+  },
+  "paramNames": [
+    "root"
+  ],
+  "helpers": [
+    "json",
+    "tree"
+  ],
+  "starter": {
+    "python": "class Solution:\n    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:\n        pass\n",
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar diameterOfBinaryTree = function(root) {\n    \n};\n"
+  },
+  "tests": {
+    "visible": [
+      {
+        "args": {
+          "root": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "expected": 3
+      }
+    ],
+    "hidden": [
+      {
+        "args": {
+          "root": [
+            1,
+            2
+          ]
+        },
+        "expected": 1
+      },
+      {
+        "args": {
+          "root": [
+            1
+          ]
+        },
+        "expected": 0
+      }
+    ]
+  }
+}
