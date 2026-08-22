@@ -66,13 +66,19 @@ export type Attempt = {
   verdict: string;
 };
 
+export type AiProvider = "openai" | "ollama";
+
 export type Settings = {
   pythonPath: string;
   nodePath: string;
   defaultLanguage: Language | string;
   dailyGoal: number;
   timerEnabled: boolean;
-  openaiApiKey: string;
+  openaiApiKey?: string;
+  openaiApiKeySet: boolean;
+  aiProvider: AiProvider | string;
+  ollamaHost: string;
+  ollamaModel: string;
 };
 
 export type ProgressSnapshot = {
@@ -82,8 +88,32 @@ export type ProgressSnapshot = {
   daily: { date: string; xp: number; goalMet: boolean; acceptedCount: number }[];
   drafts: { problemId: string; language: string; code: string }[];
   notes: { problemId: string; body: string }[];
+  aiReviews: { problemId: string; language: string; body: string }[];
+  attemptComplexities: {
+    attemptId: string;
+    timeComplexity: string;
+    spaceComplexity: string;
+  }[];
   streak: number;
   xpToday: number;
+  today: string;
+};
+
+export type AttemptComplexity = {
+  attemptId: string;
+  timeComplexity: string;
+  spaceComplexity: string;
+};
+
+export type OllamaStatus = {
+  running: boolean;
+  models: string[];
+};
+
+export type OllamaPullProgress = {
+  status: string;
+  completed?: number | null;
+  total?: number | null;
 };
 
 export type JudgeOutput = {

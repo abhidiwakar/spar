@@ -3,10 +3,20 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import remarkGfm from "remark-gfm";
-import { loadProgress, recordAttempt, reviewSolution, runTests, saveDraft, saveNote } from "../../lib/api";
+import {
+  analyzeAttemptComplexity,
+  loadEditorial,
+  loadProgress,
+  markHintUsed,
+  reviewSolution,
+  runTests,
+  saveDraft,
+  saveNote,
+  submitSolution,
+} from "../../lib/api";
 import { problemById, unitById } from "../../lib/content";
 import { useApp } from "../../lib/store";
-import type { JudgeOutput, Language, TestCase } from "../../lib/types";
+import type { AttemptComplexity, JudgeOutput, Language, TestCase } from "../../lib/types";
 
 type LeftTab = "description" | "editorial" | "submissions" | "review";
 
@@ -34,8 +44,17 @@ export function WorkspaceScreen() {
   const [reviewing, setReviewing] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [timerOn, setTimerOn] = useState(false);
+  const [expandedAttemptId, setExpandedAttemptId] = useState<string | null>(null);
+  const [complexityLoading, setComplexityLoading] = useState<Record<string, boolean>>({});
+  const [complexityErrors, setComplexityErrors] = useState<Record<string, string>>({});
+  const [localComplexities, setLocalComplexities] = useState<Record<string, AttemptComplexity>>({});
   const started = useRef(Date.now());
   const saveTimer = useRef<number | null>(null);
+  const noteTimer = useRef<number | null>(null);
+  const codeRef = useRef("");
+  const noteRef = useRef("");
+  const [editorial, setEditorial] = useState("");
+  const [hintSaving, setHintSaving] = useState(false);
 
   const accepted = progress?.problemStates.some(
     (s) => s.problemId === problemId && s.status === "accepted",
@@ -53,13 +72,68 @@ export function WorkspaceScreen() {
     setActiveCase(0);
     setCustomCases(problem.tests.visible.map((t) => ({ ...t })));
     setLeftTab("description");
-    setReviewText("");
+    const savedReview = progress?.aiReviews?.find(
+      (x) => x.problemId === problem.id && x.language === language,
+    );
+    setReviewText(savedReview?.body ?? "");
     setReviewError("");
+    setExpandedAttemptId(null);
+    setComplexityErrors({});
     started.current = Date.now();
     setElapsed(0);
     const n = progress?.notes.find((x) => x.problemId === problem.id);
     setNote(n?.body ?? "");
+    setUsedHint(Boolean(progress?.problemStates.find((s) => s.problemId === problem.id)?.usedHint));
+    setEditorial("");
   }, [problem, language]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    codeRef.current = code;
+  }, [code]);
+
+  useEffect(() => {
+    noteRef.current = note;
+  }, [note]);
+
+  useEffect(() => {
+    if (!problem || !(accepted || usedHint)) {
+      setEditorial("");
+      return;
+    }
+    let cancelled = false;
+    void loadEditorial(problem.id)
+      .then((text) => {
+        if (!cancelled) setEditorial(text);
+      })
+      .catch(() => {
+        if (!cancelled) setEditorial("");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [problem, accepted, usedHint]);
+
+  useEffect(() => {
+    return () => {
+      if (saveTimer.current) window.clearTimeout(saveTimer.current);
+      if (noteTimer.current) window.clearTimeout(noteTimer.current);
+      const p = problem;
+      if (p) {
+        void saveDraft(p.id, language, codeRef.current);
+        void saveNote(p.id, noteRef.current);
+      }
+    };
+  }, [problem, language]);
+
+  const reviewConfigured =
+    progress?.settings.aiProvider === "ollama"
+      ? Boolean((progress?.settings.ollamaModel ?? "").trim())
+      : Boolean(progress?.settings.openaiApiKeySet);
+
+  const reviewSetupHint =
+    progress?.settings.aiProvider === "ollama"
+      ? "Select or install an Ollama model in Settings to review your solution."
+      : "Add an OpenAI API key in Settings to review your solution.";
 
   useEffect(() => {
     if (!progress?.settings.timerEnabled) {
@@ -86,6 +160,29 @@ export function WorkspaceScreen() {
     [language, problem],
   );
 
+  const persistNote = useCallback(
+    (value: string) => {
+      if (!problem) return;
+      if (noteTimer.current) window.clearTimeout(noteTimer.current);
+      noteTimer.current = window.setTimeout(() => {
+        void saveNote(problem.id, value);
+      }, 400);
+    },
+    [problem],
+  );
+
+  async function revealHint() {
+    if (!problem || usedHint || hintSaving) return;
+    setHintSaving(true);
+    try {
+      await markHintUsed(problem.id);
+      setUsedHint(true);
+      setProgress(await loadProgress());
+    } finally {
+      setHintSaving(false);
+    }
+  }
+
   const cases = customCases.length ? customCases : problem?.tests.visible ?? [];
 
   async function run(kind: "run" | "submit") {
@@ -93,32 +190,25 @@ export function WorkspaceScreen() {
     setBusy(true);
     setResult(null);
     try {
-      const tests =
-        kind === "run" ? cases : [...problem.tests.visible, ...problem.tests.hidden];
-      const out = await runTests({
-        language,
-        source: code,
-        entry: problem.entry[language],
-        mode: problem.mode,
-        helpers: problem.helpers,
-        paramNames: problem.paramNames,
-        tests,
-        pythonPath: progress?.settings.pythonPath,
-        nodePath: progress?.settings.nodePath,
-      });
-      setResult(out);
-      if (kind === "submit") {
-        const awarded = await recordAttempt({
+      if (kind === "run") {
+        const out = await runTests({
           problemId: problem.id,
           language,
-          code,
-          passed: out.verdict === "accepted",
-          usedHint,
-          durationMs: Date.now() - started.current,
-          verdict: out.verdict,
-          difficulty: problem.difficulty,
+          source: code,
+          pythonPath: progress?.settings.pythonPath,
+          nodePath: progress?.settings.nodePath,
         });
-        void awarded;
+        setResult(out);
+      } else {
+        const { output } = await submitSolution({
+          problemId: problem.id,
+          language,
+          source: code,
+          durationMs: Date.now() - started.current,
+          pythonPath: progress?.settings.pythonPath,
+          nodePath: progress?.settings.nodePath,
+        });
+        setResult(output);
         await saveDraft(problem.id, language, code);
         setProgress(await loadProgress());
       }
@@ -154,6 +244,7 @@ export function WorkspaceScreen() {
         code,
       });
       setReviewText(text);
+      setProgress(await loadProgress());
     } catch (e) {
       setReviewError(String(e));
     } finally {
@@ -165,6 +256,50 @@ export function WorkspaceScreen() {
     () => (progress?.attempts ?? []).filter((a) => a.problemId === problemId),
     [progress, problemId],
   );
+
+  const complexityByAttempt = useMemo(() => {
+    const map: Record<string, AttemptComplexity> = { ...localComplexities };
+    for (const c of progress?.attemptComplexities ?? []) {
+      if (!map[c.attemptId]) map[c.attemptId] = c;
+    }
+    return map;
+  }, [progress?.attemptComplexities, localComplexities]);
+
+  function toggleSubmission(attemptId: string) {
+    setExpandedAttemptId((current) => (current === attemptId ? null : attemptId));
+  }
+
+  async function requestComplexity(attemptId: string, force = false) {
+    if (!reviewConfigured) {
+      setComplexityErrors((prev) => ({
+        ...prev,
+        [attemptId]:
+          progress?.settings.aiProvider === "ollama"
+            ? "Select or install an Ollama model in Settings to analyze complexity."
+            : "Add an OpenAI API key in Settings to analyze complexity.",
+      }));
+      return;
+    }
+    setComplexityErrors((prev) => {
+      const next = { ...prev };
+      delete next[attemptId];
+      return next;
+    });
+    setComplexityLoading((prev) => ({ ...prev, [attemptId]: true }));
+    try {
+      const result = await analyzeAttemptComplexity(attemptId, force);
+      setLocalComplexities((prev) => ({ ...prev, [result.attemptId]: result }));
+      setProgress(await loadProgress());
+    } catch (e) {
+      setComplexityErrors((prev) => ({ ...prev, [attemptId]: String(e) }));
+    } finally {
+      setComplexityLoading((prev) => {
+        const next = { ...prev };
+        delete next[attemptId];
+        return next;
+      });
+    }
+  }
 
   if (!problem) {
     return (
@@ -209,14 +344,14 @@ export function WorkspaceScreen() {
           </select>
           <button
             className="rounded-md border border-ink-700 px-3 py-1 text-xs hover:bg-ink-800 disabled:opacity-40"
-            disabled={busy || missingRuntime}
+            disabled={busy || missingRuntime || hintSaving}
             onClick={() => void run("run")}
           >
             Run
           </button>
           <button
             className="rounded-md bg-gold-400 px-3 py-1 text-xs font-semibold text-ink-950 hover:bg-gold-500 disabled:opacity-40"
-            disabled={busy || missingRuntime}
+            disabled={busy || missingRuntime || hintSaving}
             onClick={() => void run("submit")}
           >
             Submit
@@ -294,13 +429,14 @@ export function WorkspaceScreen() {
                     </p>
                   ) : null}
                   <button
-                    className="mt-6 text-xs text-gold-400 underline-offset-2 hover:underline"
-                    onClick={() => setUsedHint(true)}
+                    className="mt-6 text-xs text-gold-400 underline-offset-2 hover:underline disabled:opacity-40"
+                    disabled={hintSaving}
+                    onClick={() => void revealHint()}
                   >
                     {usedHint ? "Hint used (no XP bonus)" : "Reveal approach hint"}
                   </button>
-                  {usedHint && problem.editorial ? (
-                    <p className="mt-2 text-sm text-paper-400">{problem.editorial.split("\n")[0]}</p>
+                  {usedHint && editorial ? (
+                    <p className="mt-2 text-sm text-paper-400">{editorial.split("\n")[0]}</p>
                   ) : null}
                 </div>
               )}
@@ -308,7 +444,7 @@ export function WorkspaceScreen() {
                 <div className="problem-prose">
                   {accepted || usedHint ? (
                     <Markdown remarkPlugins={[remarkGfm]}>
-                      {problem.editorial || "No editorial for this problem yet."}
+                      {editorial || "No editorial for this problem yet."}
                     </Markdown>
                   ) : (
                     <p className="text-sm text-paper-400">
@@ -320,7 +456,11 @@ export function WorkspaceScreen() {
                     <textarea
                       className="mt-2 h-28 w-full rounded-md border border-ink-700 bg-ink-950 p-2 font-sans text-sm"
                       value={note}
-                      onChange={(e) => setNote(e.target.value)}
+                      onChange={(e) => {
+                        const next = e.target.value;
+                        setNote(next);
+                        persistNote(next);
+                      }}
                       onBlur={() => void saveNote(problem.id, note)}
                     />
                   </div>
@@ -331,16 +471,90 @@ export function WorkspaceScreen() {
                   {submissions.length === 0 ? (
                     <li className="text-paper-400">No submissions yet.</li>
                   ) : (
-                    submissions.map((a) => (
-                      <li key={a.id} className="rounded-md border border-ink-700 px-3 py-2">
-                        <div className="flex justify-between">
-                          <span className={a.passed ? "text-easy" : "text-hard"}>{a.verdict}</span>
-                          <span className="text-xs text-paper-500">
-                            {a.language} · {new Date(a.createdAt).toLocaleString()}
-                          </span>
-                        </div>
-                      </li>
-                    ))
+                    submissions.map((a) => {
+                      const expanded = expandedAttemptId === a.id;
+                      const complexity = complexityByAttempt[a.id];
+                      const loading = Boolean(complexityLoading[a.id]);
+                      const error = complexityErrors[a.id];
+                      return (
+                        <li key={a.id} className="rounded-md border border-ink-700">
+                          <button
+                            type="button"
+                            className="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-ink-850"
+                            onClick={() => toggleSubmission(a.id)}
+                          >
+                            <span className={a.passed ? "text-easy" : "text-hard"}>{a.verdict}</span>
+                            <span className="text-xs text-paper-500">
+                              {a.language} · {new Date(a.createdAt).toLocaleString()}
+                            </span>
+                          </button>
+                          {expanded ? (
+                            <div className="border-t border-ink-700 px-3 py-3">
+                              {loading ? (
+                                <p className="mb-3 text-xs text-paper-400">Analyzing complexity…</p>
+                              ) : null}
+                              {error && !loading ? (
+                                <div className="mb-3">
+                                  <p className="text-xs text-hard">{error}</p>
+                                  {!reviewConfigured ? (
+                                    <button
+                                      type="button"
+                                      className="mt-2 rounded-md bg-gold-400 px-2 py-1 text-xs font-semibold text-ink-950"
+                                      onClick={() => setScreen("settings")}
+                                    >
+                                      Open Settings
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="mt-2 rounded-md border border-ink-600 px-2 py-1 text-xs text-paper-300 hover:border-gold-700"
+                                      onClick={() => void requestComplexity(a.id, true)}
+                                    >
+                                      Retry
+                                    </button>
+                                  )}
+                                </div>
+                              ) : null}
+                              {complexity ? (
+                                <div className="mb-3 flex flex-wrap items-center gap-4 text-xs">
+                                  <p>
+                                    <span className="text-paper-500">Time </span>
+                                    <span className="font-mono text-paper-100">
+                                      {complexity.timeComplexity}
+                                    </span>
+                                  </p>
+                                  <p>
+                                    <span className="text-paper-500">Space </span>
+                                    <span className="font-mono text-paper-100">
+                                      {complexity.spaceComplexity}
+                                    </span>
+                                  </p>
+                                  <button
+                                    type="button"
+                                    className="rounded-md border border-ink-600 px-2 py-1 text-xs text-paper-300 hover:border-gold-700 disabled:opacity-40"
+                                    disabled={loading}
+                                    onClick={() => void requestComplexity(a.id, true)}
+                                  >
+                                    Re-analyze
+                                  </button>
+                                </div>
+                              ) : !loading ? (
+                                <button
+                                  type="button"
+                                  className="mb-3 rounded-md bg-gold-400 px-2 py-1 text-xs font-semibold text-ink-950 disabled:opacity-40"
+                                  onClick={() => void requestComplexity(a.id)}
+                                >
+                                  Analyze complexity
+                                </button>
+                              ) : null}
+                              <pre className="max-h-64 overflow-auto rounded-md bg-ink-950 p-2 font-mono text-xs text-paper-300 whitespace-pre-wrap">
+                                {a.code}
+                              </pre>
+                            </div>
+                          ) : null}
+                        </li>
+                      );
+                    })
                   )}
                 </ul>
               )}
@@ -350,11 +564,9 @@ export function WorkspaceScreen() {
                     <p className="text-sm text-paper-400">
                       Review unlocks after you get Accepted on this problem.
                     </p>
-                  ) : !(progress?.settings.openaiApiKey ?? "").trim() ? (
+                  ) : !reviewConfigured ? (
                     <div>
-                      <p className="text-sm text-paper-400">
-                        Add an OpenAI API key in Settings to review your solution.
-                      </p>
+                      <p className="text-sm text-paper-400">{reviewSetupHint}</p>
                       <button
                         className="mt-4 rounded-md bg-gold-400 px-3 py-1.5 text-xs font-semibold text-ink-950"
                         onClick={() => setScreen("settings")}
@@ -367,6 +579,13 @@ export function WorkspaceScreen() {
                       <p className="text-sm text-paper-400">
                         Critique of the code in the editor: complexity, edge cases, and a cleaner
                         approach. It will not write a full replacement solution.
+                      </p>
+                      <p className="mt-2 text-xs text-paper-500">
+                        Review quality depends on the model — this is only as good as{" "}
+                        {progress?.settings.aiProvider === "ollama"
+                          ? progress.settings.ollamaModel || "your local Ollama model"
+                          : "gpt-4o-mini"}
+                        .
                       </p>
                       <button
                         className="mt-4 rounded-md bg-gold-400 px-3 py-1.5 text-xs font-semibold text-ink-950 disabled:opacity-40"

@@ -28,3 +28,5 @@ If the app cannot find `python3` or `node`, it opens setup so you can paste an a
 - `src-tauri/` — judge (`python3` / `node`) and SQLite progress
 
 Progress is stored locally in the app data directory.
+
+Hidden tests and editorials live in `content/` for authoring. The renderer only sees visible cases. The packaged app compiles the catalog into the binary instead of copying `content/` into Resources. Editorials load after Accepted or a hint. The judge runs your code unsandboxed on this machine.

@@ -15,7 +15,12 @@ export const units: Unit[] = unwrap<Unit[]>(Object.values(unitModules)[0]).sort(
 );
 
 export const problems: Problem[] = Object.values(problemModules)
-  .map((m) => unwrap<Problem>(m))
+  .map((m) => {
+    const p = unwrap<Problem>(m);
+    delete p.editorial;
+    if (p.tests) p.tests.hidden = [];
+    return p;
+  })
   .sort((a, b) => a.unitId.localeCompare(b.unitId) || a.order - b.order);
 
 export const problemById = new Map(problems.map((p) => [p.id, p]));

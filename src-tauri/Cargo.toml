@@ -22,4 +22,9 @@ chrono = { version = "0.4", default-features = false, features = ["clock", "std"
 which = "7"
 wait-timeout = "0.2"
 thiserror = "2"
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
+futures-util = "0.3"
+include_dir = "0.7"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"

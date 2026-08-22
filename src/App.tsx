@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useCallback, useEffect, useState } from "react";
 import { detectRuntimes, loadProgress } from "./lib/api";
 import { units } from "./lib/content";
 import { useApp } from "./lib/store";
@@ -19,34 +19,67 @@ export default function App() {
   const setLanguage = useApp((s) => s.setLanguage);
   const progress = useApp((s) => s.progress);
   const runtimes = useApp((s) => s.runtimes);
+  const [bootError, setBootError] = useState("");
+  const [bootTick, setBootTick] = useState(0);
+
+  const boot = useCallback(async () => {
+    setBootError("");
+    try {
+      const snap = await loadProgress();
+      setProgress(snap);
+      const rt = await detectRuntimes(snap.settings.pythonPath, snap.settings.nodePath);
+      setRuntimes(rt);
+      const preferred = snap.settings.defaultLanguage as Language;
+      if (preferred === "javascript" && rt.node) setLanguage("javascript");
+      else if (preferred === "python" && rt.python) setLanguage("python");
+      else if (rt.python) setLanguage("python");
+      else if (rt.node) setLanguage("javascript");
+      if (!rt.python && !rt.node) setScreen("setup");
+    } catch (e) {
+      try {
+        const rt = await detectRuntimes();
+        setRuntimes(rt);
+      } catch {
+        /* keep going so Retry is available */
+      }
+      setBootError(String(e));
+    }
+  }, [setLanguage, setProgress, setRuntimes, setScreen]);
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const snap = await loadProgress();
-        if (cancelled) return;
-        setProgress(snap);
-        const rt = await detectRuntimes(snap.settings.pythonPath, snap.settings.nodePath);
-        if (cancelled) return;
-        setRuntimes(rt);
-        const preferred = snap.settings.defaultLanguage as Language;
-        if (preferred === "javascript" && rt.node) setLanguage("javascript");
-        else if (preferred === "python" && rt.python) setLanguage("python");
-        else if (rt.python) setLanguage("python");
-        else if (rt.node) setLanguage("javascript");
-        if (!rt.python && !rt.node) setScreen("setup");
-      } catch {
-        const rt = await detectRuntimes();
-        if (cancelled) return;
-        setRuntimes(rt);
-        if (!rt.python && !rt.node) setScreen("setup");
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [setLanguage, setProgress, setRuntimes, setScreen]);
+    void boot();
+  }, [boot, bootTick]);
+
+  if (bootError) {
+    return (
+      <div className="flex h-full items-center justify-center bg-ink-950 px-6">
+        <div className="w-full max-w-lg rounded-xl border border-ink-700 bg-ink-900 p-8">
+          <img src={sparMark} alt="" className="h-10 w-10 rounded-[10px]" />
+          <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gold-400">Spar</p>
+          <h1 className="mt-2 font-serif text-3xl">Could not load progress</h1>
+          <p className="mt-3 text-sm text-paper-400">
+            The local database did not open. Your problems and settings live in this app's data
+            folder. Retry, or check that the folder is writable.
+          </p>
+          <p className="mt-3 font-mono text-xs text-hard">{bootError}</p>
+          <button
+            className="mt-6 rounded-md bg-gold-400 px-4 py-2 text-sm font-semibold text-ink-950"
+            onClick={() => setBootTick((n) => n + 1)}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!progress) {
+    return (
+      <div className="flex h-full items-center justify-center bg-ink-950 text-sm text-paper-400">
+        Loading…
+      </div>
+    );
+  }
 
   if (screen === "setup" || (runtimes && !runtimes.python && !runtimes.node && screen !== "settings")) {
     return <SetupScreen />;
@@ -78,14 +111,12 @@ export default function App() {
         </nav>
         <div className="flex items-center gap-4 text-xs text-paper-400">
           <span>
-            Streak <strong className="text-gold-400">{progress?.streak ?? 0}</strong>
+            Streak <strong className="text-gold-400">{progress.streak}</strong>
           </span>
           <span>
-            Today <strong className="text-paper-100">{progress?.xpToday ?? 0} XP</strong>
+            Today <strong className="text-paper-100">{progress.xpToday} XP</strong>
           </span>
-          <span className="hidden sm:inline text-paper-500">
-            {units.length} units
-          </span>
+          <span className="hidden sm:inline text-paper-500">{units.length} units</span>
         </div>
       </header>
       <main className="min-h-0 flex-1">

@@ -123,17 +123,46 @@ function decode(value, kind, extra) {
   if (kind === "graph") return graphFromAdj(value);
   return value;
 }
+function cmpJs(x, y) {
+  if (typeof x === "number" && typeof y === "number") return x - y;
+  if (typeof x === "string" && typeof y === "string") return x < y ? -1 : x > y ? 1 : 0;
+  const sx = String(x);
+  const sy = String(y);
+  return sx < sy ? -1 : sx > sy ? 1 : 0;
+}
+
+function isPlainObject(v) {
+  return v !== null && typeof v === "object" && !Array.isArray(v);
+}
+
 function deepEqual(a, b, compare) {
   if (compare === "sorted" && Array.isArray(a) && Array.isArray(b)) {
-    const sa = [...a].sort((x, y) => (x > y ? 1 : x < y ? -1 : 0));
-    const sb = [...b].sort((x, y) => (x > y ? 1 : x < y ? -1 : 0));
-    return JSON.stringify(sa) === JSON.stringify(sb);
+    try {
+      const sa = [...a].sort(cmpJs);
+      const sb = [...b].sort(cmpJs);
+      return deepEqual(sa, sb, "exact");
+    } catch {
+      return deepEqual(a.map(String).sort(), b.map(String).sort(), "exact");
+    }
   }
   if (compare === "set" && Array.isArray(a) && Array.isArray(b)) {
-    const norm = (x) => (Array.isArray(x) ? JSON.stringify([...x].sort()) : JSON.stringify(x));
-    return JSON.stringify([...a].map(norm).sort()) === JSON.stringify([...b].map(norm).sort());
+    const norm = (x) => (Array.isArray(x) ? [...x].sort(cmpJs) : x);
+    return deepEqual(a.map(norm).sort(cmpJs), b.map(norm).sort(cmpJs), "exact");
   }
-  return JSON.stringify(a) === JSON.stringify(b);
+  if (typeof a === "number" && typeof b === "number" && Number.isFinite(a) && Number.isFinite(b)) {
+    return Math.abs(a - b) < 1e-9;
+  }
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((x, i) => deepEqual(x, b[i], "exact"));
+  }
+  if (isPlainObject(a) && isPlainObject(b)) {
+    const keys = Object.keys(a);
+    return (
+      keys.length === Object.keys(b).length &&
+      keys.every((k) => Object.prototype.hasOwnProperty.call(b, k) && deepEqual(a[k], b[k], "exact"))
+    );
+  }
+  return Object.is(a, b);
 }
 
 function formatLogArg(a) {
@@ -154,7 +183,6 @@ const sandbox = {
   GraphNode,
   module: { exports: {} },
   exports: {},
-  require,
 };
 sandbox.global = sandbox;
 

@@ -1,6 +1,7 @@
-import { problemById, problems, problemsForUnit, units } from "../../lib/content";
+import { problems } from "../../lib/content";
+import { localDateString } from "../../lib/dates";
+import { nextProblem } from "../../lib/path";
 import { useApp } from "../../lib/store";
-import type { Problem, Unit } from "../../lib/types";
 
 export function HomeScreen() {
   const progress = useApp((s) => s.progress);
@@ -11,7 +12,7 @@ export function HomeScreen() {
     (progress?.problemStates ?? []).filter((s) => s.status === "accepted").map((s) => s.problemId),
   );
   const goal = progress?.settings.dailyGoal ?? 1;
-  const today = progress?.daily.find((d) => d.date === isoToday());
+  const today = progress?.daily.find((d) => d.date === (progress.today ?? localDateString()));
   const goalMet = Boolean(today?.goalMet);
 
   return (
@@ -66,31 +67,3 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function isoToday() {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
-}
-
-function nextProblem(
-  states: { problemId: string; status: string }[],
-): Problem | undefined {
-  const accepted = new Set(states.filter((s) => s.status === "accepted").map((s) => s.problemId));
-  for (const unit of units) {
-    if (!unitUnlocked(unit, accepted)) continue;
-    const list = problemsForUnit(unit);
-    const undone = list.find((p) => p.kind === "core" && !accepted.has(p.id));
-    if (undone) return undone;
-  }
-  for (const unit of units) {
-    const stretch = problemsForUnit(unit).find((p) => p.kind === "stretch" && !accepted.has(p.id));
-    if (stretch) return stretch;
-  }
-  return problemById.get("two-sum") ?? problems[0];
-}
-
-export function unitUnlocked(unit: Unit, accepted: Set<string>): boolean {
-  if (unit.week <= 1) return true;
-  const prev = units.find((u) => u.week === unit.week - 1);
-  if (!prev) return true;
-  return prev.coreIds.every((id) => accepted.has(id));
-}

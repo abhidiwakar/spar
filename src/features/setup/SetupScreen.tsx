@@ -19,7 +19,10 @@ export function SetupScreen() {
       defaultLanguage: progress?.settings.defaultLanguage ?? "python",
       dailyGoal: progress?.settings.dailyGoal ?? 1,
       timerEnabled: progress?.settings.timerEnabled ?? true,
-      openaiApiKey: progress?.settings.openaiApiKey ?? "",
+      openaiApiKeySet: progress?.settings.openaiApiKeySet ?? false,
+      aiProvider: progress?.settings.aiProvider ?? "openai",
+      ollamaHost: progress?.settings.ollamaHost ?? "http://127.0.0.1:11434",
+      ollamaModel: progress?.settings.ollamaModel ?? "",
     };
     try {
       await saveSettings(settings);

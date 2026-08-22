@@ -26,7 +26,7 @@ export const useApp = create<AppState>((set) => ({
   progress: null,
   usedHint: false,
   setScreen: (screen) => set({ screen }),
-  openProblem: (problemId) => set({ screen: "workspace", problemId, usedHint: false }),
+  openProblem: (problemId) => set({ screen: "workspace", problemId }),
   setLanguage: (language) => set({ language }),
   setRuntimes: (runtimes) => set({ runtimes }),
   setProgress: (progress) => set({ progress }),

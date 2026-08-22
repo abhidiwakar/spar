@@ -1,4 +1,5 @@
 import { problems, units } from "../../lib/content";
+import { lastNLocalDates } from "../../lib/dates";
 import { useApp } from "../../lib/store";
 
 export function ProgressScreen() {
@@ -16,7 +17,7 @@ export function ProgressScreen() {
       byTag.set(t, cur);
     }
   }
-  const days = lastNDates(42);
+  const days = lastNLocalDates(42, progress?.today);
   const daily = new Map((progress?.daily ?? []).map((d) => [d.date, d]));
 
   return (
@@ -78,13 +79,3 @@ export function ProgressScreen() {
   );
 }
 
-function lastNDates(n: number): string[] {
-  const out: string[] = [];
-  const d = new Date();
-  for (let i = n - 1; i >= 0; i--) {
-    const x = new Date(d);
-    x.setDate(d.getDate() - i);
-    out.push(x.toISOString().slice(0, 10));
-  }
-  return out;
-}

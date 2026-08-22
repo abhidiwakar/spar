@@ -6,7 +6,8 @@ use std::process::{Command, Stdio};
 use std::time::Duration;
 use wait_timeout::ChildExt;
 
-const TIMEOUT: Duration = Duration::from_secs(5);
+const RUN_TIMEOUT: Duration = Duration::from_secs(8);
+const SUBMIT_TIMEOUT: Duration = Duration::from_secs(15);
 
 const PYTHON_PRELUDE: &str = r#"
 from __future__ import annotations
@@ -42,6 +43,8 @@ pub struct RunRequest {
     pub tests: Vec<TestCase>,
     pub python_path: Option<String>,
     pub node_path: Option<String>,
+    #[serde(default)]
+    pub submit: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -125,6 +128,15 @@ pub fn detect_node(override_path: Option<&str>) -> Option<String> {
 }
 
 pub fn run(req: RunRequest) -> Result<JudgeOutput, JudgeError> {
+    let timeout = if req.submit {
+        SUBMIT_TIMEOUT
+    } else {
+        RUN_TIMEOUT
+    };
+    run_with_timeout(req, timeout)
+}
+
+pub fn run_with_timeout(req: RunRequest, timeout: Duration) -> Result<JudgeOutput, JudgeError> {
     let dir = tempfile_dir()?;
     let tests_json = serde_json::to_string(&req.tests)?;
     let helpers_json = serde_json::to_string(&req.helpers)?;
@@ -188,24 +200,25 @@ pub fn run(req: RunRequest) -> Result<JudgeOutput, JudgeError> {
     let stdout_file = File::create(&stdout_path)?;
     let stderr_file = File::create(&stderr_path)?;
 
-    let mut child = Command::new(&bin)
-        .args(&args)
+    let mut cmd = Command::new(&bin);
+    cmd.args(&args)
         .current_dir(&dir)
         .stdout(Stdio::from(stdout_file))
-        .stderr(Stdio::from(stderr_file))
-        .spawn()?;
+        .stderr(Stdio::from(stderr_file));
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        cmd.process_group(0);
+    }
+    let mut child = cmd.spawn()?;
 
-    let timed_out = match child.wait_timeout(TIMEOUT)? {
+    let timed_out = match child.wait_timeout(timeout)? {
         Some(_) => false,
         None => {
-            let _ = child.kill();
-            let _ = child.wait();
+            kill_judge_process(&mut child);
             true
         }
     };
-    if !timed_out {
-        let _ = child.wait();
-    }
 
     let stdout = fs::read_to_string(&stdout_path).unwrap_or_default();
     let stderr = fs::read_to_string(&stderr_path).unwrap_or_default();
@@ -221,7 +234,7 @@ pub fn run(req: RunRequest) -> Result<JudgeOutput, JudgeError> {
             passed: 0,
             total: req.tests.len(),
             stdout,
-            stderr: "Time limit exceeded (5s).".into(),
+            stderr: format!("Time limit exceeded ({}s).", timeout.as_secs()),
             cases: vec![],
         });
     }
@@ -345,10 +358,268 @@ fn tempfile_dir() -> Result<PathBuf, JudgeError> {
     Ok(dir)
 }
 
+fn kill_judge_process(child: &mut std::process::Child) {
+    #[cfg(unix)]
+    {
+        let pid = child.id() as i32;
+        unsafe {
+            libc::killpg(pid, libc::SIGKILL);
+        }
+        let _ = child.wait();
+    }
+    #[cfg(windows)]
+    {
+        let pid = child.id().to_string();
+        let _ = Command::new("taskkill")
+            .args(["/PID", &pid, "/T", "/F"])
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+        let _ = child.wait();
+    }
+    #[cfg(not(any(unix, windows)))]
+    {
+        let _ = child.kill();
+        let _ = child.wait();
+    }
+}
+
 fn python_harness() -> &'static str {
     include_str!("harness.py")
 }
 
 fn javascript_harness() -> &'static str {
     include_str!("harness.js")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::catalog;
+    use std::path::PathBuf;
+
+    fn content_dir() -> PathBuf {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../content")
+    }
+
+    fn two_sum_req(language: &str, source: &str, submit: bool) -> RunRequest {
+        let problem = catalog::load_problem(&content_dir(), "two-sum").unwrap();
+        let tests = if submit {
+            let mut t = problem.tests.visible.clone();
+            t.extend(problem.tests.hidden);
+            t
+        } else {
+            problem.tests.visible
+        };
+        let entry = if language == "python" {
+            problem.entry.python
+        } else {
+            problem.entry.javascript
+        };
+        RunRequest {
+            language: language.into(),
+            source: source.into(),
+            entry,
+            mode: problem.mode,
+            helpers: problem.helpers,
+            param_names: problem.param_names,
+            tests,
+            python_path: None,
+            node_path: None,
+            submit,
+        }
+    }
+
+    fn py_available() -> bool {
+        detect_python(None).is_some()
+    }
+
+    fn node_available() -> bool {
+        detect_node(None).is_some()
+    }
+
+    const PY_OK: &str = r#"
+class Solution:
+    def twoSum(self, nums, target):
+        seen = {}
+        for i, n in enumerate(nums):
+            if target - n in seen:
+                return [seen[target - n], i]
+            seen[n] = i
+"#;
+
+    const JS_OK: &str = r#"
+var twoSum = function(nums, target) {
+    const seen = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        if (seen.has(target - nums[i])) return [seen.get(target - nums[i]), i];
+        seen.set(nums[i], i);
+    }
+};
+"#;
+
+    #[test]
+    fn python_two_sum_accepted() {
+        if !py_available() {
+            return;
+        }
+        let out = run(two_sum_req("python", PY_OK, true)).unwrap();
+        assert_eq!(out.verdict, "accepted");
+        assert_eq!(out.passed, out.total);
+        assert!(out.total >= 4);
+    }
+
+    #[test]
+    fn javascript_two_sum_accepted() {
+        if !node_available() {
+            return;
+        }
+        let out = run(two_sum_req("javascript", JS_OK, true)).unwrap();
+        assert_eq!(out.verdict, "accepted");
+        assert_eq!(out.passed, out.total);
+    }
+
+    #[test]
+    fn python_missing_return() {
+        if !py_available() {
+            return;
+        }
+        let src = "class Solution:\n    def twoSum(self, nums, target):\n        pass\n";
+        let out = run(two_sum_req("python", src, false)).unwrap();
+        assert_ne!(out.verdict, "accepted");
+        assert!(out.cases.iter().any(|c| !c.passed));
+    }
+
+    #[test]
+    fn python_compile_error() {
+        if !py_available() {
+            return;
+        }
+        let out = run(two_sum_req("python", "def (\n", false)).unwrap();
+        assert_eq!(out.verdict, "runtime_error");
+        assert!(out.stderr.contains("SyntaxError") || out.stderr.contains("syntax"));
+    }
+
+    #[test]
+    fn python_tle() {
+        if !py_available() {
+            return;
+        }
+        let src = "class Solution:\n    def twoSum(self, nums, target):\n        while True:\n            pass\n";
+        let out = run_with_timeout(two_sum_req("python", src, false), Duration::from_millis(800)).unwrap();
+        assert_eq!(out.verdict, "tle");
+    }
+
+    #[test]
+    fn first_bad_version_python() {
+        if !py_available() {
+            return;
+        }
+        let problem = catalog::load_problem(&content_dir(), "first-bad-version").unwrap();
+        let src = r#"
+class Solution:
+    def firstBadVersion(self, n):
+        lo, hi = 1, n
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if isBadVersion(mid):
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo
+"#;
+        let req = RunRequest {
+            language: "python".into(),
+            source: src.into(),
+            entry: problem.entry.python,
+            mode: problem.mode,
+            helpers: problem.helpers,
+            param_names: problem.param_names,
+            tests: problem.tests.visible,
+            python_path: None,
+            node_path: None,
+            submit: false,
+        };
+        let out = run(req).unwrap();
+        assert_eq!(out.verdict, "accepted");
+    }
+
+    #[test]
+    fn clone_graph_python() {
+        if !py_available() {
+            return;
+        }
+        let problem = catalog::load_problem(&content_dir(), "clone-graph").unwrap();
+        let src = r#"
+class Solution:
+    def cloneGraph(self, node):
+        if not node:
+            return None
+        copies = {}
+        def dfs(n):
+            if n.val in copies:
+                return copies[n.val]
+            c = Node(n.val)
+            copies[n.val] = c
+            c.neighbors = [dfs(x) for x in n.neighbors]
+            return c
+        return dfs(node)
+"#;
+        let req = RunRequest {
+            language: "python".into(),
+            source: src.into(),
+            entry: problem.entry.python,
+            mode: problem.mode,
+            helpers: problem.helpers,
+            param_names: problem.param_names,
+            tests: problem.tests.visible,
+            python_path: None,
+            node_path: None,
+            submit: false,
+        };
+        let out = run(req).unwrap();
+        assert_eq!(out.verdict, "accepted", "{}", out.stderr);
+    }
+
+    #[test]
+    fn lru_cache_python() {
+        if !py_available() {
+            return;
+        }
+        let problem = catalog::load_problem(&content_dir(), "lru-cache").unwrap();
+        let src = r#"
+class LRUCache:
+    def __init__(self, capacity):
+        self.cap = capacity
+        self.d = {}
+    def get(self, key):
+        if key not in self.d:
+            return -1
+        v = self.d.pop(key)
+        self.d[key] = v
+        return v
+    def put(self, key, value):
+        if key in self.d:
+            self.d.pop(key)
+        self.d[key] = value
+        if len(self.d) > self.cap:
+            self.d.pop(next(iter(self.d)))
+"#;
+        let mut tests = problem.tests.visible.clone();
+        tests.extend(problem.tests.hidden);
+        let req = RunRequest {
+            language: "python".into(),
+            source: src.into(),
+            entry: problem.entry.python,
+            mode: problem.mode,
+            helpers: problem.helpers,
+            param_names: problem.param_names,
+            tests,
+            python_path: None,
+            node_path: None,
+            submit: true,
+        };
+        let out = run(req).unwrap();
+        assert_eq!(out.verdict, "accepted", "{}", out.stderr);
+    }
 }

@@ -1,6 +1,6 @@
 import { problemsForUnit, units } from "../../lib/content";
 import { useApp } from "../../lib/store";
-import { unitUnlocked } from "../home/HomeScreen";
+import { unitUnlocked } from "../../lib/path";
 
 export function PathScreen() {
   const progress = useApp((s) => s.progress);

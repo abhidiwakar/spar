@@ -1,4 +1,4 @@
-use rusqlite::{params, Connection};
+use rusqlite::{params, Connection, TransactionBehavior};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use std::sync::Mutex;
@@ -14,8 +14,24 @@ pub struct Settings {
     pub default_language: String,
     pub daily_goal: i64,
     pub timer_enabled: bool,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "String::is_empty")]
     pub openai_api_key: String,
+    #[serde(default)]
+    pub openai_api_key_set: bool,
+    #[serde(default = "default_ai_provider")]
+    pub ai_provider: String,
+    #[serde(default = "default_ollama_host")]
+    pub ollama_host: String,
+    #[serde(default)]
+    pub ollama_model: String,
+}
+
+fn default_ai_provider() -> String {
+    "openai".into()
+}
+
+fn default_ollama_host() -> String {
+    "http://127.0.0.1:11434".into()
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -61,8 +77,11 @@ pub struct ProgressSnapshot {
     pub daily: Vec<DailyStat>,
     pub drafts: Vec<Draft>,
     pub notes: Vec<Note>,
+    pub ai_reviews: Vec<AiReview>,
+    pub attempt_complexities: Vec<AttemptComplexity>,
     pub streak: i64,
     pub xp_today: i64,
+    pub today: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -78,6 +97,22 @@ pub struct Draft {
 pub struct Note {
     pub problem_id: String,
     pub body: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AiReview {
+    pub problem_id: String,
+    pub language: String,
+    pub body: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AttemptComplexity {
+    pub attempt_id: String,
+    pub time_complexity: String,
+    pub space_complexity: String,
 }
 
 pub fn open(path: PathBuf) -> rusqlite::Result<Db> {
@@ -126,6 +161,19 @@ pub fn open(path: PathBuf) -> rusqlite::Result<Db> {
             body TEXT NOT NULL,
             updated_at TEXT NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS ai_reviews (
+            problem_id TEXT NOT NULL,
+            language TEXT NOT NULL,
+            body TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            PRIMARY KEY (problem_id, language)
+        );
+        CREATE TABLE IF NOT EXISTS attempt_complexity (
+            attempt_id TEXT PRIMARY KEY,
+            time_complexity TEXT NOT NULL,
+            space_complexity TEXT NOT NULL,
+            updated_at TEXT NOT NULL
+        );
         "#,
     )?;
     Ok(Db(Mutex::new(conn)))
@@ -152,7 +200,69 @@ pub fn load_settings(conn: &Connection) -> Settings {
         daily_goal: get_setting(conn, "daily_goal", "1").parse().unwrap_or(1),
         timer_enabled: get_setting(conn, "timer_enabled", "true") == "true",
         openai_api_key: get_setting(conn, "openai_api_key", ""),
+        openai_api_key_set: false,
+        ai_provider: get_setting(conn, "ai_provider", "openai"),
+        ollama_host: get_setting(conn, "ollama_host", "http://127.0.0.1:11434"),
+        ollama_model: get_setting(conn, "ollama_model", ""),
     }
+}
+
+pub fn save_ollama_selection(
+    conn: &Connection,
+    provider: &str,
+    host: &str,
+    model: &str,
+) -> rusqlite::Result<()> {
+    for (k, v) in [
+        ("ai_provider", provider),
+        ("ollama_host", host),
+        ("ollama_model", model),
+    ] {
+        conn.execute(
+            "INSERT INTO settings(key, value) VALUES(?1, ?2)
+             ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+            params![k, v],
+        )?;
+    }
+    Ok(())
+}
+
+pub fn mark_hint_used(conn: &Connection, problem_id: &str) -> rusqlite::Result<()> {
+    conn.execute(
+        "INSERT INTO problem_state(problem_id, status, first_accepted_at, last_attempt_at, used_hint, review_at)
+         VALUES(?1, 'attempted', NULL, ?2, 1, NULL)
+         ON CONFLICT(problem_id) DO UPDATE SET used_hint = 1",
+        params![problem_id, now()],
+    )?;
+    Ok(())
+}
+
+pub fn used_hint(conn: &Connection, problem_id: &str) -> bool {
+    conn.query_row(
+        "SELECT used_hint FROM problem_state WHERE problem_id = ?1",
+        [problem_id],
+        |r| r.get::<_, i64>(0),
+    )
+    .ok()
+    .is_some_and(|h| h > 0)
+}
+
+pub fn refresh_goal_met(conn: &Connection) -> rusqlite::Result<()> {
+    let day = today();
+    let count: i64 = conn
+        .query_row(
+            "SELECT accepted_count FROM daily_stats WHERE date = ?1",
+            [&day],
+            |r| r.get(0),
+        )
+        .unwrap_or(0);
+    let goal: i64 = get_setting(conn, "daily_goal", "1").parse().unwrap_or(1);
+    let met = i64::from(count >= goal);
+    conn.execute(
+        "UPDATE daily_stats SET goal_met = ?1 WHERE date = ?2",
+        params![met, day],
+    )?;
+    Ok(())
 }
 
 pub fn save_settings(conn: &Connection, s: &Settings) -> rusqlite::Result<()> {
@@ -162,7 +272,9 @@ pub fn save_settings(conn: &Connection, s: &Settings) -> rusqlite::Result<()> {
         ("default_language", s.default_language.as_str()),
         ("daily_goal", &s.daily_goal.to_string()),
         ("timer_enabled", if s.timer_enabled { "true" } else { "false" }),
-        ("openai_api_key", s.openai_api_key.as_str()),
+        ("ai_provider", s.ai_provider.as_str()),
+        ("ollama_host", s.ollama_host.as_str()),
+        ("ollama_model", s.ollama_model.as_str()),
     ];
     for (k, v) in pairs {
         conn.execute(
@@ -171,6 +283,19 @@ pub fn save_settings(conn: &Connection, s: &Settings) -> rusqlite::Result<()> {
             params![k, v],
         )?;
     }
+    if !s.openai_api_key.trim().is_empty() {
+        conn.execute(
+            "INSERT INTO settings(key, value) VALUES('openai_api_key', ?1)
+             ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+            params![s.openai_api_key.trim()],
+        )?;
+    }
+    refresh_goal_met(conn)?;
+    Ok(())
+}
+
+pub fn clear_openai_key(conn: &Connection) -> rusqlite::Result<()> {
+    conn.execute("DELETE FROM settings WHERE key = 'openai_api_key'", [])?;
     Ok(())
 }
 
@@ -202,6 +327,77 @@ pub fn save_note(conn: &Connection, problem_id: &str, body: &str) -> rusqlite::R
     Ok(())
 }
 
+pub fn save_ai_review(
+    conn: &Connection,
+    problem_id: &str,
+    language: &str,
+    body: &str,
+) -> rusqlite::Result<()> {
+    conn.execute(
+        "INSERT INTO ai_reviews(problem_id, language, body, updated_at) VALUES(?1, ?2, ?3, ?4)
+         ON CONFLICT(problem_id, language) DO UPDATE SET
+            body = excluded.body,
+            updated_at = excluded.updated_at",
+        params![problem_id, language, body, now()],
+    )?;
+    Ok(())
+}
+
+pub fn load_attempt_complexity(conn: &Connection, attempt_id: &str) -> Option<AttemptComplexity> {
+    conn.query_row(
+        "SELECT attempt_id, time_complexity, space_complexity FROM attempt_complexity WHERE attempt_id = ?1",
+        [attempt_id],
+        |r| {
+            Ok(AttemptComplexity {
+                attempt_id: r.get(0)?,
+                time_complexity: r.get(1)?,
+                space_complexity: r.get(2)?,
+            })
+        },
+    )
+    .ok()
+}
+
+pub fn save_attempt_complexity(
+    conn: &Connection,
+    attempt_id: &str,
+    time_complexity: &str,
+    space_complexity: &str,
+) -> rusqlite::Result<()> {
+    conn.execute(
+        "INSERT INTO attempt_complexity(attempt_id, time_complexity, space_complexity, updated_at)
+         VALUES(?1, ?2, ?3, ?4)
+         ON CONFLICT(attempt_id) DO UPDATE SET
+            time_complexity = excluded.time_complexity,
+            space_complexity = excluded.space_complexity,
+            updated_at = excluded.updated_at",
+        params![attempt_id, time_complexity, space_complexity, now()],
+    )?;
+    Ok(())
+}
+
+pub fn get_attempt(conn: &Connection, attempt_id: &str) -> Option<Attempt> {
+    conn.query_row(
+        "SELECT id, problem_id, language, code, passed, used_hint, duration_ms, created_at, verdict
+         FROM attempts WHERE id = ?1",
+        [attempt_id],
+        |r| {
+            Ok(Attempt {
+                id: r.get(0)?,
+                problem_id: r.get(1)?,
+                language: r.get(2)?,
+                code: r.get(3)?,
+                passed: r.get::<_, i64>(4)? > 0,
+                used_hint: r.get::<_, i64>(5)? > 0,
+                duration_ms: r.get(6)?,
+                created_at: r.get(7)?,
+                verdict: r.get(8)?,
+            })
+        },
+    )
+    .ok()
+}
+
 fn xp_for(difficulty: &str, first: bool, used_hint: bool, review: bool) -> i64 {
     if review {
         return 30;
@@ -222,7 +418,43 @@ fn xp_for(difficulty: &str, first: bool, used_hint: bool, review: bool) -> i64 {
     }
 }
 
+fn review_window_due(review_at: &Option<String>) -> bool {
+    let Some(raw) = review_at.as_deref() else {
+        return false;
+    };
+    chrono::DateTime::parse_from_rfc3339(raw)
+        .map(|dt| dt.with_timezone(&chrono::Local) <= chrono::Local::now())
+        .unwrap_or(false)
+}
+
 pub fn record_attempt(
+    conn: &mut Connection,
+    problem_id: &str,
+    language: &str,
+    code: &str,
+    passed: bool,
+    used_hint: bool,
+    duration_ms: Option<i64>,
+    verdict: &str,
+    difficulty: &str,
+) -> rusqlite::Result<i64> {
+    let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+    let awarded = record_attempt_tx(
+        &tx,
+        problem_id,
+        language,
+        code,
+        passed,
+        used_hint,
+        duration_ms,
+        verdict,
+        difficulty,
+    )?;
+    tx.commit()?;
+    Ok(awarded)
+}
+
+fn record_attempt_tx(
     conn: &Connection,
     problem_id: &str,
     language: &str,
@@ -255,21 +487,21 @@ pub fn record_attempt(
         .unwrap_or(false);
     let prev_hint = existing.as_ref().map(|(_, _, h, _)| *h > 0).unwrap_or(false);
     let hint_flag = used_hint || prev_hint;
-    let is_review = existing
+    let review_due = existing
         .as_ref()
-        .map(|(_, _, _, review_at)| review_at.is_some() && was_accepted)
+        .map(|(_, _, _, review_at)| review_window_due(review_at) && was_accepted)
         .unwrap_or(false);
 
     let mut awarded = 0i64;
     if passed && verdict == "accepted" {
         let first = !was_accepted;
-        awarded = xp_for(difficulty, first, hint_flag, is_review && !first);
-        let review_at = chrono::Local::now() + chrono::TimeDelta::days(3);
-        let review_at2 = chrono::Local::now() + chrono::TimeDelta::days(7);
+        awarded = xp_for(difficulty, first, hint_flag, review_due && !first);
         let review_s = if first {
-            Some(review_at.to_rfc3339())
+            Some((chrono::Local::now() + chrono::TimeDelta::days(3)).to_rfc3339())
+        } else if review_due {
+            Some((chrono::Local::now() + chrono::TimeDelta::days(7)).to_rfc3339())
         } else {
-            Some(review_at2.to_rfc3339())
+            existing.as_ref().and_then(|(_, _, _, r)| r.clone())
         };
         conn.execute(
             "INSERT INTO problem_state(problem_id, status, first_accepted_at, last_attempt_at, used_hint, review_at)
@@ -290,19 +522,7 @@ pub fn record_attempt(
                 accepted_count = daily_stats.accepted_count + 1",
             params![day, awarded],
         )?;
-        let (xp, count, goal): (i64, i64, i64) = {
-            let count = conn.query_row(
-                "SELECT xp, accepted_count FROM daily_stats WHERE date = ?1",
-                [&day],
-                |r| Ok((r.get::<_, i64>(0)?, r.get::<_, i64>(1)?)),
-            )?;
-            let goal: i64 = get_setting(conn, "daily_goal", "1").parse().unwrap_or(1);
-            (count.0, count.1, goal)
-        };
-        let _ = xp;
-        if count >= goal {
-            conn.execute("UPDATE daily_stats SET goal_met = 1 WHERE date = ?1", [&day])?;
-        }
+        refresh_goal_met(conn)?;
     } else {
         conn.execute(
             "INSERT INTO problem_state(problem_id, status, first_accepted_at, last_attempt_at, used_hint, review_at)
@@ -352,7 +572,7 @@ pub fn streak(conn: &Connection) -> i64 {
 }
 
 pub fn snapshot(conn: &Connection) -> rusqlite::Result<ProgressSnapshot> {
-    let settings = load_settings(conn);
+    let mut settings = load_settings(conn);
     let mut problem_states = Vec::new();
     {
         let mut stmt = conn.prepare(
@@ -439,11 +659,46 @@ pub fn snapshot(conn: &Connection) -> rusqlite::Result<ProgressSnapshot> {
             notes.push(row?);
         }
     }
+    let mut ai_reviews = Vec::new();
+    {
+        let mut stmt = conn.prepare(
+            "SELECT problem_id, language, body FROM ai_reviews ORDER BY updated_at DESC LIMIT 200",
+        )?;
+        let rows = stmt.query_map([], |r| {
+            Ok(AiReview {
+                problem_id: r.get(0)?,
+                language: r.get(1)?,
+                body: r.get(2)?,
+            })
+        })?;
+        for row in rows {
+            ai_reviews.push(row?);
+        }
+    }
+    let mut attempt_complexities = Vec::new();
+    {
+        let mut stmt = conn.prepare(
+            "SELECT attempt_id, time_complexity, space_complexity FROM attempt_complexity
+             WHERE attempt_id IN (SELECT id FROM attempts ORDER BY created_at DESC LIMIT 200)",
+        )?;
+        let rows = stmt.query_map([], |r| {
+            Ok(AttemptComplexity {
+                attempt_id: r.get(0)?,
+                time_complexity: r.get(1)?,
+                space_complexity: r.get(2)?,
+            })
+        })?;
+        for row in rows {
+            attempt_complexities.push(row?);
+        }
+    }
     let xp_today = daily
         .iter()
         .find(|d| d.date == today())
         .map(|d| d.xp)
         .unwrap_or(0);
+    settings.openai_api_key_set = !settings.openai_api_key.trim().is_empty();
+    settings.openai_api_key.clear();
     Ok(ProgressSnapshot {
         settings,
         problem_states,
@@ -451,7 +706,176 @@ pub fn snapshot(conn: &Connection) -> rusqlite::Result<ProgressSnapshot> {
         daily,
         drafts,
         notes,
+        ai_reviews,
+        attempt_complexities,
         streak: streak(conn),
         xp_today,
+        today: today(),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn mem() -> Connection {
+        let conn = Connection::open_in_memory().unwrap();
+        conn.execute_batch(
+            r#"
+            PRAGMA journal_mode = WAL;
+            CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS drafts (
+                problem_id TEXT NOT NULL, language TEXT NOT NULL, code TEXT NOT NULL,
+                updated_at TEXT NOT NULL, PRIMARY KEY (problem_id, language)
+            );
+            CREATE TABLE IF NOT EXISTS attempts (
+                id TEXT PRIMARY KEY, problem_id TEXT NOT NULL, language TEXT NOT NULL,
+                code TEXT NOT NULL, passed INTEGER NOT NULL, used_hint INTEGER NOT NULL DEFAULT 0,
+                duration_ms INTEGER, created_at TEXT NOT NULL, verdict TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS problem_state (
+                problem_id TEXT PRIMARY KEY, status TEXT NOT NULL, first_accepted_at TEXT,
+                last_attempt_at TEXT, used_hint INTEGER NOT NULL DEFAULT 0, review_at TEXT
+            );
+            CREATE TABLE IF NOT EXISTS daily_stats (
+                date TEXT PRIMARY KEY, xp INTEGER NOT NULL DEFAULT 0,
+                goal_met INTEGER NOT NULL DEFAULT 0, accepted_count INTEGER NOT NULL DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS notes (
+                problem_id TEXT PRIMARY KEY, body TEXT NOT NULL, updated_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS ai_reviews (
+                problem_id TEXT NOT NULL, language TEXT NOT NULL, body TEXT NOT NULL,
+                updated_at TEXT NOT NULL, PRIMARY KEY (problem_id, language)
+            );
+            CREATE TABLE IF NOT EXISTS attempt_complexity (
+                attempt_id TEXT PRIMARY KEY, time_complexity TEXT NOT NULL,
+                space_complexity TEXT NOT NULL, updated_at TEXT NOT NULL
+            );
+            "#,
+        )
+        .unwrap();
+        conn
+    }
+
+    fn accept(conn: &mut Connection, id: &str, hint: bool) -> i64 {
+        record_attempt(conn, id, "python", "code", true, hint, Some(100), "accepted", "easy").unwrap()
+    }
+
+    #[test]
+    fn first_easy_no_hint_is_70() {
+        let mut conn = mem();
+        assert_eq!(accept(&mut conn, "two-sum", false), 70);
+    }
+
+    #[test]
+    fn hint_strips_first_clear_bonus() {
+        let mut conn = mem();
+        assert_eq!(accept(&mut conn, "two-sum", true), 50);
+    }
+
+    #[test]
+    fn persisted_hint_applies_on_later_accept() {
+        let mut conn = mem();
+        mark_hint_used(&conn, "two-sum").unwrap();
+        assert_eq!(accept(&mut conn, "two-sum", false), 50);
+    }
+
+    #[test]
+    fn second_accept_before_review_window_is_10() {
+        let mut conn = mem();
+        accept(&mut conn, "two-sum", false);
+        assert_eq!(accept(&mut conn, "two-sum", false), 10);
+    }
+
+    #[test]
+    fn review_window_awards_30() {
+        let mut conn = mem();
+        accept(&mut conn, "two-sum", false);
+        conn.execute(
+            "UPDATE problem_state SET review_at = ?1",
+            [(chrono::Local::now() - chrono::TimeDelta::days(1)).to_rfc3339()],
+        )
+        .unwrap();
+        assert_eq!(accept(&mut conn, "two-sum", false), 30);
+    }
+
+    #[test]
+    fn failed_submit_does_not_increment_accepted() {
+        let mut conn = mem();
+        record_attempt(
+            &mut conn, "two-sum", "python", "x", false, false, None, "wrong_answer", "easy",
+        )
+        .unwrap();
+        let count: i64 = conn
+            .query_row(
+                "SELECT COALESCE(SUM(accepted_count), 0) FROM daily_stats",
+                [],
+                |r| r.get(0),
+            )
+            .unwrap();
+        assert_eq!(count, 0);
+        assert!(!is_accepted(&conn, "two-sum"));
+    }
+
+    #[test]
+    fn raising_daily_goal_clears_goal_met() {
+        let mut conn = mem();
+        accept(&mut conn, "two-sum", false);
+        let met: i64 = conn
+            .query_row("SELECT goal_met FROM daily_stats WHERE date = ?1", [today()], |r| r.get(0))
+            .unwrap();
+        assert_eq!(met, 1);
+        let mut s = load_settings(&conn);
+        s.daily_goal = 5;
+        save_settings(&conn, &s).unwrap();
+        let met: i64 = conn
+            .query_row("SELECT goal_met FROM daily_stats WHERE date = ?1", [today()], |r| r.get(0))
+            .unwrap();
+        assert_eq!(met, 0);
+    }
+
+    #[test]
+    fn snapshot_today_matches_local_date() {
+        let conn = mem();
+        let snap = snapshot(&conn).unwrap();
+        assert_eq!(snap.today, today());
+    }
+
+    #[test]
+    fn snapshot_redacts_openai_key() {
+        let conn = mem();
+        conn.execute(
+            "INSERT INTO settings(key, value) VALUES('openai_api_key', 'sk-secret')",
+            [],
+        )
+        .unwrap();
+        let snap = snapshot(&conn).unwrap();
+        assert!(snap.settings.openai_api_key.is_empty());
+        assert!(snap.settings.openai_api_key_set);
+        let json = serde_json::to_value(&snap.settings).unwrap();
+        assert!(json.get("openaiApiKey").is_none());
+        assert_eq!(json["openaiApiKeySet"], true);
+        assert_eq!(load_settings(&conn).openai_api_key, "sk-secret");
+    }
+
+    #[test]
+    fn empty_settings_save_keeps_existing_key() {
+        let conn = mem();
+        conn.execute(
+            "INSERT INTO settings(key, value) VALUES('openai_api_key', 'sk-secret')",
+            [],
+        )
+        .unwrap();
+        let mut s = load_settings(&conn);
+        s.openai_api_key.clear();
+        save_settings(&conn, &s).unwrap();
+        assert_eq!(load_settings(&conn).openai_api_key, "sk-secret");
+        s.openai_api_key = "sk-new".into();
+        save_settings(&conn, &s).unwrap();
+        assert_eq!(load_settings(&conn).openai_api_key, "sk-new");
+        clear_openai_key(&conn).unwrap();
+        assert!(load_settings(&conn).openai_api_key.is_empty());
+        assert!(!snapshot(&conn).unwrap().settings.openai_api_key_set);
+    }
 }
