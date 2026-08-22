@@ -392,7 +392,7 @@ export function WorkspaceScreen() {
                       </span>
                     ))}
                   </div>
-                  <p className="mt-3 text-xs text-paper-500">{problem.microsoftNote}</p>
+                  <p className="mt-3 text-xs text-paper-500">{problem.tip}</p>
                   <div className="problem-prose mt-4">
                     <Markdown remarkPlugins={[remarkGfm]}>{problem.statement}</Markdown>
                   </div>

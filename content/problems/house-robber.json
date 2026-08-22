@@ -9,8 +9,8 @@
   "unitId": "unit-09",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "1D DP: rob this and skip previous, or skip this.",
-  "statement": "You are a robber. `nums[i]` is the money in house i. Adjacent houses have a security system \u2014 you cannot rob two adjacent houses. Return the maximum amount you can rob.",
+  "tip": "1D DP: rob this and skip previous, or skip this.",
+  "statement": "You are a robber. `nums[i]` is the money in house i. Adjacent houses have a security system — you cannot rob two adjacent houses. Return the maximum amount you can rob.",
   "examples": [
     {
       "input": "nums = [1,2,3,1]",

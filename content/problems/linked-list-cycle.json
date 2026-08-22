@@ -9,7 +9,7 @@
   "unitId": "unit-03",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Floyd. `pos` is the index where the tail connects, or -1.",
+  "tip": "Floyd. `pos` is the index where the tail connects, or -1.",
   "statement": "Given `head` of a linked list, return `true` if there is a cycle.\n\nThe test extra field `pos` is the index the tail links to (`-1` if none). You will receive a real `ListNode` that may contain that cycle. Do not use extra O(n) memory if you can help it.",
   "examples": [
     {

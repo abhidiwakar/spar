@@ -10,7 +10,7 @@
   "unitId": "unit-10",
   "kind": "core",
   "order": 1,
-  "microsoftNote": "Hash + doubly linked list. O(1) get/put. Design round adjacent.",
+  "tip": "Hash + doubly linked list. O(1) get/put. Design round adjacent.",
   "statement": "Design a data structure that follows the constraints of a **Least Recently Used (LRU) cache**.\n\nImplement `LRUCache`:\n\n- `LRUCache(int capacity)` initialize with positive size.\n- `int get(int key)` return the value if present, else `-1`.\n- `void put(int key, int value)` update or insert. If the number of keys exceeds capacity, evict the least recently used key.\n\nGet and put must both be O(1) average.",
   "examples": [
     {
@@ -25,7 +25,7 @@
     "At most 2 * 10^5 calls to get and put."
   ],
   "followUp": null,
-  "editorial": "Map key \u2192 node. Dummy head/tail. Move to head on get/put. Evict tail.prev.",
+  "editorial": "Map key → node. Dummy head/tail. Move to head on get/put. Evict tail.prev.",
   "mode": "class",
   "entry": {
     "python": "LRUCache",

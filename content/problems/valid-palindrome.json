@@ -9,7 +9,7 @@
   "unitId": "unit-02",
   "kind": "core",
   "order": 1,
-  "microsoftNote": "Two pointers skipping non-alphanumeric. Off-by-one on empty leftover.",
+  "tip": "Two pointers skipping non-alphanumeric. Off-by-one on empty leftover.",
   "statement": "A phrase is a palindrome if, after converting all uppercase letters into lowercase and removing all non-alphanumeric characters, it reads the same forward and backward.\n\nGiven a string `s`, return `true` if it is a palindrome.",
   "examples": [
     {

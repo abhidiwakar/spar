@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 7,
-  "microsoftNote": "Mirror comparison, not 'is BST'.",
+  "tip": "Mirror comparison, not 'is BST'.",
   "statement": "Return true if the binary tree is a mirror of itself (symmetric around its center).\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

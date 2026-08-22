@@ -4,7 +4,7 @@
     "week": 1,
     "title": "Arrays and hashing",
     "subtitle": "O(n) with a map",
-    "briefing": "When a nested loop is scanning for a complement or a duplicate, a hash map turns it into one pass. Microsoft OAs start here.",
+    "briefing": "When a nested loop is scanning for a complement or a duplicate, a hash map turns it into one pass. Most paths start here.",
     "kind": "standard",
     "coreIds": ["two-sum", "contains-duplicate", "best-time-buy-sell", "valid-anagram"],
     "stretchIds": ["group-anagrams"]
@@ -34,7 +34,7 @@
     "week": 4,
     "title": "Binary search",
     "subtitle": "On indexes and on answers",
-    "briefing": "If the predicate is monotonic, binary search. Rotated arrays and 'minimum feasible capacity' are the Microsoft variants.",
+    "briefing": "If the predicate is monotonic, binary search. Rotated arrays and 'minimum feasible capacity' are the usual variants.",
     "kind": "standard",
     "coreIds": ["binary-search", "search-rotated-sorted", "find-peak-element", "first-bad-version"],
     "stretchIds": ["koko-eating-bananas"]
@@ -44,7 +44,7 @@
     "week": 5,
     "title": "Binary trees I",
     "subtitle": "What does this node return?",
-    "briefing": "Trees dominate Microsoft loops. Recursive DFS plus level-order BFS. Practice both.",
+    "briefing": "Trees show up constantly. Recursive DFS plus level-order BFS. Practice both.",
     "kind": "standard",
     "coreIds": ["max-depth-binary-tree", "invert-binary-tree", "same-tree", "diameter-binary-tree", "path-sum", "level-order", "symmetric-tree"],
     "stretchIds": []
@@ -84,7 +84,7 @@
     "week": 9,
     "title": "Textbook DP",
     "subtitle": "Define dp[i], then fill",
-    "briefing": "Microsoft DP is recognizable medium: stairs, robber, coin change, unique paths, LIS, word break. Not burst balloons.",
+    "briefing": "Textbook DP is recognizable medium: stairs, robber, coin change, unique paths, LIS, word break. Not burst balloons.",
     "kind": "standard",
     "coreIds": ["climbing-stairs", "house-robber", "coin-change", "unique-paths", "longest-increasing-subsequence", "word-break"],
     "stretchIds": ["house-robber-iii"]
@@ -102,7 +102,7 @@
   {
     "id": "unit-11",
     "week": 11,
-    "title": "Mixed Microsoft set",
+    "title": "Mixed set",
     "subtitle": "Name the pattern in two minutes",
     "briefing": "No topic labels. Identify the pattern, then code. Weekend: two 45-minute problems back to back.",
     "kind": "mixed",

@@ -9,7 +9,7 @@
   "unitId": "unit-04",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Very common Microsoft medium. Decide which half is sorted, then whether target lives there.",
+  "tip": "Very common medium. Decide which half is sorted, then whether target lives there.",
   "statement": "`nums` is a possibly rotated sorted array of **distinct** integers. Return the index of `target`, or `-1`. O(log n).",
   "examples": [
     {

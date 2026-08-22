@@ -18,11 +18,11 @@ export function HomeScreen() {
   return (
     <div className="mx-auto flex h-full max-w-3xl flex-col justify-center gap-10 px-6 py-10">
       <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-gold-400">Microsoft interview gym</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-gold-400">DSA gym</p>
         <h1 className="mt-2 font-serif text-4xl leading-tight">Solve the next one.</h1>
         <p className="mt-3 max-w-xl text-paper-400">
-          A 12-week path of medium-first problems. Trees and graphs are weighted the way Microsoft
-          actually asks them. Write Python or JavaScript, run tests, submit.
+          A 12-week path of medium-first problems. Arrays, trees, graphs, and DP in the order they
+          build on each other. Write Python or JavaScript, run tests, submit.
         </p>
       </div>
 

@@ -9,7 +9,7 @@
   "unitId": "unit-10",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Monotonic deque of indices. Hard but pattern-based.",
+  "tip": "Monotonic deque of indices. Hard but pattern-based.",
   "statement": "You are given an array `nums` and a sliding window of size `k` moving from the very left to the very right. Return the max of each window.",
   "examples": [
     {

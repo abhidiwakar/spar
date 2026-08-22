@@ -9,7 +9,7 @@
   "unitId": "unit-02",
   "kind": "stretch",
   "order": 5,
-  "microsoftNote": "Sort, then two-sum on the remainder. Dedup is the part people fumble.",
+  "tip": "Sort, then two-sum on the remainder. Dedup is the part people fumble.",
   "statement": "Given an integer array `nums`, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i`, `j`, and `k` are distinct and `nums[i] + nums[j] + nums[k] == 0`.\n\nThe solution set must not contain duplicate triplets.",
   "examples": [
     {

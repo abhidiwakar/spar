@@ -10,7 +10,7 @@
   "unitId": "unit-09",
   "kind": "core",
   "order": 6,
-  "microsoftNote": "dp[i] = whether s[:i] can be segmented.",
+  "tip": "dp[i] = whether s[:i] can be segmented.",
   "statement": "Given a string `s` and a dictionary `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words. Words may be reused.",
   "examples": [
     {

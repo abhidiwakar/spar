@@ -9,7 +9,7 @@
   "unitId": "unit-08",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Heap of size k or quickselect. Sorting is acceptable if you name the complexity.",
+  "tip": "Heap of size k or quickselect. Sorting is acceptable if you name the complexity.",
   "statement": "Given an integer array `nums` and an integer `k`, return the `k`th **largest** element in the array (1-indexed: 1 = largest).",
   "examples": [
     {

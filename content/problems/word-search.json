@@ -9,7 +9,7 @@
   "unitId": "unit-07",
   "kind": "stretch",
   "order": 6,
-  "microsoftNote": "Backtracking on a grid. Mark visited, unmark on return.",
+  "tip": "Backtracking on a grid. Mark visited, unmark on return.",
   "statement": "Given an `m x n` grid of characters `board` and a string `word`, return `true` if `word` exists in the grid. The word can be constructed from sequentially adjacent cells (4-dir). The same cell may not be used twice.",
   "examples": [
     {

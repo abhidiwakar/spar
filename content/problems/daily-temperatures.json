@@ -10,7 +10,7 @@
   "unitId": "unit-03",
   "kind": "stretch",
   "order": 5,
-  "microsoftNote": "Next greater element via a decreasing stack of indices.",
+  "tip": "Next greater element via a decreasing stack of indices.",
   "statement": "Given `temperatures` where `temperatures[i]` is the temperature on day `i`, return an array `answer` such that `answer[i]` is the number of days you have to wait after the `i`th day to get a warmer temperature. If there is no future day, `answer[i] == 0`.",
   "examples": [
     {

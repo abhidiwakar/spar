@@ -9,7 +9,7 @@
   "unitId": "unit-06",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Walk down from the root; split point is the LCA. p and q are values.",
+  "tip": "Walk down from the root; split point is the LCA. p and q are values.",
   "statement": "Given a BST `root` and two node values `p` and `q` that exist in the tree, return the value of their lowest common ancestor.\n\nThe LCA is the lowest node that has both `p` and `q` as descendants (a node can be a descendant of itself).",
   "examples": [
     {

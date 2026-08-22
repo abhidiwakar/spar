@@ -9,7 +9,7 @@
   "unitId": "unit-01",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "One-pass min-so-far. Interviewers watch whether you invent O(n^2) first and then cut it.",
+  "tip": "One-pass min-so-far. Interviewers watch whether you invent O(n^2) first and then cut it.",
   "statement": "You are given `prices` where `prices[i]` is the price of a stock on day `i`.\n\nYou want one buy and one later sell. Return the maximum profit. If you cannot profit, return `0`.",
   "examples": [
     {

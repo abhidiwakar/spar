@@ -12,11 +12,18 @@ dist
 dist-ssr
 *.local
 
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+
 # Editor
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
@@ -30,3 +37,7 @@ src-tauri/gen
 # SQLite
 *.db
 *.db-journal
+
+# Python
+__pycache__/
+*.py[cod]

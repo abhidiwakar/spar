@@ -10,7 +10,7 @@
   "unitId": "unit-08",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Minimum removals = n - maximum non-overlapping. Sort by end.",
+  "tip": "Minimum removals = n - maximum non-overlapping. Sort by end.",
   "statement": "Given an array of intervals `intervals` where `intervals[i] = [starti, endi]`, return the minimum number of intervals you need to remove to make the rest non-overlapping.\n\nTwo intervals overlap if they share any points except if they only touch at an endpoint: `[1,2]` and `[2,3]` do **not** overlap.",
   "examples": [
     {

@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Null handling. Don't crash on empty trees.",
+  "tip": "Null handling. Don't crash on empty trees.",
   "statement": "Given the roots of two binary trees `p` and `q`, write a function to check if they are the same (identical structure and values).\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

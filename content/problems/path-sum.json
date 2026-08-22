@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 5,
-  "microsoftNote": "Root-to-leaf, not any path. Microsoft asks path variants constantly.",
+  "tip": "Root-to-leaf, not any path. Path variants show up constantly.",
   "statement": "Return true if the tree has a **root-to-leaf** path such that the sum of node values equals `targetSum`.\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

@@ -9,7 +9,7 @@
   "unitId": "unit-09",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Grid DP. Combinatorics follow-up is C(m+n-2, m-1).",
+  "tip": "Grid DP. Combinatorics follow-up is C(m+n-2, m-1).",
   "statement": "A robot is on an `m x n` grid at top-left. It can only move down or right. How many unique paths to the bottom-right?",
   "examples": [
     {

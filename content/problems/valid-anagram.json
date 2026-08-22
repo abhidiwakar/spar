@@ -9,7 +9,7 @@
   "unitId": "unit-01",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Frequency maps. Unicode follow-up is a chance to talk constraints.",
+  "tip": "Frequency maps. Unicode follow-up is a chance to talk constraints.",
   "statement": "Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.\n\nAn anagram uses the same characters the same number of times.",
   "examples": [
     {

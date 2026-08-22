@@ -10,7 +10,7 @@
   "unitId": "unit-07",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Multi-source BFS. Minutes = max distance from any rotten orange.",
+  "tip": "Multi-source BFS. Minutes = max distance from any rotten orange.",
   "statement": "In a grid, `0` is empty, `1` is a fresh orange, `2` is rotten. Every minute, any fresh orange 4-directionally adjacent to a rotten one becomes rotten.\n\nReturn the minimum minutes until no fresh orange remains. If impossible, return `-1`.",
   "examples": [
     {

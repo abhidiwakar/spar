@@ -10,7 +10,7 @@
   "unitId": "unit-02",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Variable window. Microsoft likes this as a communication problem: when does the left pointer move?",
+  "tip": "Variable window. The key question is when the left pointer moves.",
   "statement": "Given a string `s`, find the length of the longest substring without repeating characters.",
   "examples": [
     {
@@ -28,7 +28,7 @@
     "s consists of English letters, digits, symbols and spaces."
   ],
   "followUp": "What if the alphabet is huge?",
-  "editorial": "Window [left, right]. Map char \u2192 last index. If s[right] was seen at or after left, jump left. Track max width.",
+  "editorial": "Window [left, right]. Map char → last index. If s[right] was seen at or after left, jump left. Track max width.",
   "mode": "function",
   "entry": {
     "python": "lengthOfLongestSubstring",

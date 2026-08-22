@@ -9,7 +9,7 @@
   "unitId": "unit-06",
   "kind": "core",
   "order": 5,
-  "microsoftNote": "Level order with alternating reverse. Frequently reported at Microsoft.",
+  "tip": "Level order with alternating reverse.",
   "statement": "Given the root of a binary tree, return the zigzag level order traversal of its nodes' values (i.e., from left to right, then right to left for the next level and alternate).",
   "examples": [
     {
@@ -22,7 +22,7 @@
     "-100 <= Node.val <= 100"
   ],
   "followUp": null,
-  "editorial": "BFS. Reverse every odd level (0-index even is L\u2192R).",
+  "editorial": "BFS. Reverse every odd level (0-index even is L→R).",
   "mode": "function",
   "entry": {
     "python": "zigzagLevelOrder",

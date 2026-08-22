@@ -9,7 +9,7 @@
   "unitId": "unit-08",
   "kind": "stretch",
   "order": 5,
-  "microsoftNote": "Min rooms = max overlap. Sort starts; min-heap of end times.",
+  "tip": "Min rooms = max overlap. Sort starts; min-heap of end times.",
   "statement": "Given an array of meeting time intervals `intervals` where `intervals[i] = [starti, endi]`, return the minimum number of conference rooms required.",
   "examples": [
     {

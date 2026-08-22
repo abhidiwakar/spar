@@ -10,7 +10,7 @@
   "unitId": "unit-07",
   "kind": "core",
   "order": 5,
-  "microsoftNote": "Multi-source BFS from every 0.",
+  "tip": "Multi-source BFS from every 0.",
   "statement": "Given an `m x n` binary matrix `mat`, return the distance of the nearest `0` for each cell. Adjacent cells are 4-directional, distance 1 each.",
   "examples": [
     {

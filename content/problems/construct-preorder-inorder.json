@@ -9,7 +9,7 @@
   "unitId": "unit-06",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Onsite favorite. Preorder gives the root; inorder splits left/right.",
+  "tip": "Onsite favorite. Preorder gives the root; inorder splits left/right.",
   "statement": "Given two integer arrays `preorder` and `inorder` where `preorder` is the preorder traversal of a binary tree and `inorder` is the inorder traversal of the same tree (distinct values), construct and return the binary tree.",
   "examples": [
     {
@@ -24,7 +24,7 @@
     "inorder is the inorder of the tree, preorder is the preorder of the tree."
   ],
   "followUp": "O(n) with an index map for inorder.",
-  "editorial": "Root = preorder[0]. Find it in inorder. Left size = index. Recurse on slices. Map value\u2192inorder index.",
+  "editorial": "Root = preorder[0]. Find it in inorder. Left size = index. Recurse on slices. Map value→inorder index.",
   "mode": "function",
   "entry": {
     "python": "buildTree",

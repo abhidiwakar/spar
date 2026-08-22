@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Height vs diameter \u2014 the return value to the parent is height, the answer is a side effect.",
+  "tip": "Height vs diameter — the return value to the parent is height, the answer is a side effect.",
   "statement": "The diameter is the length of the longest path between any two nodes, measured in **edges**. It may or may not pass through the root.\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

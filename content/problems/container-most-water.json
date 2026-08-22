@@ -10,7 +10,7 @@
   "unitId": "unit-02",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Classic two-pointer greedy. Prove why you move the shorter side.",
+  "tip": "Classic two-pointer greedy. Prove why you move the shorter side.",
   "statement": "You are given `height` of length `n`. Two indices `i < j` form a container of area `min(height[i], height[j]) * (j - i)`.\n\nReturn the maximum area of water the container can store.",
   "examples": [
     {

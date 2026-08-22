@@ -9,7 +9,7 @@
   "unitId": "unit-07",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Cycle detection. Kahn or DFS colors.",
+  "tip": "Cycle detection. Kahn or DFS colors.",
   "statement": "There are `numCourses` labeled `0` to `numCourses - 1`. `prerequisites[i] = [ai, bi]` means you must take `bi` before `ai`.\n\nReturn `true` if you can finish all courses (the graph is a DAG).",
   "examples": [
     {

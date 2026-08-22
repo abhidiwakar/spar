@@ -9,7 +9,7 @@
   "unitId": "unit-10",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Node with children map and is_word flag.",
+  "tip": "Node with children map and is_word flag.",
   "statement": "Implement a trie with `insert(word)`, `search(word)`, and `startsWith(prefix)`.\n\n`search` returns true only for a full word. `startsWith` is a prefix query.",
   "examples": [
     {

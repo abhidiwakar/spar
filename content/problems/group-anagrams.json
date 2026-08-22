@@ -9,7 +9,7 @@
   "unitId": "unit-01",
   "kind": "stretch",
   "order": 5,
-  "microsoftNote": "Map from a canonical key (sorted letters or 26-count tuple) to a list of words.",
+  "tip": "Map from a canonical key (sorted letters or 26-count tuple) to a list of words.",
   "statement": "Given an array of strings `strs`, group the anagrams together. Return the groups in any order.",
   "examples": [
     {

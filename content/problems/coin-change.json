@@ -8,7 +8,7 @@
   "unitId": "unit-09",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Unbounded knapsack. Microsoft textbook DP.",
+  "tip": "Unbounded knapsack. Textbook DP.",
   "statement": "You are given coins of different denominations and a total amount of money `amount`. Return the fewest number of coins that you need to make up that amount. If it is impossible, return `-1`. You may use each coin as many times as you want.",
   "examples": [
     {

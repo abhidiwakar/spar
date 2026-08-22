@@ -9,7 +9,7 @@
   "unitId": "unit-04",
   "kind": "stretch",
   "order": 5,
-  "microsoftNote": "Binary search on the answer (speed k).",
+  "tip": "Binary search on the answer (speed k).",
   "statement": "Koko has `piles[i]` bananas in pile i. Guards return in `h` hours. She eats at speed `k` bananas/hour, one pile at a time, rounding hours **up**.\n\nReturn the minimum integer `k` such that she finishes in `h` hours.",
   "examples": [
     {

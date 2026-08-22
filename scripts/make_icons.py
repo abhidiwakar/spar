@@ -2,9 +2,10 @@ import struct
 import zlib
 from pathlib import Path
 
-ROOT = Path("/Users/abhishek/Projects/LearnDSA/src-tauri/icons")
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent / "src-tauri" / "icons"
 ROOT.mkdir(parents=True, exist_ok=True)
-PUBLIC = Path("/Users/abhishek/Projects/LearnDSA/public")
+PUBLIC = HERE.parent / "public"
 PUBLIC.mkdir(exist_ok=True)
 
 

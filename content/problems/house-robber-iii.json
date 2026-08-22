@@ -9,7 +9,7 @@
   "unitId": "unit-09",
   "kind": "stretch",
   "order": 7,
-  "microsoftNote": "Tree DP: return (rob_this, skip_this) from each node.",
+  "tip": "Tree DP: return (rob_this, skip_this) from each node.",
   "statement": "Houses form a binary tree. If you rob a node you cannot rob its children. Return the maximum amount of money you can rob.",
   "examples": [
     {

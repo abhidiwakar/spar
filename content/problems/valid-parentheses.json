@@ -9,7 +9,7 @@
   "unitId": "unit-03",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Stack matching. Empty stack at the end, never pop empty.",
+  "tip": "Stack matching. Empty stack at the end, never pop empty.",
   "statement": "Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.\n\nOpen brackets must be closed by the same type, in the correct order. Every close has a corresponding open.",
   "examples": [
     {

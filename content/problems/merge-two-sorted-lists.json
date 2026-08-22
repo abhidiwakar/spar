@@ -8,7 +8,7 @@
   "unitId": "unit-03",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Dummy head. Do not drop the remainder of the longer list.",
+  "tip": "Dummy head. Do not drop the remainder of the longer list.",
   "statement": "Merge two sorted linked lists and return it as a sorted list. The lists should be spliced together, not copied as new nodes if you can reuse them.",
   "examples": [
     {

@@ -10,7 +10,7 @@
   "unitId": "unit-06",
   "kind": "stretch",
   "order": 6,
-  "microsoftNote": "The Hard tree they actually ask. Gain returned to parent vs path through node.",
+  "tip": "The Hard tree they actually ask. Gain returned to parent vs path through node.",
   "statement": "A **path** is a sequence of nodes where each pair of adjacent nodes has an edge. A node appears at most once. The path does **not** need to pass through the root.\n\nThe **path sum** is the sum of the node values. Return the maximum path sum of any non-empty path.",
   "examples": [
     {

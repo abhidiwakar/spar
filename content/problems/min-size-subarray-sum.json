@@ -9,7 +9,7 @@
   "unitId": "unit-02",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "Positive integers make a shrinking window valid. Say that out loud.",
+  "tip": "Positive integers make a shrinking window valid. Say that out loud.",
   "statement": "Given an array of **positive** integers `nums` and a positive integer `target`, return the **minimal length** of a subarray whose sum is greater than or equal to `target`. If none exists, return `0`.",
   "examples": [
     {

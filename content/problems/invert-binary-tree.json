@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "The joke question that still shows up as a warmup.",
+  "tip": "The joke question that still shows up as a warmup.",
   "statement": "Invert a binary tree (mirror it) and return its root.\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

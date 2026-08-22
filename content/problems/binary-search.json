@@ -9,7 +9,7 @@
   "unitId": "unit-04",
   "kind": "core",
   "order": 1,
-  "microsoftNote": "Write the loop bounds without an off-by-one. Say the invariant.",
+  "tip": "Write the loop bounds without an off-by-one. Say the invariant.",
   "statement": "Given a sorted array of integers `nums` (ascending, distinct) and an integer `target`, return the index of `target` or `-1` if it is not present. You must write an algorithm with O(log n) runtime.",
   "examples": [
     {
@@ -24,7 +24,7 @@
     "nums is sorted in ascending order."
   ],
   "followUp": null,
-  "editorial": "lo, hi inclusive or exclusive \u2014 pick one and stick to it. Mid overflow: lo + (hi-lo)//2.",
+  "editorial": "lo, hi inclusive or exclusive — pick one and stick to it. Mid overflow: lo + (hi-lo)//2.",
   "mode": "function",
   "entry": {
     "python": "search",

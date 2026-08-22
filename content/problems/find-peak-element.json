@@ -9,8 +9,8 @@
   "unitId": "unit-04",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Binary search on slope. nums[-1] and nums[n] are -inf.",
-  "statement": "A peak is an element strictly greater than its neighbors. Given `nums`, return **any** peak index. `nums[-1]` and `nums[n]` are considered `-\u221e`. O(log n).",
+  "tip": "Binary search on slope. nums[-1] and nums[n] are -inf.",
+  "statement": "A peak is an element strictly greater than its neighbors. Given `nums`, return **any** peak index. `nums[-1]` and `nums[n]` are considered `-∞`. O(log n).",
   "examples": [
     {
       "input": "nums = [1,2,3,1]",

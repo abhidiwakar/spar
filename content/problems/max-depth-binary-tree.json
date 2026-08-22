@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 1,
-  "microsoftNote": "Tree height is muscle memory for Microsoft.",
+  "tip": "Tree height is muscle memory.",
   "statement": "Return the number of nodes along the longest path from the root down to the farthest leaf.\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

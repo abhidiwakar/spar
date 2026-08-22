@@ -11,7 +11,7 @@
   "unitId": "unit-07",
   "kind": "core",
   "order": 1,
-  "microsoftNote": "Grid DFS/BFS. Cloud-infra teams ask this constantly.",
+  "tip": "Grid DFS/BFS. Cloud-infra teams ask this constantly.",
   "statement": "Given an `m x n` 2D binary grid `grid` which represents a map of `'1'`s (land) and `'0'`s (water), return the number of islands.\n\nAn island is surrounded by water and is formed by connecting adjacent lands **horizontally or vertically**.",
   "examples": [
     {

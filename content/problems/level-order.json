@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 6,
-  "microsoftNote": "Iterative BFS. They like seeing a queue, not only recursion.",
+  "tip": "Iterative BFS. They like seeing a queue, not only recursion.",
   "statement": "Return the level-order traversal of node values (from left to right, level by level).\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {

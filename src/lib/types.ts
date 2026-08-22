@@ -19,7 +19,7 @@ export type Problem = {
   unitId: string;
   kind: ProblemKind;
   order: number;
-  microsoftNote: string;
+  tip: string;
   statement: string;
   examples: { input: string; output: string; explanation?: string }[];
   constraints: string[];

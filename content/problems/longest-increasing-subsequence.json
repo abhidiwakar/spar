@@ -9,7 +9,7 @@
   "unitId": "unit-09",
   "kind": "core",
   "order": 5,
-  "microsoftNote": "O(n^2) DP is acceptable; mention patience sorting O(n log n).",
+  "tip": "O(n^2) DP is acceptable; mention patience sorting O(n log n).",
   "statement": "Given an integer array `nums`, return the length of the longest strictly increasing subsequence.",
   "examples": [
     {

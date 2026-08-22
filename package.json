@@ -2,7 +2,16 @@
   "name": "learndsa",
   "private": true,
   "version": "0.1.0",
-  "description": "Microsoft interview gym — LeetCode-style DSA practice",
+  "description": "Local DSA gym — LeetCode-style practice",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhidiwakar/spar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abhidiwakar/spar/issues"
+  },
+  "homepage": "https://github.com/abhidiwakar/spar#readme",
   "type": "module",
   "scripts": {
     "dev": "vite",

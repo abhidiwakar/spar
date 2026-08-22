@@ -9,7 +9,7 @@
   "unitId": "unit-01",
   "kind": "core",
   "order": 2,
-  "microsoftNote": "Warm-up used to see if you reach for a set without being asked.",
+  "tip": "Warm-up used to see if you reach for a set without being asked.",
   "statement": "Given an integer array `nums`, return `true` if any value appears **at least twice**, and `false` if every element is distinct.",
   "examples": [
     {

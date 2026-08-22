@@ -10,7 +10,7 @@
   "unitId": "unit-08",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Sort by start, then scan and merge when current.start <= last.end.",
+  "tip": "Sort by start, then scan and merge when current.start <= last.end.",
   "statement": "Given an array of `intervals` where `intervals[i] = [starti, endi]`, merge all overlapping intervals and return an array of the non-overlapping intervals that cover all the intervals in the input.",
   "examples": [
     {

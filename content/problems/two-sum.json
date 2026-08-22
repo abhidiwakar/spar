@@ -9,7 +9,7 @@
   "unitId": "unit-01",
   "kind": "core",
   "order": 1,
-  "microsoftNote": "OA staple. One-pass hash map is the expected story, not the nested loop.",
+  "tip": "Classic starter. One-pass hash map is the expected story, not the nested loop.",
   "statement": "Given an array of integers `nums` and an integer `target`, return **the indices** of the two numbers that add up to `target`.\n\nYou may assume each input has **exactly one** solution, and you may not use the same element twice. Return the indices in any order.",
   "examples": [
     {
@@ -29,7 +29,7 @@
     "Exactly one valid answer exists."
   ],
   "followUp": "Can you do it in one pass?",
-  "editorial": "Walk the array once. For each value x, look up target - x in a map of value \u2192 index. If it exists, return those indices. Otherwise store x.",
+  "editorial": "Walk the array once. For each value x, look up target - x in a map of value → index. If it exists, return those indices. Otherwise store x.",
   "mode": "function",
   "entry": {
     "python": "twoSum",

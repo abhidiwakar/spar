@@ -9,7 +9,7 @@
   "unitId": "unit-06",
   "kind": "core",
   "order": 3,
-  "microsoftNote": "Level-order; last node on each level.",
+  "tip": "Level-order; last node on each level.",
   "statement": "Given the root of a binary tree, imagine yourself standing on the **right side** of it. Return the values of the nodes you can see ordered from top to bottom.",
   "examples": [
     {

@@ -9,7 +9,7 @@
   "unitId": "unit-04",
   "kind": "core",
   "order": 4,
-  "microsoftNote": "API-style binary search. Minimize calls to isBadVersion.",
+  "tip": "API-style binary search. Minimize calls to isBadVersion.",
   "statement": "You are a product manager. Versions `[1, n]` go bad and stay bad. `isBadVersion(version)` is provided.\n\nImplement `firstBadVersion(n)` to find the first bad version. Minimize API calls.",
   "examples": [
     {
