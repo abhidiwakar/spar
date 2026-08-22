@@ -1,6 +1,6 @@
 [package]
 name = "learndsa"
-version = "0.1.1"
+version = "0.1.2"
 description = "Local DSA gym"
 authors = ["Abhishek Diwakar"]
 license = "MIT"
