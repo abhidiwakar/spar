@@ -15,7 +15,28 @@ Add them under **Settings → Secrets and variables → Actions**. Never commit 
 openssl base64 -A -in /path/to/certificate.p12 -out certificate-base64.txt
 ```
 
+If you built the `.p12` with OpenSSL (not Keychain Access), macOS CI will often fail with `MAC verification failed` unless you use legacy algorithms:
+
+```bash
+openssl pkcs12 -export -legacy \
+  -inkey spar-developer.key \
+  -in developer.pem \
+  -out spar-developer.p12 \
+  -name "Developer ID Application"
+```
+
+Then re-run the `openssl base64 -A` line and update `APPLE_CERTIFICATE` and `APPLE_CERTIFICATE_PASSWORD`.
+
 5. `security find-identity -v -p codesigning` — you should see `Developer ID Application: Your Name (TEAMID)`.
+
+## `MAC verification failed` on CI
+
+That error is almost always a bad `.p12` or password, not the workflow.
+
+- Re-export with `-legacy` as above, or export from Keychain Access on a Mac.
+- `APPLE_CERTIFICATE` must be the **one-line** base64 of the `.p12`, not the `.cer`, `.key`, or `.certSigningRequest`.
+- `APPLE_CERTIFICATE_PASSWORD` is the `.p12` export password, not the Apple app-specific password (`APPLE_PASSWORD`).
+- No quotes, spaces, or extra newlines in either secret. After you change them, re-run the failed job.
 
 ## App-specific password
 

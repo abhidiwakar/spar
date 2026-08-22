@@ -58,6 +58,7 @@ pub fn is_safe_problem_id(id: &str) -> bool {
             .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
 }
 
+#[cfg(test)]
 pub fn load_problem(content_dir: &Path, id: &str) -> Result<CatalogProblem, String> {
     load_from_fs(Some(content_dir), id)
 }
@@ -69,7 +70,7 @@ fn load_from_fs(content_dir: Option<&Path>, id: &str) -> Result<CatalogProblem, 
     let dir = content_dir.ok_or_else(|| "Unknown problem.".to_string())?;
     let path = dir.join("problems").join(format!("{id}.json"));
     let raw = std::fs::read_to_string(&path).map_err(|_| "Unknown problem.".to_string())?;
-    parse_problem(&raw)
+    parse_problem(&raw, id)
 }
 
 fn load_embedded(id: &str) -> Result<CatalogProblem, String> {
@@ -82,11 +83,16 @@ fn load_embedded(id: &str) -> Result<CatalogProblem, String> {
     let raw = file
         .contents_utf8()
         .ok_or_else(|| "Problem catalog is unreadable.".to_string())?;
-    parse_problem(raw)
+    parse_problem(raw, id)
 }
 
-fn parse_problem(raw: &str) -> Result<CatalogProblem, String> {
-    serde_json::from_str(raw).map_err(|e| format!("Problem catalog is unreadable: {e}"))
+fn parse_problem(raw: &str, expected_id: &str) -> Result<CatalogProblem, String> {
+    let problem: CatalogProblem =
+        serde_json::from_str(raw).map_err(|e| format!("Problem catalog is unreadable: {e}"))?;
+    if problem.id != expected_id {
+        return Err("Unknown problem.".into());
+    }
+    Ok(problem)
 }
 
 #[cfg(test)]
@@ -110,6 +116,20 @@ mod tests {
         assert!(!p.tests.visible.is_empty());
         assert!(!p.tests.hidden.is_empty());
         assert!(p.editorial.as_ref().is_some_and(|e| !e.is_empty()));
+    }
+
+    #[test]
+    fn rejects_mismatched_catalog_id() {
+        let raw = r#"{
+            "id": "other",
+            "difficulty": "easy",
+            "mode": "function",
+            "entry": { "python": "f", "javascript": "f" },
+            "paramNames": [],
+            "helpers": [],
+            "tests": { "visible": [] }
+        }"#;
+        assert!(parse_problem(raw, "two-sum").is_err());
     }
 
     #[test]

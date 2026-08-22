@@ -134,15 +134,34 @@ jobs:
           echo "APPLE_SIGNING_IDENTITY=$CERT_ID" >> "$GITHUB_ENV"
           echo "Imported $CERT_ID"
 
+      - name: Prepare Apple notarization credentials
+        if: runner.os == 'macOS'
+        env:
+          RAW_APPLE_ID: ${{ vars.APPLE_ID }}
+          RAW_APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          RAW_APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+        run: |
+          id=$(printf '%s' "$RAW_APPLE_ID" | tr -d '\r\n[:space:]')
+          team=$(printf '%s' "$RAW_APPLE_TEAM_ID" | tr -d '\r\n[:space:]')
+          pass=$(printf '%s' "$RAW_APPLE_PASSWORD" | tr -d '\r\n')
+          if [ -z "$id" ] || [ -z "$team" ] || [ -z "$pass" ]; then
+            echo "APPLE_ID, APPLE_TEAM_ID, or APPLE_PASSWORD is empty in GitHub Actions."
+            exit 1
+          fi
+          {
+            echo "APPLE_ID=$id"
+            echo "APPLE_TEAM_ID=$team"
+            echo "APPLE_PASSWORD<<PW"
+            printf '%s\n' "$pass"
+            echo "PW"
+          } >> "$GITHUB_ENV"
+          echo "APPLE_ID length=${#id} team_id length=${#team} password length=${#pass}"
+
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPLE_CERTIFICATE: ${{ runner.os == 'macOS' && secrets.APPLE_CERTIFICATE || '' }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ runner.os == 'macOS' && secrets.APPLE_CERTIFICATE_PASSWORD || '' }}
-          APPLE_SIGNING_IDENTITY: ${{ env.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID: ${{ runner.os == 'macOS' && (vars.APPLE_ID || secrets.APPLE_ID) || '' }}
-          APPLE_PASSWORD: ${{ runner.os == 'macOS' && secrets.APPLE_PASSWORD || '' }}
-          APPLE_TEAM_ID: ${{ runner.os == 'macOS' && (vars.APPLE_TEAM_ID || secrets.APPLE_TEAM_ID) || '' }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         with:
           tagName: v__VERSION__
           releaseName: Spar v__VERSION__
