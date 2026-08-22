@@ -1,6 +1,6 @@
 # macOS signing and notarization
 
-CI signs and notarizes the Apple Silicon `.dmg` with a **Developer ID Application** certificate. Without these GitHub secrets the macOS package job fails.
+CI signs and notarizes the Apple Silicon `.dmg` with a **Developer ID Application** certificate. Without these GitHub values the macOS package job fails.
 
 Add them under **Settings → Secrets and variables → Actions**. Never commit the `.p12` or `.p8`.
 
@@ -23,14 +23,21 @@ At [appleid.apple.com](https://appleid.apple.com) → Sign-In and Security → A
 
 Your Team ID is on the [membership page](https://developer.apple.com/account#MembershipDetailsCard).
 
-## GitHub secrets
+## GitHub Actions
 
-| Secret | Value |
+**Secrets**
+
+| Name | Value |
 | --- | --- |
 | `APPLE_CERTIFICATE` | Entire contents of `certificate-base64.txt` (one line) |
 | `APPLE_CERTIFICATE_PASSWORD` | Password you set when exporting the `.p12` |
-| `APPLE_ID` | Apple ID email |
 | `APPLE_PASSWORD` | App-specific password |
+
+**Variables**
+
+| Name | Value |
+| --- | --- |
+| `APPLE_ID` | Developer Apple ID email |
 | `APPLE_TEAM_ID` | 10-character team ID |
 
 The signing identity is read from the imported certificate. Do not use an Apple Development cert — Gatekeeper will still reject the app.
