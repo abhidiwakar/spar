@@ -18,6 +18,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "pack:msix": "pwsh -File scripts/pack_msix.ps1",
     "gen:content": "python3 scripts/gen_problems.py"
   },
   "dependencies": {

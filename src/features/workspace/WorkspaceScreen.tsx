@@ -53,6 +53,8 @@ export function WorkspaceScreen() {
   const noteTimer = useRef<number | null>(null);
   const codeRef = useRef("");
   const noteRef = useRef("");
+  const baselineRef = useRef("");
+  const timerOnRef = useRef(false);
   const [editorial, setEditorial] = useState("");
   const [hintSaving, setHintSaving] = useState(false);
 
@@ -67,7 +69,10 @@ export function WorkspaceScreen() {
   useEffect(() => {
     if (!problem) return;
     const d = progress?.drafts.find((x) => x.problemId === problem.id && x.language === language);
-    setCode(d?.code || problem.starter[language]);
+    const initial = d?.code || problem.starter[language];
+    baselineRef.current = initial;
+    setCode(initial);
+    setTimerOn(false);
     setResult(null);
     setActiveCase(0);
     setCustomCases(problem.tests.visible.map((t) => ({ ...t })));
@@ -90,6 +95,10 @@ export function WorkspaceScreen() {
   useEffect(() => {
     codeRef.current = code;
   }, [code]);
+
+  useEffect(() => {
+    timerOnRef.current = timerOn;
+  }, [timerOn]);
 
   useEffect(() => {
     noteRef.current = note;
@@ -136,12 +145,16 @@ export function WorkspaceScreen() {
       : "Add an OpenAI API key in Settings to review your solution.";
 
   useEffect(() => {
-    if (!progress?.settings.timerEnabled) {
-      setTimerOn(false);
-      return;
-    }
+    if (!progress?.settings.timerEnabled) setTimerOn(false);
+  }, [progress?.settings.timerEnabled]);
+
+  function startTimerOnEdit(next: string) {
+    if (!progress?.settings.timerEnabled || timerOnRef.current) return;
+    if (next === baselineRef.current) return;
+    started.current = Date.now();
+    setElapsed(0);
     setTimerOn(true);
-  }, [problemId, progress?.settings.timerEnabled]);
+  }
 
   useEffect(() => {
     if (!timerOn) return;
@@ -625,6 +638,7 @@ export function WorkspaceScreen() {
                   const next = v ?? "";
                   setCode(next);
                   persistDraft(next);
+                  startTimerOnEdit(next);
                 }}
                 options={{
                   minimap: { enabled: false },

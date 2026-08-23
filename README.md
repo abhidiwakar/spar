@@ -32,7 +32,7 @@ If the app cannot find `python3` or `node`, it opens setup so you can paste an a
 
 Pushes to `main` run tests first. If they pass, the patch version is bumped and installers are published on [Releases](https://github.com/abhidiwakar/spar/releases): a signed, notarized Apple Silicon `.dmg` and Windows `.exe` / `.msi`. To cut `0.2.0` instead of `0.1.x`, set that version in `src-tauri/tauri.conf.json` before you push. Pull requests run tests only.
 
-macOS signing needs the secrets in [docs/macos-signing.md](docs/macos-signing.md). Windows SmartScreen may still warn on the unsigned installer.
+The Microsoft Store listing is an **MSIX** upload (Microsoft signs it). See [docs/msix-store.md](docs/msix-store.md). macOS signing needs the secrets in [docs/macos-signing.md](docs/macos-signing.md). Windows SmartScreen may still warn on the GitHub `.exe` / `.msi`.
 
 ## Tests
 

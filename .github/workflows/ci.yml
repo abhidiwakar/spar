@@ -168,7 +168,55 @@ jobs:
           releaseBody: |
             macOS Apple Silicon (`.dmg`, signed and notarized) and Windows (`.exe` / `.msi`).
 
-            Windows SmartScreen may warn on the unsigned installer.
+            The Microsoft Store upload is an unsigned `.msix` (see docs/msix-store.md).
+            Windows SmartScreen may warn on the GitHub `.exe` / `.msi`.
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+      - name: Ensure Windows SDK (makeappx)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $kits = "${env:ProgramFiles(x86)}\Windows Kits\10\bin"
+          $found = Get-ChildItem $kits -Recurse -Filter makeappx.exe -ErrorAction SilentlyContinue |
+            Where-Object { $_.Directory.Name -eq "x64" } |
+            Select-Object -First 1
+          if ($found) {
+            Write-Host "Found $($found.FullName)"
+            exit 0
+          }
+          Write-Host "Installing Windows SDK so makeappx.exe is available"
+          winget install --id Microsoft.WindowsSDK.10.0.26100 --exact --accept-package-agreements --accept-source-agreements
+          $found = Get-ChildItem $kits -Recurse -Filter makeappx.exe -ErrorAction SilentlyContinue |
+            Where-Object { $_.Directory.Name -eq "x64" } |
+            Select-Object -First 1
+          if (-not $found) { throw "makeappx.exe still missing after Windows SDK install." }
+          Write-Host "Found $($found.FullName)"
+
+      - name: Pack unsigned MSIX
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          ./scripts/pack_msix.ps1
+          $built = Get-ChildItem src-tauri/target/release/bundle/msix/*.msix -ErrorAction SilentlyContinue
+          if (-not $built) { throw "pack_msix.ps1 finished but no .msix was written." }
+          Get-ChildItem src-tauri/target/release/bundle/msix/*.msix | ForEach-Object { $_.FullName }
+
+      - name: Upload MSIX artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: spar-msix
+          path: src-tauri/target/release/bundle/msix/*.msix
+          if-no-files-found: error
+
+      - name: Attach MSIX to release
+        if: runner.os == 'Windows'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version.outputs.version }}
+          files: src-tauri/target/release/bundle/msix/*.msix
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
