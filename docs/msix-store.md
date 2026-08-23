@@ -16,12 +16,13 @@ This is a different product type from the EXE/MSI listing. Create a new **MSIX**
 ```json
 {
   "identityName": "paste Package/Identity/Name here",
+  "displayName": "exact reserved name from Partner Center",
   "publisher": "CN=paste-publisher-id-here",
-  "publisherDisplayName": "Abhishek Diwakar"
+  "publisherDisplayName": "Diwakar IT Services"
 }
 ```
 
-`publisher` must include the `CN=` prefix and match Partner Center exactly. A mismatch fails upload.
+`displayName` must match a **reserved** app name exactly (including spaces). `Package/Properties/DisplayName` is not the Start-menu nickname. `publisher` must include the `CN=` prefix.
 
 Identity values live in `msix/identity.json` (they are public in every installed package). Pushes to `main` pack an unsigned `.msix` on `windows-latest` and attach it to the GitHub Release.
 
@@ -50,7 +51,10 @@ On `main`, CI does this after the Tauri Windows build and uploads `spar-msix` as
 
    Spar is a Win32 desktop app (Tauri). Run and Submit execute the user’s Python or Node.js on this machine. Progress is a local SQLite file. Full trust is required to launch those runtimes and write app data. There is no in-process sandbox.
 
-5. Submit.
+5. Under device families, leave **Windows 10/11 Desktop** checked. Uncheck Xbox, HoloLens, Surface Hub, Team, and IoT unless you upload packages for those.
+6. Submit.
+
+If validation says the display name is not reserved, `displayName` in `msix/identity.json` does not match a name on **Manage app names**. Use that exact string, or reserve `Spar` there if you want the package to keep saying Spar.
 
 ## What you do not do
 

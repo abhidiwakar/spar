@@ -4,6 +4,7 @@
 param(
     [string]$Publisher = $env:MSIX_PUBLISHER,
     [string]$IdentityName = $env:MSIX_IDENTITY_NAME,
+    [string]$DisplayName = $env:MSIX_DISPLAY_NAME,
     [string]$PublisherDisplayName = $env:MSIX_PUBLISHER_DISPLAY_NAME,
     [string]$Arch = "x64",
     [switch]$SkipIfUnconfigured
@@ -25,12 +26,15 @@ if (-not (Test-Path $IdentityPath)) {
 $identity = Get-Content $IdentityPath -Raw | ConvertFrom-Json
 if (-not $IdentityName) { $IdentityName = $identity.identityName }
 if (-not $Publisher) { $Publisher = $identity.publisher }
+if (-not $DisplayName) { $DisplayName = $identity.displayName }
 if (-not $PublisherDisplayName) { $PublisherDisplayName = $identity.publisherDisplayName }
 $IdentityName = "$IdentityName".Trim()
+$DisplayName = "$DisplayName".Trim()
 $Publisher = "$Publisher".Trim()
 $PublisherDisplayName = "$PublisherDisplayName".Trim()
 
 if (-not $IdentityName) { throw "Set identityName in msix/identity.json or MSIX_IDENTITY_NAME." }
+if (-not $DisplayName) { throw "Set displayName in msix/identity.json to the reserved Store name." }
 if (-not $PublisherDisplayName) { throw "Set publisherDisplayName in msix/identity.json." }
 if (-not $Publisher -or $Publisher -notmatch '^CN=') {
     $hint = @"
@@ -114,6 +118,7 @@ foreach ($asset in $assets) {
 $manifest = Get-Content $TemplatePath -Raw
 $manifest = $manifest.
     Replace("__IDENTITY_NAME__", $IdentityName).
+    Replace("__DISPLAY_NAME__", $DisplayName).
     Replace("__PUBLISHER__", $Publisher).
     Replace("__PUBLISHER_DISPLAY_NAME__", $PublisherDisplayName).
     Replace("__VERSION__", $msixVersion).

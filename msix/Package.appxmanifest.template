@@ -10,7 +10,7 @@
     Version="__VERSION__"
     ProcessorArchitecture="__ARCH__" />
   <Properties>
-    <DisplayName>Spar</DisplayName>
+    <DisplayName>__DISPLAY_NAME__</DisplayName>
     <PublisherDisplayName>__PUBLISHER_DISPLAY_NAME__</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
     <Description>Local DSA gym for interview practice.</Description>
