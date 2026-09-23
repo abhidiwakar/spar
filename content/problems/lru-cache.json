@@ -25,19 +25,22 @@
     "At most 2 * 10^5 calls to get and put."
   ],
   "followUp": null,
-  "editorial": "Map key → node. Dummy head/tail. Move to head on get/put. Evict tail.prev.",
+  "editorial": "Map key \u2192 node. Dummy head/tail. Move to head on get/put. Evict tail.prev.",
   "mode": "class",
   "entry": {
     "python": "LRUCache",
-    "javascript": "LRUCache"
+    "javascript": "LRUCache",
+    "cpp": "LRUCache"
   },
   "paramNames": [],
   "helpers": [
     "json"
   ],
+  "cppTypes": null,
   "starter": {
     "python": "class LRUCache:\n    def __init__(self, capacity: int):\n        pass\n\n    def get(self, key: int) -> int:\n        pass\n\n    def put(self, key: int, value: int) -> None:\n        pass\n",
-    "javascript": "var LRUCache = function(capacity) {\n    \n};\n\n/** \n * @param {number} key\n * @return {number}\n */\nLRUCache.prototype.get = function(key) {\n    \n};\n\n/** \n * @param {number} key \n * @param {number} value\n * @return {void}\n */\nLRUCache.prototype.put = function(key, value) {\n    \n};\n"
+    "javascript": "var LRUCache = function(capacity) {\n    \n};\n\n/** \n * @param {number} key\n * @return {number}\n */\nLRUCache.prototype.get = function(key) {\n    \n};\n\n/** \n * @param {number} key \n * @param {number} value\n * @return {void}\n */\nLRUCache.prototype.put = function(key, value) {\n    \n};\n",
+    "cpp": "class LRUCache {\npublic:\n    LRUCache(int capacity) {\n        \n    }\n    \n    int get(int key) {\n        \n    }\n    \n    void put(int key, int value) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

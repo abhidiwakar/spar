@@ -30,7 +30,8 @@
   "mode": "function",
   "entry": {
     "python": "updateMatrix",
-    "javascript": "updateMatrix"
+    "javascript": "updateMatrix",
+    "cpp": "updateMatrix"
   },
   "paramNames": [
     "mat"
@@ -39,9 +40,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "vector<vector<int>>",
+    "params": [
+      "vector<vector<int>>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def updateMatrix(self, mat: list[list[int]]) -> list[list[int]]:\n        pass\n",
-    "javascript": "/**\n * @param {number[][]} mat\n * @return {number[][]}\n */\nvar updateMatrix = function(mat) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[][]} mat\n * @return {number[][]}\n */\nvar updateMatrix = function(mat) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

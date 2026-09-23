@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "coinChange",
-    "javascript": "coinChange"
+    "javascript": "coinChange",
+    "cpp": "coinChange"
   },
   "paramNames": [
     "coins",
@@ -37,9 +38,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def coinChange(self, coins: list[int], amount: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} coins\n * @param {number} amount\n * @return {number}\n */\nvar coinChange = function(coins, amount) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} coins\n * @param {number} amount\n * @return {number}\n */\nvar coinChange = function(coins, amount) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int coinChange(vector<int>& coins, int amount) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

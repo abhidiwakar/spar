@@ -25,6 +25,40 @@ def js_fn(name: str, params: list[tuple[str, str]], ret: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def py_to_cpp_type(t: str, *, param: bool = False) -> str:
+    mapping = {
+        "int": "int",
+        "bool": "bool",
+        "str": "string",
+        "None": "void",
+        "list[int]": "vector<int>",
+        "list[str]": "vector<string>",
+        "list[list[int]]": "vector<vector<int>>",
+        "list[list[str]]": "vector<vector<char>>",
+        "list[Optional[ListNode]]": "vector<ListNode*>",
+        "Optional[ListNode]": "ListNode*",
+        "Optional[TreeNode]": "TreeNode*",
+        "Optional[Node]": "Node*",
+    }
+    if t not in mapping:
+        raise KeyError(f"No C++ mapping for Python type {t!r}")
+    cpp = mapping[t]
+    if param and cpp.startswith("vector"):
+        return f"{cpp}&"
+    if param and cpp == "string":
+        return "string"
+    return cpp
+
+
+def cpp_fn(name: str, params: list[tuple[str, str]], ret: str) -> str:
+    cpp_params = [(n, py_to_cpp_type(t, param=True)) for n, t in params]
+    cpp_ret = py_to_cpp_type(ret, param=False)
+    args = ", ".join(f"{t} {n}" for n, t in cpp_params)
+    return (
+        f"class Solution {{\npublic:\n    {cpp_ret} {name}({args}) {{\n        \n    }}\n}};\n"
+    )
+
+
 def dump(p: dict) -> None:
     path = ROOT / f"{p['id']}.json"
     path.write_text(json.dumps(p, indent=2) + "\n")
@@ -57,7 +91,14 @@ def P(
     mode: str = "function",
     starter_py: str | None = None,
     starter_js: str | None = None,
+    starter_cpp: str | None = None,
 ) -> None:
+    cpp_types = None
+    if mode == "function":
+        cpp_types = {
+            "return": py_to_cpp_type(py_ret, param=False),
+            "params": [py_to_cpp_type(t, param=True) for _, t in py_params],
+        }
     dump(
         {
             "id": id,
@@ -74,12 +115,15 @@ def P(
             "followUp": followUp,
             "editorial": editorial,
             "mode": mode,
-            "entry": {"python": entry, "javascript": entry},
+            "entry": {"python": entry, "javascript": entry, "cpp": entry},
             "paramNames": paramNames,
             "helpers": helpers,
+            "cppTypes": cpp_types,
             "starter": {
                 "python": starter_py or py_fn(entry, py_params, py_ret),
                 "javascript": starter_js or js_fn(entry, js_params, js_ret),
+                "cpp": starter_cpp
+                or (cpp_fn(entry, py_params, py_ret) if mode == "function" else ""),
             },
             "tests": {"visible": visible, "hidden": hidden},
         }
@@ -1494,6 +1538,7 @@ def write_unit10() -> None:
         mode="class",
         starter_py="class LRUCache:\n    def __init__(self, capacity: int):\n        pass\n\n    def get(self, key: int) -> int:\n        pass\n\n    def put(self, key: int, value: int) -> None:\n        pass\n",
         starter_js="var LRUCache = function(capacity) {\n    \n};\n\n/** \n * @param {number} key\n * @return {number}\n */\nLRUCache.prototype.get = function(key) {\n    \n};\n\n/** \n * @param {number} key \n * @param {number} value\n * @return {void}\n */\nLRUCache.prototype.put = function(key, value) {\n    \n};\n",
+        starter_cpp="class LRUCache {\npublic:\n    LRUCache(int capacity) {\n        \n    }\n    \n    int get(int key) {\n        \n    }\n    \n    void put(int key, int value) {\n        \n    }\n};\n",
         visible=[{
             "ops": [["LRUCache", 2], ["put", 1, 1], ["put", 2, 2], ["get", 1], ["put", 3, 3], ["get", 2], ["put", 4, 4], ["get", 1], ["get", 3], ["get", 4]],
             "expected": [None, None, None, 1, None, -1, None, -1, 3, 4],
@@ -1527,6 +1572,7 @@ def write_unit10() -> None:
         mode="class",
         starter_py="class Trie:\n    def __init__(self):\n        pass\n\n    def insert(self, word: str) -> None:\n        pass\n\n    def search(self, word: str) -> bool:\n        pass\n\n    def startsWith(self, prefix: str) -> bool:\n        pass\n",
         starter_js="var Trie = function() {\n    \n};\n\nTrie.prototype.insert = function(word) {\n    \n};\n\nTrie.prototype.search = function(word) {\n    \n};\n\nTrie.prototype.startsWith = function(prefix) {\n    \n};\n",
+        starter_cpp="class Trie {\npublic:\n    Trie() {\n        \n    }\n    \n    void insert(string word) {\n        \n    }\n    \n    bool search(string word) {\n        \n    }\n    \n    bool startsWith(string prefix) {\n        \n    }\n};\n",
         visible=[{
             "ops": [["Trie"], ["insert", "apple"], ["search", "apple"], ["search", "app"], ["startsWith", "app"], ["insert", "app"], ["search", "app"]],
             "expected": [None, None, True, False, True, None, True],

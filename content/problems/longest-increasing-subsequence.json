@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "lengthOfLIS",
-    "javascript": "lengthOfLIS"
+    "javascript": "lengthOfLIS",
+    "cpp": "lengthOfLIS"
   },
   "paramNames": [
     "nums"
@@ -35,9 +36,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def lengthOfLIS(self, nums: list[int]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar lengthOfLIS = function(nums) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar lengthOfLIS = function(nums) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int lengthOfLIS(vector<int>& nums) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

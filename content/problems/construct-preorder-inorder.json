@@ -24,11 +24,12 @@
     "inorder is the inorder of the tree, preorder is the preorder of the tree."
   ],
   "followUp": "O(n) with an index map for inorder.",
-  "editorial": "Root = preorder[0]. Find it in inorder. Left size = index. Recurse on slices. Map value→inorder index.",
+  "editorial": "Root = preorder[0]. Find it in inorder. Left size = index. Recurse on slices. Map value\u2192inorder index.",
   "mode": "function",
   "entry": {
     "python": "buildTree",
-    "javascript": "buildTree"
+    "javascript": "buildTree",
+    "cpp": "buildTree"
   },
   "paramNames": [
     "preorder",
@@ -39,9 +40,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "TreeNode*",
+    "params": [
+      "vector<int>&",
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} preorder\n * @param {number[]} inorder\n * @return {TreeNode|null}\n */\nvar buildTree = function(preorder, inorder) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} preorder\n * @param {number[]} inorder\n * @return {TreeNode|null}\n */\nvar buildTree = function(preorder, inorder) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

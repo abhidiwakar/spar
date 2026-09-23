@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "minEatingSpeed",
-    "javascript": "minEatingSpeed"
+    "javascript": "minEatingSpeed",
+    "cpp": "minEatingSpeed"
   },
   "paramNames": [
     "piles",
@@ -38,9 +39,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def minEatingSpeed(self, piles: list[int], h: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} piles\n * @param {number} h\n * @return {number}\n */\nvar minEatingSpeed = function(piles, h) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} piles\n * @param {number} h\n * @return {number}\n */\nvar minEatingSpeed = function(piles, h) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int minEatingSpeed(vector<int>& piles, int h) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

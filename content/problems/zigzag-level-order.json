@@ -22,11 +22,12 @@
     "-100 <= Node.val <= 100"
   ],
   "followUp": null,
-  "editorial": "BFS. Reverse every odd level (0-index even is L→R).",
+  "editorial": "BFS. Reverse every odd level (0-index even is L\u2192R).",
   "mode": "function",
   "entry": {
     "python": "zigzagLevelOrder",
-    "javascript": "zigzagLevelOrder"
+    "javascript": "zigzagLevelOrder",
+    "cpp": "zigzagLevelOrder"
   },
   "paramNames": [
     "root"
@@ -35,9 +36,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "vector<vector<int>>",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number[][]}\n */\nvar zigzagLevelOrder = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number[][]}\n */\nvar zigzagLevelOrder = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

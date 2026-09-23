@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "rob",
-    "javascript": "rob"
+    "javascript": "rob",
+    "cpp": "rob"
   },
   "paramNames": [
     "root"
@@ -35,9 +36,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def rob(self, root: Optional[TreeNode]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar rob = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar rob = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int rob(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

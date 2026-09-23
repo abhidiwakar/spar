@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "threeSum",
-    "javascript": "threeSum"
+    "javascript": "threeSum",
+    "cpp": "threeSum"
   },
   "paramNames": [
     "nums"
@@ -35,9 +36,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "vector<vector<int>>",
+    "params": [
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def threeSum(self, nums: list[int]) -> list[list[int]]:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<vector<int>> threeSum(vector<int>& nums) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

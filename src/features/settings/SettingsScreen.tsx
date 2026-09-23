@@ -35,6 +35,7 @@ export function SettingsScreen() {
   const runtimes = useApp((s) => s.runtimes);
   const [pythonPath, setPythonPath] = useState(progress?.settings.pythonPath ?? "");
   const [nodePath, setNodePath] = useState(progress?.settings.nodePath ?? "");
+  const [cppPath, setCppPath] = useState(progress?.settings.cppPath ?? "");
   const [defaultLanguage, setDefaultLanguage] = useState(progress?.settings.defaultLanguage ?? "python");
   const [dailyGoal, setDailyGoal] = useState(progress?.settings.dailyGoal ?? 1);
   const [timerEnabled, setTimerEnabled] = useState(progress?.settings.timerEnabled ?? true);
@@ -61,6 +62,7 @@ export function SettingsScreen() {
     if (!progress) return;
     setPythonPath(progress.settings.pythonPath);
     setNodePath(progress.settings.nodePath);
+    setCppPath(progress.settings.cppPath);
     setDefaultLanguage(progress.settings.defaultLanguage);
     setDailyGoal(progress.settings.dailyGoal);
     setTimerEnabled(progress.settings.timerEnabled);
@@ -83,6 +85,7 @@ export function SettingsScreen() {
     (model = ollamaModel) => ({
       pythonPath,
       nodePath,
+      cppPath,
       defaultLanguage,
       dailyGoal,
       timerEnabled,
@@ -95,6 +98,7 @@ export function SettingsScreen() {
     [
       pythonPath,
       nodePath,
+      cppPath,
       defaultLanguage,
       dailyGoal,
       timerEnabled,
@@ -165,7 +169,7 @@ export function SettingsScreen() {
     try {
       await persistSettings();
       setOpenaiApiKey("");
-      const rt = await detectRuntimes(pythonPath, nodePath);
+      const rt = await detectRuntimes(pythonPath, nodePath, cppPath);
       setRuntimes(rt);
       const auto = await detectRuntimes();
       setDetected(auto);
@@ -262,6 +266,19 @@ export function SettingsScreen() {
             ready={detected !== null}
           />
         </Field>
+        <Field label="C++ compiler path">
+          <input
+            className="w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 font-mono text-sm"
+            value={cppPath}
+            onChange={(e) => setCppPath(e.target.value)}
+            placeholder="g++ or clang++"
+          />
+          <PathHint
+            override={cppPath}
+            detected={detected?.cpp}
+            ready={detected !== null}
+          />
+        </Field>
         <Field label="Default language">
           <select
             className="w-full rounded-md border border-ink-700 bg-ink-900 px-3 py-2 text-sm"
@@ -270,6 +287,7 @@ export function SettingsScreen() {
           >
             <option value="python">Python</option>
             <option value="javascript">JavaScript</option>
+            <option value="cpp">C++</option>
           </select>
         </Field>
         <Field label="Daily accepted goal">

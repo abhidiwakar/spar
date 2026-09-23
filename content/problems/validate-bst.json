@@ -26,12 +26,13 @@
     "The number of nodes is in [1, 10^4].",
     "-2^31 <= Node.val <= 2^31 - 1"
   ],
-  "followUp": "Inorder should be strictly increasing — that is another solution.",
+  "followUp": "Inorder should be strictly increasing \u2014 that is another solution.",
   "editorial": "DFS with (low, high) bounds. Left child gets high=root.val, right gets low=root.val. Strict inequalities.",
   "mode": "function",
   "entry": {
     "python": "isValidBST",
-    "javascript": "isValidBST"
+    "javascript": "isValidBST",
+    "cpp": "isValidBST"
   },
   "paramNames": [
     "root"
@@ -40,9 +41,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def isValidBST(self, root: Optional[TreeNode]) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {boolean}\n */\nvar isValidBST = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {boolean}\n */\nvar isValidBST = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool isValidBST(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

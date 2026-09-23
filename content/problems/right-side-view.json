@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "rightSideView",
-    "javascript": "rightSideView"
+    "javascript": "rightSideView",
+    "cpp": "rightSideView"
   },
   "paramNames": [
     "root"
@@ -35,9 +36,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "vector<int>",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def rightSideView(self, root: Optional[TreeNode]) -> list[int]:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number[]}\n */\nvar rightSideView = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number[]}\n */\nvar rightSideView = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<int> rightSideView(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

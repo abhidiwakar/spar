@@ -27,14 +27,20 @@ export default function App() {
     try {
       const snap = await loadProgress();
       setProgress(snap);
-      const rt = await detectRuntimes(snap.settings.pythonPath, snap.settings.nodePath);
+      const rt = await detectRuntimes(
+        snap.settings.pythonPath,
+        snap.settings.nodePath,
+        snap.settings.cppPath,
+      );
       setRuntimes(rt);
       const preferred = snap.settings.defaultLanguage as Language;
       if (preferred === "javascript" && rt.node) setLanguage("javascript");
       else if (preferred === "python" && rt.python) setLanguage("python");
+      else if (preferred === "cpp" && rt.cpp) setLanguage("cpp");
       else if (rt.python) setLanguage("python");
       else if (rt.node) setLanguage("javascript");
-      if (!rt.python && !rt.node) setScreen("setup");
+      else if (rt.cpp) setLanguage("cpp");
+      if (!rt.python && !rt.node && !rt.cpp) setScreen("setup");
     } catch (e) {
       try {
         const rt = await detectRuntimes();
@@ -81,7 +87,7 @@ export default function App() {
     );
   }
 
-  if (screen === "setup" || (runtimes && !runtimes.python && !runtimes.node && screen !== "settings")) {
+  if (screen === "setup" || (runtimes && !runtimes.python && !runtimes.node && !runtimes.cpp && screen !== "settings")) {
     return <SetupScreen />;
   }
 

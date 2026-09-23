@@ -16,6 +16,7 @@ use tauri::{Manager, State};
 struct Runtimes {
     python: Option<String>,
     node: Option<String>,
+    cpp: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -27,6 +28,7 @@ struct ClientRun {
     kind: String,
     python_path: Option<String>,
     node_path: Option<String>,
+    cpp_path: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -38,6 +40,7 @@ struct SubmitIn {
     duration_ms: Option<i64>,
     python_path: Option<String>,
     node_path: Option<String>,
+    cpp_path: Option<String>,
 }
 
 #[derive(serde::Serialize)]
@@ -48,10 +51,15 @@ struct SubmitResult {
 }
 
 #[tauri::command]
-fn detect_runtimes(python_path: Option<String>, node_path: Option<String>) -> Runtimes {
+fn detect_runtimes(
+    python_path: Option<String>,
+    node_path: Option<String>,
+    cpp_path: Option<String>,
+) -> Runtimes {
     Runtimes {
         python: judge::detect_python(python_path.as_deref()),
         node: judge::detect_node(node_path.as_deref()),
+        cpp: judge::detect_cpp(cpp_path.as_deref()),
     }
 }
 
@@ -73,8 +81,16 @@ fn assemble_run(content: &ContentDir, req: &ClientRun) -> Result<RunRequest, Str
     let entry = match req.language.as_str() {
         "python" => problem.entry.python,
         "javascript" => problem.entry.javascript,
+        "cpp" => problem
+            .entry
+            .cpp
+            .ok_or_else(|| "This problem has no C++ entry point.".to_string())?,
         other => return Err(format!("Unsupported language: {other}")),
     };
+    let cpp_types = problem.cpp_types.map(|t| judge::CppTypes {
+        return_type: t.return_type,
+        params: t.params,
+    });
     Ok(RunRequest {
         language: req.language.clone(),
         source: req.source.clone(),
@@ -85,6 +101,8 @@ fn assemble_run(content: &ContentDir, req: &ClientRun) -> Result<RunRequest, Str
         tests,
         python_path: req.python_path.clone(),
         node_path: req.node_path.clone(),
+        cpp_path: req.cpp_path.clone(),
+        cpp_types,
         submit,
     })
 }
@@ -114,6 +132,7 @@ fn submit_solution(
             kind: "submit".into(),
             python_path: req.python_path.clone(),
             node_path: req.node_path.clone(),
+            cpp_path: req.cpp_path.clone(),
         },
     )?;
     let output = judge::run(assembled).map_err(|e| e.to_string())?;

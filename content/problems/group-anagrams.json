@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "groupAnagrams",
-    "javascript": "groupAnagrams"
+    "javascript": "groupAnagrams",
+    "cpp": "groupAnagrams"
   },
   "paramNames": [
     "strs"
@@ -36,9 +37,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "vector<vector<char>>",
+    "params": [
+      "vector<string>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:\n        pass\n",
-    "javascript": "/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nvar groupAnagrams = function(strs) {\n    \n};\n"
+    "javascript": "/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nvar groupAnagrams = function(strs) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<vector<char>> groupAnagrams(vector<string>& strs) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

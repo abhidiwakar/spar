@@ -10,8 +10,16 @@ import type {
   Settings,
 } from "./types";
 
-export async function detectRuntimes(pythonPath?: string, nodePath?: string): Promise<Runtimes> {
-  return invoke("detect_runtimes", { pythonPath: pythonPath ?? null, nodePath: nodePath ?? null });
+export async function detectRuntimes(
+  pythonPath?: string,
+  nodePath?: string,
+  cppPath?: string,
+): Promise<Runtimes> {
+  return invoke("detect_runtimes", {
+    pythonPath: pythonPath ?? null,
+    nodePath: nodePath ?? null,
+    cppPath: cppPath ?? null,
+  });
 }
 
 export async function loadProgress(): Promise<ProgressSnapshot> {
@@ -41,6 +49,7 @@ export async function submitSolution(input: {
   durationMs?: number;
   pythonPath?: string;
   nodePath?: string;
+  cppPath?: string;
 }): Promise<{ output: JudgeOutput; xp: number }> {
   return invoke("submit_solution", {
     req: {
@@ -50,6 +59,7 @@ export async function submitSolution(input: {
       durationMs: input.durationMs ?? null,
       pythonPath: input.pythonPath ?? null,
       nodePath: input.nodePath ?? null,
+      cppPath: input.cppPath ?? null,
     },
   });
 }
@@ -118,6 +128,7 @@ export async function runTests(input: {
   source: string;
   pythonPath?: string;
   nodePath?: string;
+  cppPath?: string;
 }): Promise<JudgeOutput> {
   return invoke("run_tests", {
     req: {
@@ -127,6 +138,7 @@ export async function runTests(input: {
       kind: "run",
       pythonPath: input.pythonPath ?? null,
       nodePath: input.nodePath ?? null,
+      cppPath: input.cppPath ?? null,
     },
   });
 }

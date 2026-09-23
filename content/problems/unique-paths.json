@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "uniquePaths",
-    "javascript": "uniquePaths"
+    "javascript": "uniquePaths",
+    "cpp": "uniquePaths"
   },
   "paramNames": [
     "m",
@@ -37,9 +38,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "int",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def uniquePaths(self, m: int, n: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number} m\n * @param {number} n\n * @return {number}\n */\nvar uniquePaths = function(m, n) {\n    \n};\n"
+    "javascript": "/**\n * @param {number} m\n * @param {number} n\n * @return {number}\n */\nvar uniquePaths = function(m, n) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int uniquePaths(int m, int n) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

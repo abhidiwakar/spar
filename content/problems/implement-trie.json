@@ -27,15 +27,18 @@
   "mode": "class",
   "entry": {
     "python": "Trie",
-    "javascript": "Trie"
+    "javascript": "Trie",
+    "cpp": "Trie"
   },
   "paramNames": [],
   "helpers": [
     "json"
   ],
+  "cppTypes": null,
   "starter": {
     "python": "class Trie:\n    def __init__(self):\n        pass\n\n    def insert(self, word: str) -> None:\n        pass\n\n    def search(self, word: str) -> bool:\n        pass\n\n    def startsWith(self, prefix: str) -> bool:\n        pass\n",
-    "javascript": "var Trie = function() {\n    \n};\n\nTrie.prototype.insert = function(word) {\n    \n};\n\nTrie.prototype.search = function(word) {\n    \n};\n\nTrie.prototype.startsWith = function(prefix) {\n    \n};\n"
+    "javascript": "var Trie = function() {\n    \n};\n\nTrie.prototype.insert = function(word) {\n    \n};\n\nTrie.prototype.search = function(word) {\n    \n};\n\nTrie.prototype.startsWith = function(prefix) {\n    \n};\n",
+    "cpp": "class Trie {\npublic:\n    Trie() {\n        \n    }\n    \n    void insert(string word) {\n        \n    }\n    \n    bool search(string word) {\n        \n    }\n    \n    bool startsWith(string prefix) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

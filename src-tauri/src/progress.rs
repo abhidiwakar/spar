@@ -11,6 +11,7 @@ pub struct Db(pub Mutex<Connection>);
 pub struct Settings {
     pub python_path: String,
     pub node_path: String,
+    pub cpp_path: String,
     pub default_language: String,
     pub daily_goal: i64,
     pub timer_enabled: bool,
@@ -196,6 +197,7 @@ pub fn load_settings(conn: &Connection) -> Settings {
     Settings {
         python_path: get_setting(conn, "python_path", ""),
         node_path: get_setting(conn, "node_path", ""),
+        cpp_path: get_setting(conn, "cpp_path", ""),
         default_language: get_setting(conn, "default_language", "python"),
         daily_goal: get_setting(conn, "daily_goal", "1").parse().unwrap_or(1),
         timer_enabled: get_setting(conn, "timer_enabled", "true") == "true",
@@ -269,6 +271,7 @@ pub fn save_settings(conn: &Connection, s: &Settings) -> rusqlite::Result<()> {
     let pairs = [
         ("python_path", s.python_path.as_str()),
         ("node_path", s.node_path.as_str()),
+        ("cpp_path", s.cpp_path.as_str()),
         ("default_language", s.default_language.as_str()),
         ("daily_goal", &s.daily_goal.to_string()),
         ("timer_enabled", if s.timer_enabled { "true" } else { "false" }),

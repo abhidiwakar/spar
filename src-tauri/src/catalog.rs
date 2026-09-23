@@ -16,12 +16,23 @@ pub struct CatalogProblem {
     pub helpers: Vec<String>,
     pub editorial: Option<String>,
     pub tests: CatalogTests,
+    #[serde(default)]
+    pub cpp_types: Option<CatalogCppTypes>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CatalogEntry {
     pub python: String,
     pub javascript: String,
+    #[serde(default)]
+    pub cpp: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct CatalogCppTypes {
+    #[serde(rename = "return")]
+    pub return_type: String,
+    pub params: Vec<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -124,7 +135,7 @@ mod tests {
             "id": "other",
             "difficulty": "easy",
             "mode": "function",
-            "entry": { "python": "f", "javascript": "f" },
+            "entry": { "python": "f", "javascript": "f", "cpp": "f" },
             "paramNames": [],
             "helpers": [],
             "tests": { "visible": [] }

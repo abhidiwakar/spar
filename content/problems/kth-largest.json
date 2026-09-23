@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "findKthLargest",
-    "javascript": "findKthLargest"
+    "javascript": "findKthLargest",
+    "cpp": "findKthLargest"
   },
   "paramNames": [
     "nums",
@@ -37,9 +38,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def findKthLargest(self, nums: list[int], k: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findKthLargest = function(nums, k) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findKthLargest = function(nums, k) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int findKthLargest(vector<int>& nums, int k) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

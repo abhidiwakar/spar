@@ -24,11 +24,12 @@
     "nums is sorted in ascending order."
   ],
   "followUp": null,
-  "editorial": "lo, hi inclusive or exclusive — pick one and stick to it. Mid overflow: lo + (hi-lo)//2.",
+  "editorial": "lo, hi inclusive or exclusive \u2014 pick one and stick to it. Mid overflow: lo + (hi-lo)//2.",
   "mode": "function",
   "entry": {
     "python": "search",
-    "javascript": "search"
+    "javascript": "search",
+    "cpp": "search"
   },
   "paramNames": [
     "nums",
@@ -39,9 +40,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def search(self, nums: list[int], target: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number}\n */\nvar search = function(nums, target) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number}\n */\nvar search = function(nums, target) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

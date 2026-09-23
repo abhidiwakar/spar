@@ -30,7 +30,8 @@
   "mode": "function",
   "entry": {
     "python": "mergeKLists",
-    "javascript": "mergeKLists"
+    "javascript": "mergeKLists",
+    "cpp": "mergeKLists"
   },
   "paramNames": [
     "lists"
@@ -39,9 +40,16 @@
     "list",
     "listlist"
   ],
+  "cppTypes": {
+    "return": "ListNode*",
+    "params": [
+      "vector<ListNode*>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def mergeKLists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:\n        pass\n",
-    "javascript": "/**\n * @param {Array<ListNode|null>} lists\n * @return {ListNode|null}\n */\nvar mergeKLists = function(lists) {\n    \n};\n"
+    "javascript": "/**\n * @param {Array<ListNode|null>} lists\n * @return {ListNode|null}\n */\nvar mergeKLists = function(lists) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    ListNode* mergeKLists(vector<ListNode*>& lists) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

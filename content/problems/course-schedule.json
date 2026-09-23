@@ -28,7 +28,8 @@
   "mode": "function",
   "entry": {
     "python": "canFinish",
-    "javascript": "canFinish"
+    "javascript": "canFinish",
+    "cpp": "canFinish"
   },
   "paramNames": [
     "numCourses",
@@ -39,9 +40,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "int",
+      "vector<vector<int>>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: list[list[int]]) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {number} numCourses\n * @param {number[][]} prerequisites\n * @return {boolean}\n */\nvar canFinish = function(numCourses, prerequisites) {\n    \n};\n"
+    "javascript": "/**\n * @param {number} numCourses\n * @param {number[][]} prerequisites\n * @return {boolean}\n */\nvar canFinish = function(numCourses, prerequisites) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

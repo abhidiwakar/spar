@@ -29,7 +29,8 @@
   "mode": "function",
   "entry": {
     "python": "orangesRotting",
-    "javascript": "orangesRotting"
+    "javascript": "orangesRotting",
+    "cpp": "orangesRotting"
   },
   "paramNames": [
     "grid"
@@ -38,9 +39,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<vector<int>>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def orangesRotting(self, grid: list[list[int]]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[][]} grid\n * @return {number}\n */\nvar orangesRotting = function(grid) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[][]} grid\n * @return {number}\n */\nvar orangesRotting = function(grid) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int orangesRotting(vector<vector<int>>& grid) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

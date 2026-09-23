@@ -28,7 +28,8 @@
   "mode": "function",
   "entry": {
     "python": "eraseOverlapIntervals",
-    "javascript": "eraseOverlapIntervals"
+    "javascript": "eraseOverlapIntervals",
+    "cpp": "eraseOverlapIntervals"
   },
   "paramNames": [
     "intervals"
@@ -37,9 +38,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<vector<int>>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def eraseOverlapIntervals(self, intervals: list[list[int]]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[][]} intervals\n * @return {number}\n */\nvar eraseOverlapIntervals = function(intervals) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[][]} intervals\n * @return {number}\n */\nvar eraseOverlapIntervals = function(intervals) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int eraseOverlapIntervals(vector<vector<int>>& intervals) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

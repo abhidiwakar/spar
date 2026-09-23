@@ -31,7 +31,8 @@
   "mode": "function",
   "entry": {
     "python": "maxPathSum",
-    "javascript": "maxPathSum"
+    "javascript": "maxPathSum",
+    "cpp": "maxPathSum"
   },
   "paramNames": [
     "root"
@@ -40,9 +41,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def maxPathSum(self, root: Optional[TreeNode]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar maxPathSum = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar maxPathSum = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int maxPathSum(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

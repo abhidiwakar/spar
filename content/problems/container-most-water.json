@@ -28,7 +28,8 @@
   "mode": "function",
   "entry": {
     "python": "maxArea",
-    "javascript": "maxArea"
+    "javascript": "maxArea",
+    "cpp": "maxArea"
   },
   "paramNames": [
     "height"
@@ -37,9 +38,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def maxArea(self, height: list[int]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nvar maxArea = function(height) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} height\n * @return {number}\n */\nvar maxArea = function(height) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int maxArea(vector<int>& height) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

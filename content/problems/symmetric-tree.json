@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "isSymmetric",
-    "javascript": "isSymmetric"
+    "javascript": "isSymmetric",
+    "cpp": "isSymmetric"
   },
   "paramNames": [
     "root"
@@ -36,9 +37,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def isSymmetric(self, root: Optional[TreeNode]) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {boolean}\n */\nvar isSymmetric = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {boolean}\n */\nvar isSymmetric = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool isSymmetric(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [
