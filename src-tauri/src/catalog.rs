@@ -72,7 +72,7 @@ pub struct CatalogEntry {
     pub cpp: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct CatalogCppTypes {
     #[serde(rename = "return")]
     pub return_type: String,
@@ -83,6 +83,8 @@ pub struct CatalogCppTypes {
 pub struct Starter {
     pub python: String,
     pub javascript: String,
+    #[serde(default)]
+    pub cpp: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
