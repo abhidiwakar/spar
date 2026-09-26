@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "hasPathSum",
-    "javascript": "hasPathSum"
+    "javascript": "hasPathSum",
+    "cpp": "hasPathSum"
   },
   "paramNames": [
     "root",
@@ -38,9 +39,17 @@
     "tree",
     "json"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "TreeNode*",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @param {number} targetSum\n * @return {boolean}\n */\nvar hasPathSum = function(root, targetSum) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @param {number} targetSum\n * @return {boolean}\n */\nvar hasPathSum = function(root, targetSum) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool hasPathSum(TreeNode* root, int targetSum) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

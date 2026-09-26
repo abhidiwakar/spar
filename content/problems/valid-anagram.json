@@ -30,7 +30,8 @@
   "mode": "function",
   "entry": {
     "python": "isAnagram",
-    "javascript": "isAnagram"
+    "javascript": "isAnagram",
+    "cpp": "isAnagram"
   },
   "paramNames": [
     "s",
@@ -41,9 +42,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "string",
+      "string"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def isAnagram(self, s: str, t: str) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isAnagram = function(s, t) {\n    \n};\n"
+    "javascript": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isAnagram = function(s, t) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool isAnagram(string s, string t) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

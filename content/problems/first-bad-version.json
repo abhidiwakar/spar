@@ -25,7 +25,8 @@
   "mode": "function",
   "entry": {
     "python": "firstBadVersion",
-    "javascript": "firstBadVersion"
+    "javascript": "firstBadVersion",
+    "cpp": "firstBadVersion"
   },
   "paramNames": [
     "n"
@@ -35,9 +36,16 @@
     "json",
     "first_bad_version"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def firstBadVersion(self, n: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number} n\n * @return {number}\n */\nvar firstBadVersion = function(n) {\n    \n};\n"
+    "javascript": "/**\n * @param {number} n\n * @return {number}\n */\nvar firstBadVersion = function(n) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int firstBadVersion(int n) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

@@ -30,7 +30,8 @@
   "mode": "function",
   "entry": {
     "python": "wordBreak",
-    "javascript": "wordBreak"
+    "javascript": "wordBreak",
+    "cpp": "wordBreak"
   },
   "paramNames": [
     "s",
@@ -41,9 +42,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "string",
+      "vector<string>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def wordBreak(self, s: str, wordDict: list[str]) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {string} s\n * @param {string[]} wordDict\n * @return {boolean}\n */\nvar wordBreak = function(s, wordDict) {\n    \n};\n"
+    "javascript": "/**\n * @param {string} s\n * @param {string[]} wordDict\n * @return {boolean}\n */\nvar wordBreak = function(s, wordDict) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool wordBreak(string s, vector<string>& wordDict) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

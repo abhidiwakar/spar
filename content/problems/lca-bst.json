@@ -29,7 +29,8 @@
   "mode": "function",
   "entry": {
     "python": "lowestCommonAncestor",
-    "javascript": "lowestCommonAncestor"
+    "javascript": "lowestCommonAncestor",
+    "cpp": "lowestCommonAncestor"
   },
   "paramNames": [
     "root",
@@ -42,9 +43,18 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "TreeNode*",
+      "int",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def lowestCommonAncestor(self, root: Optional[TreeNode], p: int, q: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @param {number} p\n * @param {number} q\n * @return {number}\n */\nvar lowestCommonAncestor = function(root, p, q) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @param {number} p\n * @param {number} q\n * @return {number}\n */\nvar lowestCommonAncestor = function(root, p, q) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int lowestCommonAncestor(TreeNode* root, int p, int q) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

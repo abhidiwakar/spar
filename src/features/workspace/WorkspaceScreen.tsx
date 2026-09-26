@@ -64,7 +64,13 @@ export function WorkspaceScreen() {
   const unit = problem ? unitById(problem.unitId) : undefined;
   const timerMinutes = unit?.timerMinutes ?? 25;
   const missingRuntime =
-    language === "python" ? !runtimes?.python : language === "javascript" ? !runtimes?.node : true;
+    language === "python"
+      ? !runtimes?.python
+      : language === "javascript"
+        ? !runtimes?.node
+        : language === "cpp"
+          ? !runtimes?.cpp
+          : true;
 
   useEffect(() => {
     if (!problem) return;
@@ -210,6 +216,7 @@ export function WorkspaceScreen() {
           source: code,
           pythonPath: progress?.settings.pythonPath,
           nodePath: progress?.settings.nodePath,
+          cppPath: progress?.settings.cppPath,
         });
         setResult(out);
       } else {
@@ -220,6 +227,7 @@ export function WorkspaceScreen() {
           durationMs: Date.now() - started.current,
           pythonPath: progress?.settings.pythonPath,
           nodePath: progress?.settings.nodePath,
+          cppPath: progress?.settings.cppPath,
         });
         setResult(output);
         await saveDraft(problem.id, language, code);
@@ -354,6 +362,7 @@ export function WorkspaceScreen() {
           >
             <option value="python">Python</option>
             <option value="javascript">JavaScript</option>
+            <option value="cpp">C++</option>
           </select>
           <button
             className="rounded-md border border-ink-700 px-3 py-1 text-xs hover:bg-ink-800 disabled:opacity-40"
@@ -374,8 +383,12 @@ export function WorkspaceScreen() {
 
       {missingRuntime ? (
         <div className="border-b border-hard/40 bg-hard/10 px-3 py-2 text-xs text-hard">
-          {language === "python" ? "Python" : "Node.js"} was not found. Set a path in Settings to Run
-          and Submit.
+          {language === "python"
+            ? "Python"
+            : language === "javascript"
+              ? "Node.js"
+              : "A C++ compiler (g++/clang++)"}{" "}
+          was not found. Set a path in Settings to Run and Submit.
         </div>
       ) : null}
 
@@ -632,7 +645,9 @@ export function WorkspaceScreen() {
             <Panel defaultSize={68} minSize={30}>
               <Editor
                 theme="vs-dark"
-                language={language === "python" ? "python" : "javascript"}
+                language={
+                  language === "python" ? "python" : language === "cpp" ? "cpp" : "javascript"
+                }
                 value={code}
                 onChange={(v) => {
                   const next = v ?? "";

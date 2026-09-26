@@ -30,7 +30,8 @@
   "mode": "function",
   "entry": {
     "python": "isPalindrome",
-    "javascript": "isPalindrome"
+    "javascript": "isPalindrome",
+    "cpp": "isPalindrome"
   },
   "paramNames": [
     "s"
@@ -39,9 +40,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "string"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isPalindrome = function(s) {\n    \n};\n"
+    "javascript": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isPalindrome = function(s) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool isPalindrome(string s) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

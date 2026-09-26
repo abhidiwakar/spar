@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "topKFrequent",
-    "javascript": "topKFrequent"
+    "javascript": "topKFrequent",
+    "cpp": "topKFrequent"
   },
   "paramNames": [
     "nums",
@@ -38,9 +39,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "vector<int>",
+    "params": [
+      "vector<int>&",
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def topKFrequent(self, nums: list[int], k: int) -> list[int]:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar topKFrequent = function(nums, k) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar topKFrequent = function(nums, k) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<int> topKFrequent(vector<int>& nums, int k) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

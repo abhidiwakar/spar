@@ -30,7 +30,8 @@
   "mode": "function",
   "entry": {
     "python": "numIslands",
-    "javascript": "numIslands"
+    "javascript": "numIslands",
+    "cpp": "numIslands"
   },
   "paramNames": [
     "grid"
@@ -39,9 +40,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<vector<char>>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def numIslands(self, grid: list[list[str]]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {character[][]} grid\n * @return {number}\n */\nvar numIslands = function(grid) {\n    \n};\n"
+    "javascript": "/**\n * @param {character[][]} grid\n * @return {number}\n */\nvar numIslands = function(grid) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int numIslands(vector<vector<char>>& grid) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

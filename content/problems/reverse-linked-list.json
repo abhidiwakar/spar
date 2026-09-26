@@ -25,7 +25,8 @@
   "mode": "function",
   "entry": {
     "python": "reverseList",
-    "javascript": "reverseList"
+    "javascript": "reverseList",
+    "cpp": "reverseList"
   },
   "paramNames": [
     "head"
@@ -34,9 +35,16 @@
     "list",
     "list"
   ],
+  "cppTypes": {
+    "return": "ListNode*",
+    "params": [
+      "ListNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        pass\n",
-    "javascript": "/**\n * @param {ListNode|null} head\n * @return {ListNode|null}\n */\nvar reverseList = function(head) {\n    \n};\n"
+    "javascript": "/**\n * @param {ListNode|null} head\n * @return {ListNode|null}\n */\nvar reverseList = function(head) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    ListNode* reverseList(ListNode* head) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

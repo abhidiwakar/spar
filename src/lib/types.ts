@@ -1,5 +1,5 @@
 export type Difficulty = "easy" | "medium" | "hard";
-export type Language = "python" | "javascript";
+export type Language = "python" | "javascript" | "cpp";
 export type ProblemKind = "core" | "stretch";
 export type UnitKind = "standard" | "mixed" | "mock";
 
@@ -26,10 +26,10 @@ export type Problem = {
   followUp?: string;
   editorial?: string;
   mode: "function" | "class";
-  entry: { python: string; javascript: string };
+  entry: { python: string; javascript: string; cpp: string };
   paramNames: string[];
   helpers: string[];
-  starter: { python: string; javascript: string };
+  starter: { python: string; javascript: string; cpp: string };
   tests: { visible: TestCase[]; hidden: TestCase[] };
 };
 
@@ -71,6 +71,7 @@ export type AiProvider = "openai" | "ollama";
 export type Settings = {
   pythonPath: string;
   nodePath: string;
+  cppPath: string;
   defaultLanguage: Language | string;
   dailyGoal: number;
   timerEnabled: boolean;
@@ -135,4 +136,5 @@ export type JudgeOutput = {
 export type Runtimes = {
   python: string | null;
   node: string | null;
+  cpp: string | null;
 };

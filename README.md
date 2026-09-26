@@ -1,6 +1,6 @@
 # Spar
 
-A local desktop gym for data structures and algorithms. LeetCode-style workspace, Python and JavaScript, a 12-week path, streaks and XP. No hearts — you can fail Submit as often as you want.
+A local desktop gym for data structures and algorithms. LeetCode-style workspace, Python, JavaScript, and C++, a 12-week path, streaks and XP. No hearts — you can fail Submit as often as you want.
 
 Not affiliated with LeetCode or any employer.
 
@@ -12,6 +12,7 @@ Not affiliated with LeetCode or any employer.
 
 - Node.js 18+
 - Python 3 (to run Python solutions)
+- A C++17 compiler such as `g++` or `clang++` (to run C++ solutions)
 - Rust (stable) — [rustup](https://rustup.rs)
 - Xcode Command Line Tools on macOS; see [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) on Linux or Windows
 
@@ -24,9 +25,9 @@ npm run tauri dev
 
 Problem JSON under `content/problems/` is already generated. Re-run `python3 scripts/gen_problems.py` only if you change the generator.
 
-First launch: Home → **Continue** → Two Sum. Pick Python or JavaScript, **Run** visible tests, **Submit** hidden tests.
+First launch: Home → **Continue** → Two Sum. Pick Python, JavaScript, or C++, **Run** visible tests, **Submit** hidden tests.
 
-If the app cannot find `python3` or `node`, it opens setup so you can paste an absolute path.
+If the app cannot find `python3`, `node`, or a C++ compiler, it opens setup so you can paste an absolute path.
 
 ## Downloads
 
@@ -45,7 +46,7 @@ cargo test --manifest-path src-tauri/Cargo.toml --lib
 
 - `content/` — units and problems (classic algorithms, original statements)
 - `src/` — React workspace (Home, Path, editor, Progress, Settings)
-- `src-tauri/` — judge (`python3` / `node`) and SQLite progress
+- `src-tauri/` — judge (`python3` / `node` / `g++`) and SQLite progress
 
 Progress lives in the app data directory. Optional AI review uses an OpenAI key or a local Ollama model; the key stays in SQLite and is never sent to the UI.
 

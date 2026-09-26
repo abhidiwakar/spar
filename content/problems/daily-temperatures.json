@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "dailyTemperatures",
-    "javascript": "dailyTemperatures"
+    "javascript": "dailyTemperatures",
+    "cpp": "dailyTemperatures"
   },
   "paramNames": [
     "temperatures"
@@ -36,9 +37,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "vector<int>",
+    "params": [
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def dailyTemperatures(self, temperatures: list[int]) -> list[int]:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} temperatures\n * @return {number[]}\n */\nvar dailyTemperatures = function(temperatures) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} temperatures\n * @return {number[]}\n */\nvar dailyTemperatures = function(temperatures) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    vector<int> dailyTemperatures(vector<int>& temperatures) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "exist",
-    "javascript": "exist"
+    "javascript": "exist",
+    "cpp": "exist"
   },
   "paramNames": [
     "board",
@@ -38,9 +39,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "bool",
+    "params": [
+      "vector<vector<char>>&",
+      "string"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def exist(self, board: list[list[str]], word: str) -> bool:\n        pass\n",
-    "javascript": "/**\n * @param {character[][]} board\n * @param {string} word\n * @return {boolean}\n */\nvar exist = function(board, word) {\n    \n};\n"
+    "javascript": "/**\n * @param {character[][]} board\n * @param {string} word\n * @return {boolean}\n */\nvar exist = function(board, word) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    bool exist(vector<vector<char>>& board, string word) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

@@ -10,7 +10,7 @@
   "unitId": "unit-07",
   "kind": "core",
   "order": 3,
-  "tip": "Map old node → new node while DFS/BFS. Don't recurse infinitely.",
+  "tip": "Map old node \u2192 new node while DFS/BFS. Don't recurse infinitely.",
   "statement": "Given a reference of a node in a **connected** undirected graph, return a deep copy of the graph.\n\nEach node has a val and a list of neighbors. The input is an adjacency list. Node vals are 1-indexed as in the list order.",
   "examples": [
     {
@@ -25,11 +25,12 @@
     "The graph is connected."
   ],
   "followUp": null,
-  "editorial": "HashMap original→clone. DFS: create clone, then attach cloned neighbors.",
+  "editorial": "HashMap original\u2192clone. DFS: create clone, then attach cloned neighbors.",
   "mode": "function",
   "entry": {
     "python": "cloneGraph",
-    "javascript": "cloneGraph"
+    "javascript": "cloneGraph",
+    "cpp": "cloneGraph"
   },
   "paramNames": [
     "node"
@@ -38,9 +39,16 @@
     "graph",
     "graph"
   ],
+  "cppTypes": {
+    "return": "Node*",
+    "params": [
+      "Node*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def cloneGraph(self, node: Optional[Node]) -> Optional[Node]:\n        pass\n",
-    "javascript": "/**\n * @param {Node|null} node\n * @return {Node|null}\n */\nvar cloneGraph = function(node) {\n    \n};\n"
+    "javascript": "/**\n * @param {Node|null} node\n * @return {Node|null}\n */\nvar cloneGraph = function(node) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    Node* cloneGraph(Node* node) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

@@ -10,7 +10,7 @@
   "kind": "core",
   "order": 3,
   "tip": "Binary search on slope. nums[-1] and nums[n] are -inf.",
-  "statement": "A peak is an element strictly greater than its neighbors. Given `nums`, return **any** peak index. `nums[-1]` and `nums[n]` are considered `-∞`. O(log n).",
+  "statement": "A peak is an element strictly greater than its neighbors. Given `nums`, return **any** peak index. `nums[-1]` and `nums[n]` are considered `-\u221e`. O(log n).",
   "examples": [
     {
       "input": "nums = [1,2,3,1]",
@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "findPeakElement",
-    "javascript": "findPeakElement"
+    "javascript": "findPeakElement",
+    "cpp": "findPeakElement"
   },
   "paramNames": [
     "nums"
@@ -36,9 +37,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def findPeakElement(self, nums: list[int]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar findPeakElement = function(nums) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar findPeakElement = function(nums) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int findPeakElement(vector<int>& nums) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

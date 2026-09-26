@@ -28,7 +28,8 @@
   "mode": "function",
   "entry": {
     "python": "minSubArrayLen",
-    "javascript": "minSubArrayLen"
+    "javascript": "minSubArrayLen",
+    "cpp": "minSubArrayLen"
   },
   "paramNames": [
     "target",
@@ -39,9 +40,17 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "int",
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def minSubArrayLen(self, target: int, nums: list[int]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number} target\n * @param {number[]} nums\n * @return {number}\n */\nvar minSubArrayLen = function(target, nums) {\n    \n};\n"
+    "javascript": "/**\n * @param {number} target\n * @param {number[]} nums\n * @return {number}\n */\nvar minSubArrayLen = function(target, nums) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int minSubArrayLen(int target, vector<int>& nums) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

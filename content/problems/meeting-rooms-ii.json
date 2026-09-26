@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "minMeetingRooms",
-    "javascript": "minMeetingRooms"
+    "javascript": "minMeetingRooms",
+    "cpp": "minMeetingRooms"
   },
   "paramNames": [
     "intervals"
@@ -35,9 +36,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<vector<int>>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def minMeetingRooms(self, intervals: list[list[int]]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[][]} intervals\n * @return {number}\n */\nvar minMeetingRooms = function(intervals) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[][]} intervals\n * @return {number}\n */\nvar minMeetingRooms = function(intervals) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int minMeetingRooms(vector<vector<int>>& intervals) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

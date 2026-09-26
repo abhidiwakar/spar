@@ -31,7 +31,8 @@
   "mode": "function",
   "entry": {
     "python": "maxProfit",
-    "javascript": "maxProfit"
+    "javascript": "maxProfit",
+    "cpp": "maxProfit"
   },
   "paramNames": [
     "prices"
@@ -40,9 +41,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "vector<int>&"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def maxProfit(self, prices: list[int]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number[]} prices\n * @return {number}\n */\nvar maxProfit = function(prices) {\n    \n};\n"
+    "javascript": "/**\n * @param {number[]} prices\n * @return {number}\n */\nvar maxProfit = function(prices) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

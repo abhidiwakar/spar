@@ -26,7 +26,8 @@
   "mode": "function",
   "entry": {
     "python": "mergeTwoLists",
-    "javascript": "mergeTwoLists"
+    "javascript": "mergeTwoLists",
+    "cpp": "mergeTwoLists"
   },
   "paramNames": [
     "list1",
@@ -37,9 +38,17 @@
     "list",
     "list"
   ],
+  "cppTypes": {
+    "return": "ListNode*",
+    "params": [
+      "ListNode*",
+      "ListNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:\n        pass\n",
-    "javascript": "/**\n * @param {ListNode|null} list1\n * @param {ListNode|null} list2\n * @return {ListNode|null}\n */\nvar mergeTwoLists = function(list1, list2) {\n    \n};\n"
+    "javascript": "/**\n * @param {ListNode|null} list1\n * @param {ListNode|null} list2\n * @return {ListNode|null}\n */\nvar mergeTwoLists = function(list1, list2) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

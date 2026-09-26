@@ -33,6 +33,15 @@ class Node:
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct CppTypes {
+    #[serde(rename = "return")]
+    #[allow(dead_code)]
+    pub return_type: String,
+    pub params: Vec<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RunRequest {
     pub language: String,
     pub source: String,
@@ -43,6 +52,9 @@ pub struct RunRequest {
     pub tests: Vec<TestCase>,
     pub python_path: Option<String>,
     pub node_path: Option<String>,
+    pub cpp_path: Option<String>,
+    #[serde(default)]
+    pub cpp_types: Option<CppTypes>,
     #[serde(default)]
     pub submit: bool,
 }
@@ -127,6 +139,19 @@ pub fn detect_node(override_path: Option<&str>) -> Option<String> {
         .map(|p| p.to_string_lossy().to_string())
 }
 
+pub fn detect_cpp(override_path: Option<&str>) -> Option<String> {
+    if let Some(p) = override_path {
+        if !p.is_empty() && Path::new(p).exists() {
+            return Some(p.to_string());
+        }
+    }
+    which::which("g++")
+        .or_else(|_| which::which("clang++"))
+        .or_else(|_| which::which("c++"))
+        .ok()
+        .map(|p| p.to_string_lossy().to_string())
+}
+
 pub fn run(req: RunRequest) -> Result<JudgeOutput, JudgeError> {
     let timeout = if req.submit {
         SUBMIT_TIMEOUT
@@ -180,6 +205,61 @@ pub fn run_with_timeout(req: RunRequest, timeout: Duration) -> Result<JudgeOutpu
                 vec![
                     dir.join("harness.js").to_string_lossy().to_string(),
                     dir.join("solution.js").to_string_lossy().to_string(),
+                    tests_path.to_string_lossy().to_string(),
+                    result_path.to_string_lossy().to_string(),
+                    req.entry.clone(),
+                    req.mode.clone(),
+                    helpers_json,
+                    params_json,
+                ],
+            )
+        }
+        "cpp" => {
+            let cxx = detect_cpp(req.cpp_path.as_deref()).ok_or_else(|| {
+                JudgeError::Message(
+                    "A C++ compiler (g++/clang++) was not found. Set a path in Settings.".into(),
+                )
+            })?;
+            let out_kind = req.helpers.first().cloned().unwrap_or_else(|| "json".into());
+            let invoke = generate_cpp_invoke(&req, &out_kind)?;
+            fs::write(dir.join("solution.cpp"), &req.source)?;
+            fs::write(dir.join("invoke.inc"), invoke)?;
+            fs::write(dir.join("harness.cpp"), cpp_harness())?;
+            let runner = dir.join(if cfg!(windows) { "runner.exe" } else { "runner" });
+            let compile = Command::new(&cxx)
+                .args([
+                    "-std=c++17",
+                    "-O2",
+                    "-pipe",
+                    "-o",
+                    runner.to_str().unwrap_or("runner"),
+                    "harness.cpp",
+                ])
+                .current_dir(&dir)
+                .output()?;
+            if !compile.status.success() {
+                let mut err = String::from_utf8_lossy(&compile.stderr).to_string();
+                if err.trim().is_empty() {
+                    err = String::from_utf8_lossy(&compile.stdout).to_string();
+                }
+                let _ = fs::remove_dir_all(&dir);
+                return Ok(JudgeOutput {
+                    verdict: "runtime_error".into(),
+                    passed: 0,
+                    total: req.tests.len(),
+                    stdout: String::new(),
+                    stderr: if err.trim().is_empty() {
+                        "C++ compile failed.".into()
+                    } else {
+                        err
+                    },
+                    cases: vec![],
+                });
+            }
+            (
+                runner.to_string_lossy().to_string(),
+                vec![
+                    dir.join("solution.cpp").to_string_lossy().to_string(),
                     tests_path.to_string_lossy().to_string(),
                     result_path.to_string_lossy().to_string(),
                     req.entry.clone(),
@@ -392,6 +472,139 @@ fn javascript_harness() -> &'static str {
     include_str!("harness.js")
 }
 
+fn cpp_harness() -> &'static str {
+    include_str!("harness.cpp")
+}
+
+fn strip_ref(ty: &str) -> &str {
+    ty.strip_suffix('&').unwrap_or(ty).trim()
+}
+
+fn cpp_decode_expr(ty: &str, name: &str) -> Result<String, JudgeError> {
+    let base = strip_ref(ty);
+    let expr = match base {
+        "int" => format!("args[\"{name}\"].as_int()"),
+        "bool" => format!("args[\"{name}\"].as_bool()"),
+        "string" => format!("args[\"{name}\"].as_string()"),
+        "vector<int>" => format!("as_vector_int(args[\"{name}\"])"),
+        "vector<string>" => format!("as_vector_string(args[\"{name}\"])"),
+        "vector<vector<int>>" => format!("as_vector_vector_int(args[\"{name}\"])"),
+        "vector<vector<char>>" => format!("as_vector_vector_char(args[\"{name}\"])"),
+        "vector<ListNode*>" => format!("decode_listlist(args[\"{name}\"])"),
+        "ListNode*" => format!("decode_list(args[\"{name}\"], extra)"),
+        "TreeNode*" => format!("decode_tree(args[\"{name}\"])"),
+        "Node*" => format!("decode_graph(args[\"{name}\"])"),
+        other => {
+            return Err(JudgeError::Message(format!(
+                "Unsupported C++ parameter type: {other}"
+            )));
+        }
+    };
+    Ok(format!("  {base} p_{name} = {expr};"))
+}
+
+fn generate_cpp_invoke(req: &RunRequest, out_kind: &str) -> Result<String, JudgeError> {
+    if req.mode == "class" {
+        return Ok(cpp_class_invoke(&req.entry));
+    }
+    let types = req.cpp_types.as_ref().ok_or_else(|| {
+        JudgeError::Message("Missing C++ type metadata for this problem.".into())
+    })?;
+    if types.params.len() != req.param_names.len() {
+        return Err(JudgeError::Message(
+            "C++ parameter types do not match param names.".into(),
+        ));
+    }
+    let mut lines = Vec::new();
+    lines.push("static Json run_function_case(const Json& args, const Json& extra, const Json& /*params*/, const vector<string>& /*in_kinds*/, const string& out_kind) {".into());
+    lines.push("  (void)out_kind;".into());
+    lines.push("  Solution sol;".into());
+    for (name, ty) in req.param_names.iter().zip(types.params.iter()) {
+        lines.push(cpp_decode_expr(ty, name)?);
+    }
+    let args_list = req
+        .param_names
+        .iter()
+        .map(|n| format!("p_{n}"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    lines.push(format!(
+        "  auto raw = sol.{}({});",
+        req.entry, args_list
+    ));
+    lines.push(format!(
+        "  return encode_by_kind(raw, \"{}\");",
+        out_kind.replace('"', "")
+    ));
+    lines.push("}".into());
+    lines.push(String::new());
+    lines.push("static Json run_class_case(const string&, const Json&) {".into());
+    lines.push("  throw runtime_error(\"not a class problem\");".into());
+    lines.push("}".into());
+    Ok(lines.join("\n"))
+}
+
+fn cpp_class_invoke(entry: &str) -> String {
+    let body = match entry {
+        "LRUCache" => r#"
+static Json run_class_case(const string& entry, const Json& ops) {
+  (void)entry;
+  vector<Json> actual;
+  unique_ptr<LRUCache> obj;
+  for (const auto& step : ops.as_array()) {
+    const auto& arr = step.as_array();
+    string name = arr[0].as_string();
+    if (!obj) {
+      obj.reset(new LRUCache(arr[1].as_int()));
+      actual.push_back(Json::null());
+    } else if (name == "get") {
+      actual.push_back(Json::number(obj->get(arr[1].as_int())));
+    } else if (name == "put") {
+      obj->put(arr[1].as_int(), arr[2].as_int());
+      actual.push_back(Json::null());
+    } else {
+      throw runtime_error("unknown LRUCache method: " + name);
+    }
+  }
+  return Json::array(actual);
+}
+"#,
+        "Trie" => r#"
+static Json run_class_case(const string& entry, const Json& ops) {
+  (void)entry;
+  vector<Json> actual;
+  unique_ptr<Trie> obj;
+  for (const auto& step : ops.as_array()) {
+    const auto& arr = step.as_array();
+    string name = arr[0].as_string();
+    if (!obj) {
+      obj.reset(new Trie());
+      actual.push_back(Json::null());
+    } else if (name == "insert") {
+      obj->insert(arr[1].as_string());
+      actual.push_back(Json::null());
+    } else if (name == "search") {
+      actual.push_back(Json::boolean(obj->search(arr[1].as_string())));
+    } else if (name == "startsWith") {
+      actual.push_back(Json::boolean(obj->startsWith(arr[1].as_string())));
+    } else {
+      throw runtime_error("unknown Trie method: " + name);
+    }
+  }
+  return Json::array(actual);
+}
+"#,
+        _ => r#"
+static Json run_class_case(const string& entry, const Json&) {
+  throw runtime_error("unsupported C++ class entry: " + entry);
+}
+"#,
+    };
+    format!(
+        "{body}\nstatic Json run_function_case(const Json&, const Json&, const Json&, const vector<string>&, const string&) {{\n  throw runtime_error(\"not a function problem\");\n}}\n"
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -411,11 +624,16 @@ mod tests {
         } else {
             problem.tests.visible
         };
-        let entry = if language == "python" {
-            problem.entry.python
-        } else {
-            problem.entry.javascript
+        let entry = match language {
+            "python" => problem.entry.python,
+            "javascript" => problem.entry.javascript,
+            "cpp" => problem.entry.cpp.unwrap_or(problem.entry.python),
+            _ => problem.entry.python,
         };
+        let cpp_types = problem.cpp_types.map(|t| CppTypes {
+            return_type: t.return_type,
+            params: t.params,
+        });
         RunRequest {
             language: language.into(),
             source: source.into(),
@@ -426,6 +644,8 @@ mod tests {
             tests,
             python_path: None,
             node_path: None,
+            cpp_path: None,
+            cpp_types,
             submit,
         }
     }
@@ -436,6 +656,10 @@ mod tests {
 
     fn node_available() -> bool {
         detect_node(None).is_some()
+    }
+
+    fn cpp_available() -> bool {
+        detect_cpp(None).is_some()
     }
 
     const PY_OK: &str = r#"
@@ -454,6 +678,21 @@ var twoSum = function(nums, target) {
     for (let i = 0; i < nums.length; i++) {
         if (seen.has(target - nums[i])) return [seen.get(target - nums[i]), i];
         seen.set(nums[i], i);
+    }
+};
+"#;
+
+    const CPP_OK: &str = r#"
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> seen;
+        for (int i = 0; i < (int)nums.size(); i++) {
+            auto it = seen.find(target - nums[i]);
+            if (it != seen.end()) return {it->second, i};
+            seen[nums[i]] = i;
+        }
+        return {};
     }
 };
 "#;
@@ -477,6 +716,113 @@ var twoSum = function(nums, target) {
         let out = run(two_sum_req("javascript", JS_OK, true)).unwrap();
         assert_eq!(out.verdict, "accepted");
         assert_eq!(out.passed, out.total);
+    }
+
+    #[test]
+    fn cpp_two_sum_accepted() {
+        if !cpp_available() {
+            return;
+        }
+        let out = run(two_sum_req("cpp", CPP_OK, true)).unwrap();
+        assert_eq!(out.verdict, "accepted", "{}", out.stderr);
+        assert_eq!(out.passed, out.total);
+    }
+
+    #[test]
+    fn cpp_reverse_list_accepted() {
+        if !cpp_available() {
+            return;
+        }
+        let problem = catalog::load_problem(&content_dir(), "reverse-linked-list").unwrap();
+        let src = r#"
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = nullptr;
+        while (head) {
+            ListNode* nxt = head->next;
+            head->next = prev;
+            prev = head;
+            head = nxt;
+        }
+        return prev;
+    }
+};
+"#;
+        let req = RunRequest {
+            language: "cpp".into(),
+            source: src.into(),
+            entry: problem.entry.cpp.unwrap(),
+            mode: problem.mode,
+            helpers: problem.helpers,
+            param_names: problem.param_names,
+            tests: problem.tests.visible,
+            python_path: None,
+            node_path: None,
+            cpp_path: None,
+            cpp_types: problem.cpp_types.map(|t| CppTypes {
+                return_type: t.return_type,
+                params: t.params,
+            }),
+            submit: false,
+        };
+        let out = run(req).unwrap();
+        assert_eq!(out.verdict, "accepted", "{}", out.stderr);
+    }
+
+    #[test]
+    fn cpp_lru_cache_accepted() {
+        if !cpp_available() {
+            return;
+        }
+        let problem = catalog::load_problem(&content_dir(), "lru-cache").unwrap();
+        let src = r#"
+class LRUCache {
+    int cap;
+    list<pair<int,int>> order;
+    unordered_map<int, list<pair<int,int>>::iterator> pos;
+public:
+    LRUCache(int capacity) : cap(capacity) {}
+    int get(int key) {
+        auto it = pos.find(key);
+        if (it == pos.end()) return -1;
+        order.splice(order.begin(), order, it->second);
+        return it->second->second;
+    }
+    void put(int key, int value) {
+        auto it = pos.find(key);
+        if (it != pos.end()) {
+            it->second->second = value;
+            order.splice(order.begin(), order, it->second);
+            return;
+        }
+        if ((int)order.size() == cap) {
+            pos.erase(order.back().first);
+            order.pop_back();
+        }
+        order.emplace_front(key, value);
+        pos[key] = order.begin();
+    }
+};
+"#;
+        let mut tests = problem.tests.visible.clone();
+        tests.extend(problem.tests.hidden);
+        let req = RunRequest {
+            language: "cpp".into(),
+            source: src.into(),
+            entry: problem.entry.cpp.unwrap(),
+            mode: problem.mode,
+            helpers: problem.helpers,
+            param_names: problem.param_names,
+            tests,
+            python_path: None,
+            node_path: None,
+            cpp_path: None,
+            cpp_types: None,
+            submit: true,
+        };
+        let out = run(req).unwrap();
+        assert_eq!(out.verdict, "accepted", "{}", out.stderr);
     }
 
     #[test]
@@ -538,6 +884,8 @@ class Solution:
             tests: problem.tests.visible,
             python_path: None,
             node_path: None,
+            cpp_path: None,
+            cpp_types: None,
             submit: false,
         };
         let out = run(req).unwrap();
@@ -575,6 +923,8 @@ class Solution:
             tests: problem.tests.visible,
             python_path: None,
             node_path: None,
+            cpp_path: None,
+            cpp_types: None,
             submit: false,
         };
         let out = run(req).unwrap();
@@ -617,6 +967,8 @@ class LRUCache:
             tests,
             python_path: None,
             node_path: None,
+            cpp_path: None,
+            cpp_types: None,
             submit: true,
         };
         let out = run(req).unwrap();

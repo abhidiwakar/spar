@@ -10,7 +10,7 @@
   "unitId": "unit-05",
   "kind": "core",
   "order": 4,
-  "tip": "Height vs diameter — the return value to the parent is height, the answer is a side effect.",
+  "tip": "Height vs diameter \u2014 the return value to the parent is height, the answer is a side effect.",
   "statement": "The diameter is the length of the longest path between any two nodes, measured in **edges**. It may or may not pass through the root.\n\nTrees are given as level-order arrays (`null` for missing children).",
   "examples": [
     {
@@ -27,7 +27,8 @@
   "mode": "function",
   "entry": {
     "python": "diameterOfBinaryTree",
-    "javascript": "diameterOfBinaryTree"
+    "javascript": "diameterOfBinaryTree",
+    "cpp": "diameterOfBinaryTree"
   },
   "paramNames": [
     "root"
@@ -36,9 +37,16 @@
     "json",
     "tree"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "TreeNode*"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar diameterOfBinaryTree = function(root) {\n    \n};\n"
+    "javascript": "/**\n * @param {TreeNode|null} root\n * @return {number}\n */\nvar diameterOfBinaryTree = function(root) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int diameterOfBinaryTree(TreeNode* root) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [

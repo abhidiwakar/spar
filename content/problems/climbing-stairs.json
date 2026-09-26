@@ -28,7 +28,8 @@
   "mode": "function",
   "entry": {
     "python": "climbStairs",
-    "javascript": "climbStairs"
+    "javascript": "climbStairs",
+    "cpp": "climbStairs"
   },
   "paramNames": [
     "n"
@@ -37,9 +38,16 @@
     "json",
     "json"
   ],
+  "cppTypes": {
+    "return": "int",
+    "params": [
+      "int"
+    ]
+  },
   "starter": {
     "python": "class Solution:\n    def climbStairs(self, n: int) -> int:\n        pass\n",
-    "javascript": "/**\n * @param {number} n\n * @return {number}\n */\nvar climbStairs = function(n) {\n    \n};\n"
+    "javascript": "/**\n * @param {number} n\n * @return {number}\n */\nvar climbStairs = function(n) {\n    \n};\n",
+    "cpp": "class Solution {\npublic:\n    int climbStairs(int n) {\n        \n    }\n};\n"
   },
   "tests": {
     "visible": [
