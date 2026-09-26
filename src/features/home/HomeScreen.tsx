@@ -1,13 +1,15 @@
-import { problems } from "../../lib/content";
 import { localDateString } from "../../lib/dates";
 import { nextProblem } from "../../lib/path";
 import { useApp } from "../../lib/store";
 
 export function HomeScreen() {
   const progress = useApp((s) => s.progress);
+  const catalog = useApp((s) => s.catalog);
   const openProblem = useApp((s) => s.openProblem);
   const setScreen = useApp((s) => s.setScreen);
-  const next = nextProblem(progress?.problemStates ?? []);
+  const units = catalog?.units ?? [];
+  const problems = catalog?.problems ?? [];
+  const next = nextProblem(units, problems, progress?.problemStates ?? []);
   const accepted = new Set(
     (progress?.problemStates ?? []).filter((s) => s.status === "accepted").map((s) => s.problemId),
   );
@@ -66,4 +68,3 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-

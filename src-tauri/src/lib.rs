@@ -4,12 +4,12 @@ mod ollama;
 mod progress;
 mod review;
 
-use catalog::ContentDir;
+use catalog::{Catalog, CatalogSnapshot};
 use judge::{JudgeOutput, RunRequest};
 use progress::{Db, Settings};
 use serde::Deserialize;
 use std::path::PathBuf;
-use tauri::{Manager, State};
+use tauri::{AppHandle, Emitter, Manager, State};
 
 #[derive(serde::Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -71,7 +71,7 @@ fn require_problem_id(id: &str) -> Result<(), String> {
     }
 }
 
-fn assemble_run(content: &ContentDir, req: &ClientRun) -> Result<RunRequest, String> {
+fn assemble_run(content: &Catalog, req: &ClientRun) -> Result<RunRequest, String> {
     let problem = content.load_problem(&req.problem_id)?;
     let submit = req.kind == "submit";
     let mut tests = problem.tests.visible;
@@ -108,18 +108,54 @@ fn assemble_run(content: &ContentDir, req: &ClientRun) -> Result<RunRequest, Str
 }
 
 #[tauri::command]
-fn run_tests(content: State<ContentDir>, req: ClientRun) -> Result<JudgeOutput, String> {
+async fn load_catalog(
+    app: AppHandle,
+    catalog: State<'_, Catalog>,
+) -> Result<CatalogSnapshot, String> {
+    if catalog.is_dev() {
+        return catalog
+            .snapshot()?
+            .ok_or_else(|| "Local content/ catalog is empty.".into());
+    }
+
+    if let Some(snap) = catalog.snapshot()? {
+        let app2 = app.clone();
+        tauri::async_runtime::spawn(async move {
+            let catalog = app2.state::<Catalog>();
+            match catalog.refresh().await {
+                Ok(()) => {
+                    if let Ok(Some(updated)) = catalog.snapshot() {
+                        let _ = app2.emit("catalog-updated", updated);
+                    }
+                }
+                Err(e) => eprintln!("catalog refresh failed: {e}"),
+            }
+        });
+        return Ok(snap);
+    }
+
+    catalog.refresh().await?;
+    catalog
+        .snapshot()?
+        .ok_or_else(|| "Problem catalog is empty.".into())
+}
+
+#[tauri::command]
+async fn run_tests(content: State<'_, Catalog>, req: ClientRun) -> Result<JudgeOutput, String> {
     if req.kind != "run" {
         return Err("Use submit_solution to submit.".into());
     }
     let assembled = assemble_run(&content, &req)?;
-    judge::run(assembled).map_err(|e| e.to_string())
+    tauri::async_runtime::spawn_blocking(move || judge::run(assembled))
+        .await
+        .map_err(|e| e.to_string())?
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-fn submit_solution(
-    db: State<Db>,
-    content: State<ContentDir>,
+async fn submit_solution(
+    db: State<'_, Db>,
+    content: State<'_, Catalog>,
     req: SubmitIn,
 ) -> Result<SubmitResult, String> {
     let problem = content.load_problem(&req.problem_id)?;
@@ -135,7 +171,10 @@ fn submit_solution(
             cpp_path: req.cpp_path.clone(),
         },
     )?;
-    let output = judge::run(assembled).map_err(|e| e.to_string())?;
+    let output = tauri::async_runtime::spawn_blocking(move || judge::run(assembled))
+        .await
+        .map_err(|e| e.to_string())?
+        .map_err(|e| e.to_string())?;
     let mut conn = db.0.lock().map_err(|e| e.to_string())?;
     let hinted = progress::used_hint(&conn, &req.problem_id);
     let xp = progress::record_attempt(
@@ -217,7 +256,7 @@ fn mark_hint_used_cmd(db: State<Db>, problem_id: String) -> Result<(), String> {
 #[tauri::command]
 fn load_editorial(
     db: State<Db>,
-    content: State<ContentDir>,
+    content: State<Catalog>,
     problem_id: String,
 ) -> Result<String, String> {
     let conn = db.0.lock().map_err(|e| e.to_string())?;
@@ -273,27 +312,26 @@ fn open_external_url(url: String) -> Result<(), String> {
     ollama::open_external_url(&url)
 }
 
-fn db_path(app: &tauri::AppHandle) -> Result<PathBuf, String> {
-    let dir = app
-        .path()
-        .app_data_dir()
-        .map_err(|e| e.to_string())?;
+fn app_data_dir(app: &tauri::AppHandle) -> Result<PathBuf, String> {
+    let dir = app.path().app_data_dir().map_err(|e| e.to_string())?;
     std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
-    Ok(dir.join("learndsa.db"))
+    Ok(dir)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
-            let path = db_path(app.handle())?;
+            let data_dir = app_data_dir(app.handle())?;
+            let path = data_dir.join("learndsa.db");
             let db = progress::open(path).map_err(|e| e.to_string())?;
             app.manage(db);
-            app.manage(ContentDir::resolve());
+            app.manage(Catalog::open(&data_dir).map_err(|e| e.to_string())?);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
             detect_runtimes,
+            load_catalog,
             run_tests,
             submit_solution,
             load_progress,

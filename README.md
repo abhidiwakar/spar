@@ -6,7 +6,7 @@ Not affiliated with LeetCode or any employer.
 
 ## Warning
 
-**Run and Submit execute your code on this machine with your user account.** There is no sandbox. Only run code you wrote or fully trust.
+**Run and Submit still execute your code on this machine.** The judge now kills the runner after a time limit, a 512 MB memory cap, and a process cap, and on macOS it applies a Seatbelt profile (no network, no writes outside the temp workdir, no extra executables). That is isolation for runaway solutions, not a security boundary. Only run code you wrote or fully trust.
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ cargo test --manifest-path src-tauri/Cargo.toml --lib
 
 Progress lives in the app data directory. Optional AI review uses an OpenAI key or a local Ollama model; the key stays in SQLite and is never sent to the UI.
 
-Hidden tests and editorials live in `content/` for authoring. The renderer only sees visible cases. The packaged app compiles the catalog into the binary instead of copying `content/` into Resources. Editorials load after Accepted or a hint.
+Hidden tests and editorials live in `content/` for authoring. The renderer only sees visible cases. Packaged apps download `content/` from this repo's `main` branch on first launch (Setting up), then cache it under the app data directory and refresh in the background on later launches. Editorials load after Accepted or a hint.
 
 ## License
 

@@ -1,10 +1,12 @@
-import { problems, units } from "../../lib/content";
 import { lastNLocalDates } from "../../lib/dates";
 import { useApp } from "../../lib/store";
 
 export function ProgressScreen() {
   const progress = useApp((s) => s.progress);
+  const catalog = useApp((s) => s.catalog);
   const openProblem = useApp((s) => s.openProblem);
+  const problems = catalog?.problems ?? [];
+  const units = catalog?.units ?? [];
   const accepted = new Set(
     (progress?.problemStates ?? []).filter((s) => s.status === "accepted").map((s) => s.problemId),
   );
@@ -78,4 +80,3 @@ export function ProgressScreen() {
     </div>
   );
 }
-

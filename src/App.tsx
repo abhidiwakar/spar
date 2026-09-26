@@ -1,6 +1,7 @@
 import { type ReactNode, useCallback, useEffect, useState } from "react";
-import { detectRuntimes, loadProgress } from "./lib/api";
-import { units } from "./lib/content";
+import { listen } from "@tauri-apps/api/event";
+import { detectRuntimes, loadCatalog, loadProgress } from "./lib/api";
+import type { CatalogSnapshot } from "./lib/content";
 import { useApp } from "./lib/store";
 import type { Language } from "./lib/types";
 import sparMark from "./assets/spar-mark.svg";
@@ -16,11 +17,16 @@ export default function App() {
   const setScreen = useApp((s) => s.setScreen);
   const setRuntimes = useApp((s) => s.setRuntimes);
   const setProgress = useApp((s) => s.setProgress);
+  const setCatalog = useApp((s) => s.setCatalog);
   const setLanguage = useApp((s) => s.setLanguage);
   const progress = useApp((s) => s.progress);
+  const catalog = useApp((s) => s.catalog);
   const runtimes = useApp((s) => s.runtimes);
   const [bootError, setBootError] = useState("");
+  const [catalogError, setCatalogError] = useState("");
+  const [catalogLoading, setCatalogLoading] = useState(true);
   const [bootTick, setBootTick] = useState(0);
+  const [catalogTick, setCatalogTick] = useState(0);
 
   const boot = useCallback(async () => {
     setBootError("");
@@ -52,9 +58,42 @@ export default function App() {
     }
   }, [setLanguage, setProgress, setRuntimes, setScreen]);
 
+  const fetchCatalog = useCallback(async () => {
+    setCatalogError("");
+    setCatalogLoading(true);
+    try {
+      const snap = await loadCatalog();
+      setCatalog(snap);
+    } catch (e) {
+      setCatalogError(String(e));
+    } finally {
+      setCatalogLoading(false);
+    }
+  }, [setCatalog]);
+
   useEffect(() => {
     void boot();
   }, [boot, bootTick]);
+
+  useEffect(() => {
+    void fetchCatalog();
+  }, [fetchCatalog, catalogTick]);
+
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+    void listen<CatalogSnapshot>("catalog-updated", (event) => {
+      const openId = useApp.getState().problemId;
+      setCatalog(event.payload);
+      if (openId && !event.payload.problems.some((p) => p.id === openId)) {
+        setScreen("home");
+      }
+    }).then((fn) => {
+      unlisten = fn;
+    });
+    return () => {
+      unlisten?.();
+    };
+  }, [setCatalog, setScreen]);
 
   if (bootError) {
     return (
@@ -87,7 +126,44 @@ export default function App() {
     );
   }
 
-  if (screen === "setup" || (runtimes && !runtimes.python && !runtimes.node && !runtimes.cpp && screen !== "settings")) {
+  if (!catalog) {
+    return (
+      <div className="flex h-full items-center justify-center bg-ink-950 px-6">
+        <div className="w-full max-w-lg rounded-xl border border-ink-700 bg-ink-900 p-8">
+          <img src={sparMark} alt="" className="h-10 w-10 rounded-[10px]" />
+          <p className="mt-4 text-xs uppercase tracking-[0.2em] text-gold-400">Spar</p>
+          <h1 className="mt-2 font-serif text-3xl">
+            {catalogError ? "Could not download problems" : "Setting up"}
+          </h1>
+          <p className="mt-3 text-sm text-paper-400">
+            {catalogError
+              ? "Spar needs a network connection once to download the problem path from GitHub. Retry when you are online."
+              : "Downloading the problem path from GitHub. This only blocks the first launch."}
+          </p>
+          {catalogError ? (
+            <p className="mt-3 font-mono text-xs text-hard">{catalogError}</p>
+          ) : (
+            <p className="mt-6 text-sm text-paper-500">
+              {catalogLoading ? "Downloading…" : "Almost ready…"}
+            </p>
+          )}
+          {catalogError ? (
+            <button
+              className="mt-6 rounded-md bg-gold-400 px-4 py-2 text-sm font-semibold text-ink-950"
+              onClick={() => setCatalogTick((n) => n + 1)}
+            >
+              Retry
+            </button>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    screen === "setup" ||
+    (runtimes && !runtimes.python && !runtimes.node && !runtimes.cpp && screen !== "settings")
+  ) {
     return <SetupScreen />;
   }
 
@@ -122,7 +198,7 @@ export default function App() {
           <span>
             Today <strong className="text-paper-100">{progress.xpToday} XP</strong>
           </span>
-          <span className="hidden sm:inline text-paper-500">{units.length} units</span>
+          <span className="hidden sm:inline text-paper-500">{catalog.units.length} units</span>
         </div>
       </header>
       <main className="min-h-0 flex-1">

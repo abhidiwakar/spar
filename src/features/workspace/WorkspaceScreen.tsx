@@ -14,7 +14,7 @@ import {
   saveNote,
   submitSolution,
 } from "../../lib/api";
-import { problemById, unitById } from "../../lib/content";
+import { problemByIdMap, unitById } from "../../lib/content";
 import { useApp } from "../../lib/store";
 import type { AttemptComplexity, JudgeOutput, Language, TestCase } from "../../lib/types";
 
@@ -26,11 +26,17 @@ export function WorkspaceScreen() {
   const setLanguage = useApp((s) => s.setLanguage);
   const progress = useApp((s) => s.progress);
   const setProgress = useApp((s) => s.setProgress);
+  const catalog = useApp((s) => s.catalog);
   const setScreen = useApp((s) => s.setScreen);
   const runtimes = useApp((s) => s.runtimes);
   const usedHint = useApp((s) => s.usedHint);
   const setUsedHint = useApp((s) => s.setUsedHint);
+  const problemById = useMemo(
+    () => problemByIdMap(catalog?.problems ?? []),
+    [catalog?.problems],
+  );
   const problem = problemId ? problemById.get(problemId) : undefined;
+  const unit = problem ? unitById(catalog?.units ?? [], problem.unitId) : undefined;
 
   const [code, setCode] = useState("");
   const [leftTab, setLeftTab] = useState<LeftTab>("description");
@@ -61,7 +67,6 @@ export function WorkspaceScreen() {
   const accepted = progress?.problemStates.some(
     (s) => s.problemId === problemId && s.status === "accepted",
   );
-  const unit = problem ? unitById(problem.unitId) : undefined;
   const timerMinutes = unit?.timerMinutes ?? 25;
   const missingRuntime =
     language === "python"
@@ -776,5 +781,6 @@ function labelVerdict(v: string): string {
   if (v === "accepted") return "Accepted";
   if (v === "wrong_answer") return "Wrong Answer";
   if (v === "tle") return "Time Limit Exceeded";
+  if (v === "mle") return "Memory Limit Exceeded";
   return "Runtime Error";
 }

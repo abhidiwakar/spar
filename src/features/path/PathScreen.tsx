@@ -1,10 +1,13 @@
-import { problemsForUnit, units } from "../../lib/content";
+import { problemsForUnit, sortedUnits } from "../../lib/content";
 import { useApp } from "../../lib/store";
 import { unitUnlocked } from "../../lib/path";
 
 export function PathScreen() {
   const progress = useApp((s) => s.progress);
+  const catalog = useApp((s) => s.catalog);
   const openProblem = useApp((s) => s.openProblem);
+  const units = sortedUnits(catalog?.units ?? []);
+  const problems = catalog?.problems ?? [];
   const accepted = new Set(
     (progress?.problemStates ?? []).filter((s) => s.status === "accepted").map((s) => s.problemId),
   );
@@ -21,8 +24,8 @@ export function PathScreen() {
         </p>
         <ol className="mt-10 space-y-8">
           {units.map((unit) => {
-            const unlocked = unitUnlocked(unit, accepted);
-            const list = problemsForUnit(unit);
+            const unlocked = unitUnlocked(unit, units, accepted);
+            const list = problemsForUnit(unit, problems);
             const coreDone = unit.coreIds.filter((id) => accepted.has(id)).length;
             return (
               <li key={unit.id} className="relative pl-8">

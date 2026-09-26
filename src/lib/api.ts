@@ -1,4 +1,5 @@
 import { Channel, invoke } from "@tauri-apps/api/core";
+import type { CatalogSnapshot } from "./content";
 import type {
   AttemptComplexity,
   JudgeOutput,
@@ -20,6 +21,10 @@ export async function detectRuntimes(
     nodePath: nodePath ?? null,
     cppPath: cppPath ?? null,
   });
+}
+
+export async function loadCatalog(): Promise<CatalogSnapshot> {
+  return invoke("load_catalog");
 }
 
 export async function loadProgress(): Promise<ProgressSnapshot> {
